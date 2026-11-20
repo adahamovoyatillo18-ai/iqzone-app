@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>IQzone — Xalqaro Rasmiy IQ Test</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --bg: #070a13;
+      --card-bg: rgba(20, 27, 45, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.3);
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      position: relative;
+    }
+    .view { display: none; flex-direction: column; flex: 1; }
+    .view.active { display: flex; animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Top Live Bar */
+    .live-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #34d399;
+      margin: 0 auto 16px auto;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.8; } }
+
+    /* Cards */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    /* Headings */
+    h1 { font-size: 26px; font-weight: 800; text-align: center; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .gold-gradient {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+
+    /* Test Selector Tabs */
+    .tab-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .tab-item.selected {
+      background: rgba(59, 130, 246, 0.12);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+    .tab-left { display: flex; align-items: center; gap: 12px; }
+    .tab-icon { font-size: 22px; }
+    .tab-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .tab-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .tab-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+    .badge-active { background: #3b82f6; color: #fff; }
+    .badge-free { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    /* CTA Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #000;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 16px 20px;
+      border-radius: 16px;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px var(--gold-glow);
+      transition: transform 0.1s ease;
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 13px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      width: 100%;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* Trust Grid */
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .trust-item {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 10px 6px;
+      border-radius: 12px;
+    }
+    .trust-val { font-size: 13px; font-weight: 700; color: #e2e8f0; }
+    .trust-lbl { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Quiz View */
+    .quiz-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .progress-bar-bg {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 5%;
+      background: linear-gradient(90deg, #3b82f6, #f59e0b);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+    .timer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #f87171;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .question-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .q-cat {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #60a5fa;
+      background: rgba(59, 130, 246, 0.15);
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      align-self: flex-start;
+    }
+    .q-text {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    .opt-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      color: #f8fafc;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+    }
+    .opt-btn:active, .opt-btn.chosen {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: #f59e0b;
+      color: #fbbf24;
+      transform: scale(0.98);
+    }
+    .opt-letter {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .opt-btn.chosen .opt-letter {
+      background: #f59e0b;
+      color: #000;
+    }
+
+    /* Suspense View */
+    .spinner-ring {
+      width: 72px;
+      height: 72px;
+      border: 4px solid rgba(245, 158, 11, 0.15);
+      border-top-color: #f59e0b;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 40px auto 20px auto;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .status-step {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* Paywall View */
+    .lock-banner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.05));
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .lock-icon { font-size: 42px; margin-bottom: 6px; }
+    .blurred-score {
+      font-size: 32px;
+      font-weight: 900;
+      color: #fbbf24;
+      letter-spacing: 2px;
+      margin: 8px 0;
+      filter: blur(4px);
+    }
+    .price-box {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .old-price { font-size: 16px; color: #64748b; text-decoration: line-through; }
+    .new-price { font-size: 26px; font-weight: 900; color: #10b981; }
+    .pay-btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- VIEW 1: LANDING & TRIO BUNDLE -->
+    <div id="view-landing" class="view active">
+      <div class="live-bar">
+        <span class="live-dot"></span>
+        <span>JONLI: 92 140+ NAFAR TEST TOPSHIRDI</span>
+      </div>
+
+      <h1><span class="gold-gradient">IQZONE</span> PRO</h1>
+      <p class="subtitle">Xalqaro Standartlashtirilgan Kognitiv Intellekt & IQ Platformasi</p>
+
+      <div class="glass-card">
+        <div style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px;">
+          Kognitiv Testlar To‘plami (Trio Bundle)
+        </div>
+
+        <div class="tab-item selected" onclick="selectTab(1)">
+          <div class="tab-left">
+            <div class="tab-icon">🧠</div>
+            <div>
+              <div class="tab-title">Rasmiy IQ Test (21 savol)</div>
+              <div class="tab-desc">Mantiq, fazoviy va sonlar tahlili</div>
+            </div>
+          </div>
+          <span class="tab-badge badge-active">ASOSIY</span>
+        </div>
+
+        <div class="tab-item" onclick="selectTab(2)">
+          <div class="tab-left">
+            <div class="tab-icon">🎭</div>
+            <div>
+              <div class="tab-title">EQ Test (Hissiy intellekt)</div>
+              <div class="tab-desc">Empatiya va muloqot qobiliyati</div>
+            </div>
+          </div>
+          <span class="tab-badge badge-free">BEPUL 🎁</span>
+        </div>
+
+        <div class="tab-item" onclick="selectTab(3)">
+          <div class="tab-left">
+            <div class="tab-icon">⏳</div>
+            <div>
+              <div class="tab-title">PQ Test (Prokrastinatsiya)</div>
+              <div class="tab-desc">Erinchaklik va vaqt boshqaruvi</div>
+            </div>
+          </div>
+          <span class="tab-badge badge-free">BEPUL 🎁</span>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="startQuiz()">
+        <span>Testni Boshlash</span>
+        <span>🚀</span>
+      </button>
+
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-val">21 Savol</div>
+          <div class="trust-lbl">~5 Daqiqa</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-val">QR-Kodli</div>
+          <div class="trust-lbl">HD Sertifikat</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-val">CHC / Raven</div>
+          <div class="trust-lbl">Metodologiya</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: QUIZ ENGINE -->
+    <div id="view-quiz" class="view">
+      <div class="quiz-top">
+        <span id="q-counter" style="color: #f59e0b;">Savol 1 / 21</span>
+        <div class="timer-badge">
+          <span>⏱️</span>
+          <span id="timer-display">15:00</span>
+        </div>
+      </div>
+
+      <div class="progress-bar-bg">
+        <div id="progress-fill" class="progress-bar-fill"></div>
+      </div>
+
+      <div class="question-card glass-card">
+        <span id="q-cat" class="q-cat">Mantiqiy Tahlil</span>
+        <div id="q-text" class="q-text">Savol yuklanmoqda...</div>
+        <div id="options-container"></div>
+      </div>
+
+      <button class="btn-secondary" onclick="skipQuestion()">
+        ⏭️ O‘tkazib yuborish
+      </button>
+    </div>
+
+    <!-- VIEW 3: SUSPENSE / ANALYZING -->
+    <div id="view-suspense" class="view" style="justify-content: center; align-items: center; text-align: center;">
+      <div class="spinner-ring"></div>
+      <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">Natijangiz Tahlil Qilinmoqda...</h2>
+      <p id="suspense-text" class="status-step">Raven matritsalari hisoblanmoqda...</p>
+    </div>
+
+    <!-- VIEW 4: PAYWALL HOOK -->
+    <div id="view-paywall" class="view">
+      <div class="lock-banner">
+        <div class="lock-icon">🔒</div>
+        <h2 style="font-size: 20px; font-weight: 800; color: #fff;">NATIJANGIZ TAYYOR — LEKIN YOPIQ!</h2>
+        <div class="blurred-score">IQ 138</div>
+        <p style="font-size: 13px; color: #cbd5e1; margin-top: 4px;">
+          Siz aholining yuqori <b>5%</b> intellektual toifasiga kirdingiz!
+        </p>
+      </div>
+
+      <div class="glass-card" style="text-align: center;">
+        <div style="font-size: 12px; font-weight: 600; color: #94a3b8;">RASMIY QR-KODLI HD SERTIFIKAT</div>
+        <div class="price-box">
+          <span class="old-price">45 000 so‘m</span>
+          <span class="new-price">9 900 so‘m</span>
+        </div>
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.4;">
+          Bor-yo‘g‘i 9,900 so‘m bilan o‘z intellekt darajangizni rasmiy xalqaro sertifikat bilan tasdiqlang!
+        </p>
+
+        <div class="pay-btn-group">
+          <button class="btn-primary" onclick="payWithCard()">
+            💳 Click / Payme / Karta (9 900 so‘m)
+          </button>
+          <button class="btn-secondary" onclick="payWithStars()">
+            ⭐ Telegram Stars (50 ⭐ — Avto)
+          </button>
+          <button class="btn-secondary" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);" onclick="inviteFriends()">
+            🎁 5 ta do‘st taklif qilib BEPUL ochish
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Initialize Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      tg.enableClosingConfirmation();
+    }
+
+    const questions = [{"id": 1, "arch": 1, "q": "🔢 **1. Sonlar qonuniyati:**\n\n`3,  5,  9,  15,  23,  ?`\n\nKetma-ketlikdagi keyingi sonni toping:", "opts": ["29", "39", "31", "33"], "ans": 3}, {"id": 13, "arch": 2, "q": "📐 **2. Geometrik fazo:**\n\nQavariq **Kvadrat (To'rtburchak)**ning barcha burchaklarini o'zaro to'g'ri chiziqlar bilan tutashtirilsa, jami nechta **diagonal** hosil bo'ladi?", "opts": ["5", "2", "7", "8"], "ans": 1}, {"id": 25, "arch": 3, "q": "🧩 **3. Mantiqiy analogiya:**\n\n**Kitob** : **Muallif** = **Bino** : **?**\n\nMantiqiy bog'liqlikka ko'ra to'g'ri variantni tanlang:", "opts": ["Quruvchi", "Eshik", "G'isht", "Me'mor (Arxitektor)"], "ans": 3}, {"id": 37, "arch": 4, "q": "🎲 **4. Fazoviy idrok (Zar qoidasi):**\n\nStandart o'yin zarida qarama-qarshi tomonlar yig'indisi har doim **7** ga teng bo'ladi.\nAgar zarning yuqori yuzida **1** turgan bo'lsa, pastki yuzidagi raqam necha?", "opts": ["4", "3", "6"], "ans": 2}, {"id": 49, "arch": 5, "q": "⚖️ **5. Tarozi muvozanati:**\n\n• 1 ta Tarvuz = 2 ta Qovun vazniga teng.\n• 1 ta Qovun = 3 ta Olma vazniga teng.\n\nDemak, **1 ta Tarvuz** nechta Olma vazniga teng bo'ladi?", "opts": ["8 ta", "6 ta", "11 ta", "3 ta"], "ans": 1}, {"id": 61, "arch": 6, "q": "📅 **6. Taqvim mantiqi:**\n\n`Yanvar,  Mart,  May,  Iyul,  ?`\n\nUshbu ketma-ketlikdagi keyingi oy qaysi?", "opts": ["Noyabr", "Avgust", "Oktabr", "Sentabr"], "ans": 3}, {"id": 73, "arch": 7, "q": "🏝️ **7. Rost va yolg'on jumboqi:**\n\nBir orolda faqat rostgo'ylar va yolg'onchilar yashaydi. Bir kishi: 'Men yolg'onchiman' dedi.\n\nMantiqan to'g'ri xulosa qaysi?", "opts": ["U rostgo'y", "Bu mantiqiy paradoks (mumkin emas)", "U yolg'onchi", "U mehmon"], "ans": 1}, {"id": 85, "arch": 8, "q": "🧭 **8. Yo'nalish va kompas:**\n\nSiz **Shimol** tomonga qarab turibsiz. Keyin o'ng tomonga **90°** burildingiz.\nHozir qaysi tomonga qarab turibsiz?", "opts": ["Sharq", "Janub", "G'arb", "Shimol"], "ans": 0}, {"id": 97, "arch": 9, "q": "⏰ **9. Soat millari burchagi:**\n\nSoat roppa-rosa **01:00** bo'lganda, soat va daqiqa millari orasidagi eng kichik burchak necha gradus bo'ladi?", "opts": ["15°", "60°", "30°", "75°"], "ans": 2}, {"id": 109, "arch": 10, "q": "🧠 **10. Mantiqiy silogizm:**\n\n• Barcha metallar issiqlikni o'tkazadi. Mis — metall.\n\nUshbu shartlardan kelib chiqadigan **qat'iy to'g'ri xulosa** qaysi?", "opts": ["Hamma metall misdir", "Issiqlik faqat misda bo'ladi", "Mis issiqlikni o'tkazadi", "Mis metall emas"], "ans": 2}, {"id": 121, "arch": 11, "q": "🔤 **11. Harfli shifr zanjiri:**\n\n`A,  C,  E,  G,  ?`\n\nQonuniyat bo'yicha keyingi harfni toping:", "opts": ["I", "H", "K", "J"], "ans": 0}, {"id": 133, "arch": 12, "q": "🧊 **12. 3D Fazoviy bloklar:**\n\nBir qatorda bir-biriga yopishtirib terilgan **3 ta bir xil kub** mavjud.\nUshbu yangi jismning jami nechta tashqi (ochiq) yoqlari bor?", "opts": ["18", "20", "14", "12"], "ans": 2}, {"id": 145, "arch": 13, "q": "🏃 **13. Musobaqa va o'rinlar:**\n\nMarafon yugurishida 2-o'rindagi yuguruvchini quvib o'tdingiz. Hozir nechanchi o'rindasiz?", "opts": ["G'olibsiz", "3-o'rinda", "1-o'rinda", "2-o'rinda"], "ans": 3}, {"id": 157, "arch": 14, "q": "🔍 **14. Ortiqchasini toping:**\n\nQuyidagi to'rttalikdan qaysi biri qolgan 3 tasi bilan bir xil mantiqiy toifaga kirmaydi?", "opts": ["Tyulen", "Akula", "Delfin", "Kit"], "ans": 1}, {"id": 169, "arch": 15, "q": "🔢 **15. Murakkab qonuniyat:**\n\n`2,  6,  12,  20,  ?`\n\nKeyingi sonni aniqlang:", "opts": ["30", "24", "34", "38"], "ans": 0}, {"id": 181, "arch": 16, "q": "💧 **16. Hajm va idishlar mantiqi:**\n\nSizda faqat 3 litrlik va 5 litrlik ikkita idish bor. Roppa-rosa 4 litr suvni o'lchash mumkinmi?", "opts": ["Yo'q, mutlaqo iloji yo'q", "Ha, 5L idishni 3L ga to'kish orqali", "Faqat tarozi bo'lsa", "Faqat 3L likni to'ldirib"], "ans": 1}, {"id": 193, "arch": 17, "q": "🔢 **17. Arifmetik matritsa:**\n\n`[ 2 ]  [ 4 ]  ➔  [  ?  ]`\n\nAgar birinchi son 2 barobar oshirilib, ikkinchisi qo'shilsa, natija necha bo'ladi?", "opts": ["12", "15", "8", "5"], "ans": 2}, {"id": 205, "arch": 18, "q": "👥 **18. Qarindoshlik mantiqi:**\n\nSuratdagi odamga qarab: 'Bu odamning otasi mening otamning yolg'iz o'g'lidir' dedi (gapiruvchining akasi yo'q).\n\nMantiqiy xulosa qaysi?", "opts": ["Otasi", "O'zi", "O'g'li", "Akasi"], "ans": 2}, {"id": 217, "arch": 19, "q": "🔢 **19. Fibonachchi uslubidagi zanjir:**\n\n`1,  2,  3,  5,  8,  13,  ?`\n\nKeyingi sonni toping:", "opts": ["25", "30", "18", "21"], "ans": 3}, {"id": 229, "arch": 20, "q": "📊 **20. To'plamlar (Venn diagrammasi):**\n\nGuruhda jami **30 nafar** talaba bor. Ulardan **18 nafari** ingliz tilini, **15 nafari** rus tilini biladi. 3 nafari ikkala tilni ham bilmaydi.\nNechta talaba **ikkala tilni ham** biladi?", "opts": ["4", "8", "6", "11"], "ans": 2}, {"id": 241, "arch": 21, "q": "🚗 **21. Harakat va tezlik mantiqi:**\n\nIkki shahar orasidagi masofa **120 km**. Bir-biriga qarab ikki mashina 60 km/soat va 40 km/soat tezlikda bir vaqtda yo'lga chiqdi.\nUlar necha soatdan keyin uchrashadi?", "opts": ["3 soat", "2 soat", "1 soat", "1 soat"], "ans": 2}];
+    let currentIdx = 0;
+    let correctCount = 0;
+    let timerSeconds = 15 * 60;
+    let timerInterval = null;
+
+    function switchView(viewId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const target = document.getElementById(viewId);
+      if (target) target.classList.add('active');
+    }
+
+    function selectTab(num) {
+      if (num > 1) {
+        if (tg) tg.HapticFeedback?.notificationOccurred('warning');
+        alert('Bu test IQ testidan o‘tganingizdan so‘ng BEPUL ochiladi! Avval IQ testini topshiring.');
+      }
+    }
+
+    function startQuiz() {
+      if (tg) tg.HapticFeedback?.impactOccurred('medium');
+      switchView('view-quiz');
+      currentIdx = 0;
+      correctCount = 0;
+      renderQuestion();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          finishQuiz();
+          return;
+        }
+        timerSeconds--;
+        const m = Math.floor(timerSeconds / 60);
+        const s = timerSeconds % 60;
+        document.getElementById('timer-display').innerText = 
+          (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+      }, 1000);
+    }
+
+    function renderQuestion() {
+      if (currentIdx >= questions.length) {
+        finishQuiz();
+        return;
+      }
+      const q = questions[currentIdx];
+      document.getElementById('q-counter').innerText = 'Savol ' + (currentIdx + 1) + ' / ' + questions.length;
+      const pct = Math.round(((currentIdx + 1) / questions.length) * 100);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      
+      const cats = ['🔢 Sonlar mantiqi', '🧩 Fazoviy idrok', '⚖️ Mantiqiy deduksiya', '🔍 Kognitiv qoliplar'];
+      document.getElementById('q-cat').innerText = cats[currentIdx % cats.length];
+      document.getElementById('q-text').innerText = q.q;
+
+      const optsBox = document.getElementById('options-container');
+      optsBox.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+      q.opts.forEach((optText, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerHTML = '<span class="opt-letter">' + letters[i] + '</span><span>' + optText + '</span>';
+        btn.onclick = () => selectAnswer(i, btn);
+        optsBox.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(optIdx, btnEl) {
+      btnEl.classList.add('chosen');
+      if (tg) tg.HapticFeedback?.impactOccurred('light');
+      
+      const q = questions[currentIdx];
+      if (optIdx === q.ans) {
+        correctCount++;
+      }
+
+      setTimeout(() => {
+        currentIdx++;
+        renderQuestion();
+      }, 220);
+    }
+
+    function skipQuestion() {
+      if (tg) tg.HapticFeedback?.impactOccurred('light');
+      currentIdx++;
+      renderQuestion();
+    }
+
+    function finishQuiz() {
+      clearInterval(timerInterval);
+      switchView('view-suspense');
+      const steps = [
+        'Raven matritsalari kalibrlanmoqda...',
+        'Mantiqiy xatolar va tezlik tekshirilmoqda...',
+        'Xalqaro kognitiv foiz (Percentile) hisoblanmoqda...',
+        'QR-kodli rasmiy HD sertifikat tayyorlanmoqda...'
+      ];
+      let stepIdx = 0;
+      const stepInt = setInterval(() => {
+        stepIdx++;
+        if (stepIdx < steps.length) {
+          document.getElementById('suspense-text').innerText = steps[stepIdx];
+        } else {
+          clearInterval(stepInt);
+          switchView('view-paywall');
+          if (tg) {
+            tg.HapticFeedback?.notificationOccurred('success');
+            try {
+              tg.sendData(JSON.stringify({ event: 'quiz_finished', score: correctCount, total: questions.length }));
+            } catch (e) {}
+          }
+        }
+      }, 700);
+    }
+
+    function payWithCard() {
+      if (tg) {
+        tg.HapticFeedback?.impactOccurred('medium');
+        tg.sendData(JSON.stringify({ event: 'pay_click' }));
+        tg.close();
+      } else {
+        alert('To‘lov botingiz orqali davom ettiriladi.');
+      }
+    }
+
+    function payWithStars() {
+      if (tg) {
+        tg.HapticFeedback?.impactOccurred('medium');
+        tg.sendData(JSON.stringify({ event: 'pay_stars' }));
+        tg.close();
+      } else {
+        alert('Telegram Stars to‘lovi botingiz orqali amalga oshiriladi.');
+      }
+    }
+
+    function inviteFriends() {
+      if (tg) {
+        tg.HapticFeedback?.impactOccurred('medium');
+        tg.sendData(JSON.stringify({ event: 'invite_friends' }));
+        tg.close();
+      } else {
+        alert('Do‘stlarni taklif qilish botingizda ochiladi.');
+      }
+    }
+  </script>
+</body>
+</html>
