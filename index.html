@@ -326,6 +326,223 @@
     .old-price { font-size: 16px; color: #64748b; text-decoration: line-through; }
     .new-price { font-size: 26px; font-weight: 900; color: #10b981; }
     .pay-btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+
+    /* MODAL OVERLAY & BOTTOM SHEET */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .modal-sheet {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 18px 20px 28px 20px;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      text-align: center;
+    }
+    .modal-overlay.active .modal-sheet {
+      transform: translateY(0);
+    }
+    @media (min-width: 600px) {
+      .modal-overlay {
+        align-items: center;
+      }
+      .modal-sheet {
+        border-radius: 24px;
+        transform: scale(0.95);
+      }
+      .modal-overlay.active .modal-sheet {
+        transform: scale(1);
+      }
+    }
+    .modal-handle {
+      width: 38px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 2px;
+      margin: 0 auto 12px auto;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .modal-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+    }
+    .modal-price-tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    /* REALISTIC UZCARD/HUMO CARD */
+    .bank-card {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+      border: 1px solid rgba(147, 197, 253, 0.3);
+      border-radius: 16px;
+      padding: 16px 18px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(30, 27, 75, 0.6);
+      margin-bottom: 12px;
+    }
+    .bank-card::after {
+      content: "";
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .bank-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .bank-card-chip {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .bank-card-number {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    .bank-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .copy-card-btn {
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .copy-card-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* QUICK APP BUTTONS */
+    .app-btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .app-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .app-btn:hover {
+      opacity: 0.95;
+    }
+    .app-btn:active {
+      transform: scale(0.97);
+    }
+    .click-btn {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      border: 1px solid #38bdf8;
+    }
+    .payme-btn {
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+      color: #fff;
+      border: 1px solid #2dd4bf;
+    }
+
+    /* GUIDE STEPS */
+    .pay-guide {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .guide-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -473,6 +690,143 @@
 
   </div>
 
+  <!-- MODAL: KARTA & CLICK/PAYME TO'LOV -->
+  <div id="modal-card-pay" class="modal-overlay" onclick="handleModalBgClick(event, 'modal-card-pay')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      
+      <div class="modal-header">
+        <div style="font-size: 20px;">💳</div>
+        <h3 style="font-size: 18px; font-weight: 800; color: #fff;">Karta Orqali To‘lov</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-card-pay')">✕</button>
+      </div>
+
+      <div class="modal-price-tag">
+        <span style="font-size: 13px; color: #94a3b8; text-decoration: line-through;">45 000 so‘m</span>
+        <span style="font-size: 22px; font-weight: 900; color: #10b981;">9 900 so‘m</span>
+        <span style="font-size: 11px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 8px; border-radius: 6px; font-weight: 700;">-78% CHEGIRMA</span>
+      </div>
+
+      <!-- Karta Dizayni -->
+      <div class="bank-card">
+        <div class="bank-card-top">
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #93c5fd;">UZCARD / HUMO</span>
+          <span style="font-size: 11px; color: #cbd5e1;">IQzone Rasmiy</span>
+        </div>
+        <div class="bank-card-chip">💳</div>
+        <div class="bank-card-number" id="card-num-text">6262 5701 0900 7361</div>
+        <div class="bank-card-bottom">
+          <div>
+            <div style="font-size: 9px; color: #94a3b8; text-transform: uppercase;">Karta Egasi</div>
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">OYATILLO ADXAMOV</div>
+          </div>
+          <button class="copy-card-btn" id="copy-btn" onclick="copyCardNumber()">
+            📋 Nusxalash
+          </button>
+        </div>
+      </div>
+
+      <!-- Ilovalar tugmalari -->
+      <div style="margin: 12px 0 6px 0; font-size: 12px; font-weight: 600; color: #cbd5e1; text-align: left;">
+        Tezkor to‘lov ilovalari:
+      </div>
+      <div class="app-btn-grid">
+        <a href="https://my.click.uz/" target="_blank" class="app-btn click-btn">
+          <span>🟢</span>
+          <span>Click</span>
+        </a>
+        <a href="https://payme.uz/" target="_blank" class="app-btn payme-btn">
+          <span>🔵</span>
+          <span>Payme</span>
+        </a>
+      </div>
+
+      <!-- Yo'riqnoma -->
+      <div class="pay-guide">
+        <div class="guide-step">
+          <span class="step-num">1</span>
+          <span>Kartaga <b>9 900 so‘m</b> o‘tkazing (Click, Payme yoki Uzum)</span>
+        </div>
+        <div class="guide-step">
+          <span class="step-num">2</span>
+          <span>To‘lov chekini (skrinshot) <b>botga</b> yuboring</span>
+        </div>
+        <div class="guide-step">
+          <span class="step-num">3</span>
+          <span><b>1–2 daqiqada</b> IQzone rasmiy natijangiz va HD sertifikat ochiladi!</span>
+        </div>
+      </div>
+
+      <!-- Amal tugmasi -->
+      <button class="btn-primary" style="margin-top: 14px;" onclick="goToBotForReceipt()">
+        💬 Chekni Botga Yuborish 🚀
+      </button>
+      <a href="https://t.me/adahamov_08" target="_blank" class="btn-secondary" style="margin-top: 8px; text-decoration: none; display: block;">
+        👨‍💻 Adminga Yozish (@adahamov_08)
+      </a>
+    </div>
+  </div>
+
+  <!-- MODAL: TELEGRAM STARS -->
+  <div id="modal-stars-pay" class="modal-overlay" onclick="handleModalBgClick(event, 'modal-stars-pay')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <div style="font-size: 20px;">⭐</div>
+        <h3 style="font-size: 18px; font-weight: 800; color: #fff;">Telegram Stars To‘lovi</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-stars-pay')">✕</button>
+      </div>
+
+      <div style="text-align: center; padding: 14px 0;">
+        <div style="font-size: 44px; margin-bottom: 6px;">⭐</div>
+        <div style="font-size: 24px; font-weight: 900; color: #fbbf24;">50 Stars (Avto)</div>
+        <p style="font-size: 13px; color: #94a3b8; margin-top: 8px; line-height: 1.5;">
+          Telegram Stars orqali to‘lov qilganda natijangiz va rasmiy HD sertifikatingiz <b>avtomatik 1 soniyada</b> ochiladi!
+        </p>
+      </div>
+
+      <button class="btn-primary" onclick="goToBotStars()">
+        ⭐ Botda Stars orqali to‘lash 🚀
+      </button>
+      <button class="btn-secondary" style="margin-top: 8px;" onclick="closeModal('modal-stars-pay')">
+        ✕ Bekor qilish
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: BEPUL OCHISH (REFERRAL) -->
+  <div id="modal-invite" class="modal-overlay" onclick="handleModalBgClick(event, 'modal-invite')">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <div style="font-size: 20px;">🎁</div>
+        <h3 style="font-size: 18px; font-weight: 800; color: #fff;">5 ta Do‘st — 100% Bepul</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-invite')">✕</button>
+      </div>
+
+      <div style="text-align: center; padding: 10px 0;">
+        <div style="font-size: 38px; margin-bottom: 6px;">👥</div>
+        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5;">
+          5 ta do‘stingizga havola yuboring. Ular botga kirib test topshirishi bilan rasmiy sertifikatingiz <b>mutlaqo bepul</b> ochiladi!
+        </p>
+      </div>
+
+      <div class="bank-card" style="background: rgba(255,255,255,0.04); padding: 12px; margin-bottom: 12px;">
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Sizning taklif havolangiz:</div>
+        <div style="font-size: 13px; font-weight: 700; color: #38bdf8; word-break: break-all;" id="invite-link-text">
+          https://t.me/Iqzonebot?start=iqtest
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="shareToTelegram()">
+        📲 Telegram'da Do‘stlarga Ulashish
+      </button>
+      <button class="btn-secondary" id="copy-ref-btn" style="margin-top: 8px;" onclick="copyInviteLink()">
+        📋 Havolani Nusxalash
+      </button>
+    </div>
+  </div>
+
   <script>
     // Initialize Telegram WebApp
     const tg = window.Telegram?.WebApp;
@@ -600,33 +954,130 @@
       }, 700);
     }
 
-    function payWithCard() {
-      if (tg) {
-        tg.HapticFeedback?.impactOccurred('medium');
-        tg.sendData(JSON.stringify({ event: 'pay_click' }));
-        tg.close();
-      } else {
-        alert('To‘lov botingiz orqali davom ettiriladi.');
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('active');
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('active');
+      }
+    }
+
+    function handleModalBgClick(e, id) {
+      if (e.target.id === id) {
+        closeModal(id);
+      }
+    }
+
+    function payWithCard() {
+      openModal('modal-card-pay');
     }
 
     function payWithStars() {
-      if (tg) {
-        tg.HapticFeedback?.impactOccurred('medium');
-        tg.sendData(JSON.stringify({ event: 'pay_stars' }));
-        tg.close();
-      } else {
-        alert('Telegram Stars to‘lovi botingiz orqali amalga oshiriladi.');
-      }
+      openModal('modal-stars-pay');
     }
 
     function inviteFriends() {
-      if (tg) {
-        tg.HapticFeedback?.impactOccurred('medium');
-        tg.sendData(JSON.stringify({ event: 'invite_friends' }));
-        tg.close();
+      const userId = tg?.initDataUnsafe?.user?.id;
+      const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
+      const linkElem = document.getElementById('invite-link-text');
+      if (linkElem) linkElem.innerText = refLink;
+      openModal('modal-invite');
+    }
+
+    function copyCardNumber() {
+      const cardNum = "6262570109007361";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cardNum).then(() => {
+          showCardCopied();
+        }).catch(() => fallbackCopy(cardNum));
       } else {
-        alert('Do‘stlarni taklif qilish botingizda ochiladi.');
+        fallbackCopy(cardNum);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showCardCopied();
+      } catch (err) {
+        prompt('Karta raqamini nusxalang:', text);
+      }
+      document.body.removeChild(ta);
+    }
+
+    function showCardCopied() {
+      const btn = document.getElementById('copy-btn');
+      if (btn) {
+        btn.innerText = '✅ Nusxalandi!';
+        btn.style.background = '#10b981';
+        btn.style.borderColor = '#34d399';
+        btn.style.color = '#fff';
+        setTimeout(() => {
+          btn.innerText = '📋 Nusxalash';
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 2500);
+      }
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function goToBotForReceipt() {
+      const url = 'https://t.me/Iqzonebot';
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
+    function goToBotStars() {
+      const url = 'https://t.me/Iqzonebot?start=pay_stars';
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
+    function shareToTelegram() {
+      const userId = tg?.initDataUnsafe?.user?.id;
+      const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
+      const text = encodeURIComponent(`🧠 Men IQzone rasmiy testini topshirdim. Qani, o'z intellekt darajangizni sinab ko'ring! 👉 ${refLink}`);
+      const url = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${text}`;
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+
+    function copyInviteLink() {
+      const userId = tg?.initDataUnsafe?.user?.id;
+      const link = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(() => {
+          const btn = document.getElementById('copy-ref-btn');
+          if (btn) {
+            btn.innerText = '✅ Havola nusxalandi!';
+            setTimeout(() => { btn.innerText = '📋 Havolani Nusxalash'; }, 2500);
+          }
+        });
+      } else {
+        prompt('Taklif havolasi:', link);
       }
     }
   </script>
