@@ -1581,8 +1581,8 @@
       const uid = tg?.initDataUnsafe?.user?.id || '';
       const refLink = uid ? `https://t.me/Iqzonebot?start=ref_${uid}` : 'https://t.me/Iqzonebot';
       const shareText = currentLang === 'ru'
-        ? '🧠 Я прошёл официальный IQ тест в IQzone! Проверь свой уровень интеллекта: '
-        : '🧠 Men IQzone rasmiy testida intellektimni sinab ko'rdim! Qani, siz ham o'z darajangizni tekshirib ko'ring: ';
+        ? "🧠 Я прошёл официальный IQ тест в IQzone! Проверь свой уровень интеллекта: "
+        : "🧠 Men IQzone rasmiy testida intellektimni sinab ko'rdim! Qani, siz ham o'z darajangizni tekshirib ko'ring: ";
       
       const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(shareText)}`;
       if (tg?.openTelegramLink) {
