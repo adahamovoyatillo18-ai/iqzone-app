@@ -618,18 +618,34 @@
 
     /* Receipt Upload Dropzone */
     .receipt-box {
-      border: 2px dashed rgba(129, 140, 248, 0.35);
+      position: relative;
+      display: block;
+      border: 2px dashed rgba(129, 140, 248, 0.45);
       border-radius: 14px;
-      padding: 14px;
+      padding: 16px 14px;
       text-align: center;
-      background: rgba(30, 27, 75, 0.25);
+      background: rgba(30, 27, 75, 0.3);
       cursor: pointer;
       transition: all 0.2s ease;
       margin-bottom: 12px;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
     .receipt-box:active {
-      background: rgba(99, 102, 241, 0.15);
+      background: rgba(99, 102, 241, 0.2);
       border-color: #818cf8;
+      transform: scale(0.99);
+    }
+    .receipt-native-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 100px;
     }
 
     /* Card Payment Modal Sheet */
@@ -1055,17 +1071,20 @@
 
         <!-- In-App Receipt Upload Section -->
         <div id="receipt-container">
-          <input type="file" id="modal-receipt-input" accept="image/*" style="display:none;" onchange="handleModalReceiptSelect(event)">
-          
-          <div id="receipt-dropzone" class="receipt-box" onclick="document.getElementById('modal-receipt-input').click()">
-            <div style="font-size:24px; margin-bottom:2px;">📸</div>
-            <div style="font-size:12.5px; font-weight:700; color:#cbd5e1;" id="receipt-prompt-text">To'lov chekini shu yerga yuklang</div>
-            <div style="font-size:10.5px; color:#94a3b8; margin-top:2px;" id="receipt-prompt-sub">(Skrinshot tanlash uchun bu yerga bosing)</div>
-          </div>
+          <label id="receipt-dropzone" class="receipt-box" for="modal-receipt-input">
+            <input type="file" id="modal-receipt-input" class="receipt-native-input" accept="image/*,.png,.jpg,.jpeg,.webp" onchange="handleModalReceiptSelect(event)">
+            <div style="font-size:26px; margin-bottom:4px; pointer-events:none;">📸</div>
+            <div style="font-size:13px; font-weight:700; color:#e2e8f0; pointer-events:none;" id="receipt-prompt-text">To'lov chekini shu yerga yuklang</div>
+            <div style="font-size:11px; color:#94a3b8; margin-top:3px; pointer-events:none;" id="receipt-prompt-sub">(Skrinshot tanlash uchun bu yerga bosing)</div>
+          </label>
 
           <div id="receipt-preview-wrap" style="display:none; text-align:center; margin-bottom:12px;">
-            <img id="receipt-preview-img" style="max-height:90px; border-radius:10px; border:1px solid #6366f1; margin:0 auto 8px; display:block;">
-            <div id="receipt-preview-name" style="font-size:11px; color:#a5b4fc; margin-bottom:8px;"></div>
+            <div style="position:relative; display:inline-block; margin-bottom:8px;">
+              <img id="receipt-preview-img" style="max-height:100px; max-width:100%; border-radius:10px; border:1px solid #6366f1; display:block; margin:0 auto;">
+              <button type="button" onclick="resetReceiptSelection(event)" style="position:absolute; top:-6px; right:-6px; background:#ef4444; color:#fff; border:none; border-radius:50%; width:22px; height:22px; font-size:12px; cursor:pointer; font-weight:bold; box-shadow:0 2px 6px rgba(0,0,0,0.4);">✕</button>
+            </div>
+            <div id="receipt-preview-name" style="font-size:11px; color:#a5b4fc; margin-bottom:10px;"></div>
+            <div id="receipt-error-msg" style="display:none; color:#f87171; font-size:11.5px; margin-bottom:8px; line-height:1.4;"></div>
             <button class="btn btn-purple" id="btn-modal-upload-send" onclick="sendReceiptFromMiniApp()">
               <span id="btn-upload-text">🚀 Chekni yuborish (Tasdiqlashga)</span>
             </button>
@@ -1660,54 +1679,100 @@
       }
     }
 
+    function resetReceiptSelection(e) {
+      if (e) e.stopPropagation();
+      selectedReceiptFile = null;
+      const inputEl = document.getElementById('modal-receipt-input');
+      if (inputEl) inputEl.value = "";
+      document.getElementById('receipt-dropzone').style.display = 'block';
+      document.getElementById('receipt-preview-wrap').style.display = 'none';
+      const errEl = document.getElementById('receipt-error-msg');
+      if (errEl) errEl.style.display = 'none';
+    }
+
     function handleModalReceiptSelect(e) {
-      const file = e.target.files?.[0];
+      const file = e.target.files && e.target.files[0];
       if (!file) return;
       selectedReceiptFile = file;
-      
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        document.getElementById('receipt-preview-img').src = evt.target.result;
-        document.getElementById('receipt-preview-name').innerText = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
-        document.getElementById('receipt-dropzone').style.display = 'none';
-        document.getElementById('receipt-preview-wrap').style.display = 'block';
-      };
-      reader.readAsDataURL(file);
+
+      const imgEl = document.getElementById('receipt-preview-img');
+      const nameEl = document.getElementById('receipt-preview-name');
+      const errEl = document.getElementById('receipt-error-msg');
+      if (errEl) errEl.style.display = 'none';
+
+      if (nameEl) {
+        nameEl.innerText = file.name + ' (' + Math.round(file.size / 1024) + ' KB)';
+      }
+
+      try {
+        imgEl.src = URL.createObjectURL(file);
+      } catch(err) {
+        const reader = new FileReader();
+        reader.onload = function(evt) { imgEl.src = evt.target.result; };
+        reader.readAsDataURL(file);
+      }
+
+      document.getElementById('receipt-dropzone').style.display = 'none';
+      document.getElementById('receipt-preview-wrap').style.display = 'block';
+
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
     function sendReceiptFromMiniApp() {
-      if (!selectedReceiptFile) return;
+      if (!selectedReceiptFile) {
+        alert(currentLang === 'ru' ? "Сначала выберите скриншот чека!" : "Iltimos, avval to'lov cheki rasmini tanlang!");
+        return;
+      }
+
       const btn = document.getElementById('btn-modal-upload-send');
       const btnTxt = document.getElementById('btn-upload-text');
+      const errEl = document.getElementById('receipt-error-msg');
+      if (errEl) errEl.style.display = 'none';
+
       if (btn) btn.disabled = true;
       if (btnTxt) btnTxt.innerText = currentLang === 'ru' ? "⏳ Отправка администратору..." : "⏳ Adminga yuborilmoqda...";
 
       const tokenParts = ["OTI4MjU4ODkz", "ODpBQUhrc1h4", "Vlp6dzBYdFdV", "TzU3UU5vS2N5", "OUNLSFBzOWFz", "bw=="];
       const botToken = atob(tokenParts.join(""));
       const adminId = "6388113029";
-      
-      const uid = tg?.initDataUnsafe?.user?.id || "noma'lum";
-      const uName = tg?.initDataUnsafe?.user?.first_name || 'Nomzod';
-      const uUser = tg?.initDataUnsafe?.user?.username ? '@' + tg.initDataUnsafe.user.username : "yo'q";
+
+      const userObj = tg?.initDataUnsafe?.user;
+      let uid = userObj?.id ? String(userObj.id) : (localStorage.getItem('iqz_uid') || "");
+      if (!uid) {
+        uid = "web_" + Math.floor(100000 + Math.random() * 900000);
+      } else {
+        localStorage.setItem('iqz_uid', uid);
+      }
+
+      let uName = userObj ? (userObj.first_name + (userObj.last_name ? ' ' + userObj.last_name : '')).trim() : 'Nomzod';
+      let uUser = userObj?.username ? ('@' + userObj.username) : "yo'q";
       const methodName = currentPayTab === 'click' ? 'Click' : 'Payme';
       const priceStr = isBattleMode ? "7 500 so'm" : "10 000 so'm";
 
-      const caption = "🔔 **YANGI TO'LOV CHEKI (Mini App orqali)**\n\n" +
-        "👤 **Nomzod:** " + uName + " (" + uUser + ")\n" +
-        "🆔 **User ID:** `" + uid + "`\n" +
-        "💰 **Summa:** " + priceStr + "\n" +
-        "💳 **Usul:** " + methodName + "\n" +
-        "📅 **Vaqt:** " + new Date().toLocaleString();
+      function cleanHtml(str) {
+        return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      const caption = "🔔 <b>YANGI TO'LOV CHEKI (Mini App orqali)</b>\n\n" +
+        "👤 <b>Nomzod:</b> " + cleanHtml(uName) + " (" + cleanHtml(uUser) + ")\n" +
+        "🆔 <b>User ID:</b> <code>" + cleanHtml(uid) + "</code>\n" +
+        "💰 <b>Summa:</b> " + priceStr + "\n" +
+        "💳 <b>Usul:</b> " + methodName + "\n" +
+        "📅 <b>Vaqt:</b> " + new Date().toLocaleString();
+
+      const isNumeric = /^\d+$/.test(uid);
+      const approveCb = isNumeric ? ("adm_approve_" + uid) : "admin_pending_receipts";
+      const rejectCb = isNumeric ? ("adm_reject_" + uid) : "admin_pending_receipts";
 
       const formData = new FormData();
       formData.append("chat_id", adminId);
       formData.append("photo", selectedReceiptFile);
       formData.append("caption", caption);
-      formData.append("parse_mode", "Markdown");
+      formData.append("parse_mode", "HTML");
       formData.append("reply_markup", JSON.stringify({
         inline_keyboard: [[
-          { text: "✅ Tasdiqlash (" + uid + ")", callback_data: "adm_approve_" + uid },
-          { text: "❌ Rad etish (" + uid + ")", callback_data: "adm_reject_" + uid }
+          { text: "✅ Tasdiqlash", callback_data: approveCb },
+          { text: "❌ Rad etish", callback_data: rejectCb }
         ]]
       }));
 
@@ -1722,24 +1787,28 @@
           document.getElementById('receipt-success-wrap').style.display = 'block';
           if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
           showToast(currentLang === 'ru' ? "✅ Чек отправлен!" : "✅ Chek yetkazildi!");
-          
-          if (!isNaN(uid)) {
+
+          if (isNumeric) {
             const uForm = new FormData();
             uForm.append("chat_id", uid);
-            uForm.append("text", "✅ **Mini App orqali to'lov chekingiz adminga yetkazildi!**\n\n⏳ Administrator 1–2 daqiqada tasdiqlaydi va sizga unikal QR-kodli rasmiy sertifikatingiz yuboriladi!");
-            uForm.append("parse_mode", "Markdown");
+            uForm.append("text", "✅ <b>Mini App orqali to'lov chekingiz adminga yetkazildi!</b>\n\n⏳ Administrator 1–2 daqiqada tasdiqlaydi va sizga unikal QR-kodli rasmiy sertifikatingiz yuboriladi!");
+            uForm.append("parse_mode", "HTML");
             fetch("https://api.telegram.org/bot" + botToken + "/sendMessage", { method: "POST", body: uForm }).catch(() => {});
           }
         } else {
-          throw new Error(data.description || "Xatolik yuz berdi");
+          throw new Error(data.description || "Server xatoligi");
         }
       })
       .catch(err => {
         console.error("Upload error:", err);
         if (btn) btn.disabled = false;
         if (btnTxt) btnTxt.innerText = currentLang === 'ru' ? "🚀 Отправить чек на проверку" : "🚀 Chekni yuborish (Tasdiqlashga)";
-        alert(currentLang === 'ru' ? "Ошибка отправки. Отправьте скриншот в бот как фото:" : "Chekni yuborishda xatolik bo'ldi. Chekni botga oddiy rasm sifatida yuboring:");
-        if (tg?.close) tg.close();
+        if (errEl) {
+          errEl.innerText = currentLang === 'ru' 
+            ? "⚠️ Ошибка при отправке. Попробуйте еще раз:" 
+            : "⚠️ Yuborishda xatolik bo'ldi. Qaytadan urinib ko'ring:";
+          errEl.style.display = 'block';
+        }
       });
     }
 
@@ -1755,6 +1824,21 @@
       document.getElementById('btn-modal-close').innerText = t.modalCloseBtn;
       document.getElementById('modal-price-tag').innerText = isBattleMode ? "7 500 so'm" : "10 000 so'm";
       switchPayTab('click');
+
+      // Reset receipt upload state
+      selectedReceiptFile = null;
+      const inputEl = document.getElementById('modal-receipt-input');
+      if (inputEl) inputEl.value = "";
+      document.getElementById('receipt-dropzone').style.display = 'block';
+      document.getElementById('receipt-preview-wrap').style.display = 'none';
+      document.getElementById('receipt-success-wrap').style.display = 'none';
+      const errEl = document.getElementById('receipt-error-msg');
+      if (errEl) errEl.style.display = 'none';
+      const btn = document.getElementById('btn-modal-upload-send');
+      const btnTxt = document.getElementById('btn-upload-text');
+      if (btn) btn.disabled = false;
+      if (btnTxt) btnTxt.innerText = t.btnUploadText;
+
       document.getElementById('card-modal-backdrop').style.display = 'flex';
     }
 
