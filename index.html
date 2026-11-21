@@ -460,6 +460,119 @@
       flex-shrink: 0;
     }
 
+    /* Locked Certificate Mockup (High-Converting Paywall) */
+    .locked-cert-card {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 2px solid rgba(245, 158, 11, 0.45);
+      border-radius: 20px;
+      padding: 22px 18px;
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative;
+      box-shadow: 0 10px 32px rgba(245, 158, 11, 0.15);
+    }
+    .cert-gold-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 4px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .cert-user-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .cert-id-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: monospace;
+      letter-spacing: 1.5px;
+      margin-bottom: 16px;
+    }
+    .cert-lock-box {
+      position: relative;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 14px;
+      padding: 16px;
+      margin: 0 auto 14px;
+      max-width: 240px;
+      overflow: hidden;
+    }
+    .cert-blurred-iq {
+      font-size: 38px;
+      font-weight: 900;
+      color: #fbbf24;
+      filter: blur(8px);
+      user-select: none;
+      letter-spacing: 2px;
+    }
+    .cert-lock-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(9, 13, 22, 0.65);
+      backdrop-filter: blur(2px);
+    }
+    .lock-icon {
+      font-size: 26px;
+      filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.6));
+    }
+    .lock-text {
+      font-size: 11px;
+      font-weight: 800;
+      color: #fde68a;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+    .cert-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: #34d399;
+      font-weight: 600;
+    }
+    .dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulseGlow 1.5s infinite ease-in-out;
+    }
+    .paywall-notice-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .notice-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #f59e0b;
+      margin-bottom: 6px;
+    }
+    .notice-sub {
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
     /* Toast Notification */
     .toast {
       position: fixed;
@@ -726,20 +839,43 @@
           <p class="subtitle" id="paywall-sub">Rasmiy sertifikat va to'liq kognitiv tahlilni yuklab oling</p>
         </div>
 
-        <!-- Teaser Card -->
-        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:16px; padding:16px; text-align:center; margin-bottom:16px;">
-          <div style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase;" id="teaser-label">Kognitiv Darajangiz</div>
-          <div style="font-size:26px; font-weight:800; color:#fbbf24; margin:6px 0;" id="teaser-level">Yuqori Intellekt (Top 12%)</div>
-          <div style="font-size:13px; color:#cbd5e1;" id="teaser-score">20 ta savoldan to'g'ri topildi: <strong>16 / 20</strong></div>
+        <!-- Locked Certificate Mockup Card -->
+        <div class="locked-cert-card">
+          <div class="cert-gold-badge" id="cert-badge-tag">🏆 RASMIY IQZONE SERTIFIKATI</div>
+          <div class="cert-user-name" id="paywall-user-name">FOYDALANUVCHI</div>
+          <div class="cert-id-tag">ID: IQZ-2026-••••-••••</div>
+          
+          <div class="cert-lock-box">
+            <div class="cert-blurred-iq">IQ: 138</div>
+            <div class="cert-lock-overlay">
+              <span class="lock-icon">🔒</span>
+              <span class="lock-text" id="lock-text-status">NATIJA QULFLANGAN</span>
+            </div>
+          </div>
+          
+          <div class="cert-status-pill">
+            <span class="dot-live"></span> <span id="cert-calc-done">Kognitiv Tahlil 100% Tayyor</span>
+          </div>
+        </div>
+
+        <div class="paywall-notice-box">
+          <div class="notice-title" id="notice-title-text">⚠️ IQ darajangiz va sertifikatingiz xavfsiz qulflandi!</div>
+          <p class="notice-sub" id="notice-sub-text">
+            Siz 20 ta kognitiv va Raven matritsali savollarni muvaffaqiyatli topshirdingiz.
+            Aniq IQ ballingizni bilish va unikal QR-kodli rasmiy HD sertifikatni yuklab olish uchun to'lovni tasdiqlang:
+          </p>
         </div>
 
         <!-- Payment Actions -->
         <div style="margin-bottom:14px;">
           <button class="btn btn-gold" onclick="payViaStars()">
-            <span>⭐️ Telegram Stars bilan to'lash (50 ⭐️)</span>
+            <span id="btn-stars-pay">⭐️ Telegram Stars bilan to'lash (50 ⭐️)</span>
           </button>
           <button class="btn btn-purple" onclick="payViaCard()">
             <span id="btn-card-pay">💳 Click / Payme orqali (10 000 so'm)</span>
+          </button>
+          <button class="btn btn-glass" onclick="inviteForFree()">
+            <span id="btn-invite-free">🎁 5 ta do'st bilan BEPUL ochish</span>
           </button>
         </div>
 
@@ -851,7 +987,13 @@
         codeEmptyToast: "Iltimos, 4 xonali kodni kiriting!",
         starsBtn: "⭐️ Telegram Stars bilan to'lash (50 ⭐️)",
         cardBtn: "💳 Click / Payme orqali (10 000 so'm)",
-        battleCardBtn: "💳 Click / Payme orqali (7 500 so'm)"
+        battleCardBtn: "💳 Click / Payme orqali (7 500 so'm)",
+        certBadge: "🏆 RASMIY IQZONE SERTIFIKATI",
+        certCalcDone: "Kognitiv Tahlil 100% Tayyor",
+        lockStatus: "NATIJA QULFLANGAN 🔒",
+        noticeTitle: "⚠️ IQ darajangiz va sertifikatingiz xavfsiz qulflandi!",
+        noticeSub: "Siz 20 ta kognitiv va Raven matritsali savollarni muvaffaqiyatli topshirdingiz. Aniq IQ ballingizni bilish va unikal QR-kodli rasmiy HD sertifikatni yuklab olish uchun to'lovni tasdiqlang:",
+        inviteFreeBtn: "🎁 5 ta do'st bilan BEPUL ochish" 
       },
       ru: {
         landingTitle: "Определите свой уровень IQ",
@@ -892,7 +1034,13 @@
         codeEmptyToast: "Пожалуйста, введите 4-значный код!",
         starsBtn: "⭐️ Оплата Telegram Stars (50 ⭐️)",
         cardBtn: "💳 Оплата через Click / Payme (10 000 сум)",
-        battleCardBtn: "💳 Оплата через Click / Payme (7 500 сум)"
+        battleCardBtn: "💳 Оплата через Click / Payme (7 500 сум)",
+        certBadge: "🏆 ОФИЦИАЛЬНЫЙ СЕРТИФИКАТ IQZONE",
+        certCalcDone: "Когнитивный анализ 100% готов",
+        lockStatus: "РЕЗУЛЬТАТ ЗАБЛОКИРОВАН 🔒",
+        noticeTitle: "⚠️ Ваш балл IQ и сертификат надёжно заблокированы!",
+        noticeSub: "Вы успешно завершили 20 вопросов теста. Чтобы узнать точный балл IQ и получить именной сертификат с QR-кодом, подтвердите оплату:",
+        inviteFreeBtn: "🎁 БЕСПЛАТНО за 5 друзей" 
       }
     };
 
@@ -1220,24 +1368,27 @@
 
     function showPaywallView() {
       showView('view-paywall');
-      const total = 20;
-      const score = correctCount;
-      const estimatedIq = 95 + Math.round((score / total) * 45);
+      const uName = tg?.initDataUnsafe?.user?.first_name || (currentLang === 'ru' ? 'Участник' : 'Foydalanuvchi');
+      document.getElementById('paywall-user-name').innerText = uName.toUpperCase();
+      
+      const t = I18N[currentLang];
+      document.getElementById('cert-badge-tag').innerText = t.certBadge;
+      document.getElementById('cert-calc-done').innerText = t.certCalcDone;
+      document.getElementById('notice-title-text').innerText = t.noticeTitle;
+      document.getElementById('notice-sub-text').innerText = t.noticeSub;
+      document.getElementById('btn-invite-free').innerText = t.inviteFreeBtn;
 
       if (isBattleMode) {
         document.getElementById('battle-result-banner').style.display = 'block';
         document.getElementById('solo-result-banner').style.display = 'none';
-        document.getElementById('btn-card-pay').innerText = I18N[currentLang].battleCardBtn;
+        document.getElementById('btn-card-pay').innerText = t.battleCardBtn;
+        document.getElementById('lock-text-status').innerText = currentLang === 'ru' ? 'БИТВА ЗАВЕРШЕНА 🔒' : 'BATTLE NATIJASI 🔒';
       } else {
         document.getElementById('battle-result-banner').style.display = 'none';
         document.getElementById('solo-result-banner').style.display = 'block';
-        document.getElementById('btn-card-pay').innerText = I18N[currentLang].cardBtn;
+        document.getElementById('btn-card-pay').innerText = t.cardBtn;
+        document.getElementById('lock-text-status').innerText = t.lockStatus;
       }
-
-      document.getElementById('teaser-level').innerText = `IQ ~${estimatedIq} (Top ${Math.max(5, 30 - score * 1.2).toFixed(0)}%)`;
-      document.getElementById('teaser-score').innerHTML = currentLang === 'ru' 
-        ? `Из 20 вопросов верно: <strong>${score} / 20</strong>`
-        : `20 ta savoldan to'g'ri topildi: <strong>${score} / 20</strong>`;
     }
 
     function showBonusResults() {
@@ -1264,18 +1415,44 @@
     }
 
     function payViaStars() {
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+      try {
+        tg?.sendData(JSON.stringify({ event: "pay_stars", score: correctCount }));
+      } catch (e) {}
+
+      const url = 'https://t.me/Iqzonebot?start=pay_stars';
       if (tg?.openTelegramLink) {
-        tg.openTelegramLink('https://t.me/Iqzonebot?start=pay_stars');
+        tg.openTelegramLink(url);
       } else {
-        window.open('https://t.me/Iqzonebot?start=pay_stars', '_blank');
+        window.open(url, '_blank');
       }
     }
 
     function payViaCard() {
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      try {
+        tg?.sendData(JSON.stringify({ event: "pay_click" }));
+      } catch (e) {}
+
+      const url = 'https://t.me/Iqzonebot?start=pay_card';
       if (tg?.openTelegramLink) {
-        tg.openTelegramLink('https://t.me/Iqzonebot?start=pay_card');
+        tg.openTelegramLink(url);
       } else {
-        window.open('https://t.me/Iqzonebot?start=pay_card', '_blank');
+        window.open(url, '_blank');
+      }
+    }
+
+    function inviteForFree() {
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      try {
+        tg?.sendData(JSON.stringify({ event: "invite_friends" }));
+      } catch (e) {}
+
+      const url = 'https://t.me/Iqzonebot?start=ref_invite';
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink(url);
+      } else {
+        window.open(url, '_blank');
       }
     }
 
