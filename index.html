@@ -749,6 +749,23 @@
         <h1 id="landing-title">Aql Darajangizni Aniqlang</h1>
         <p class="subtitle" id="landing-subtitle">20 ta tasviriy mantiq va kognitiv savol.</p>
 
+        <!-- Saved Result Banner if candidate already took test -->
+        <div id="resume-test-banner" style="display:none; background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(79, 70, 229, 0.2)); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 16px; padding: 14px; margin-bottom: 16px; text-align: left;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span style="font-size:20px;">🔒</span>
+            <span style="font-size:13px; font-weight:800; color:#fbbf24;" id="resume-banner-title">Tayyor ishlangan IQ natijangiz bor!</span>
+          </div>
+          <p style="font-size:11.5px; color:#cbd5e1; margin-bottom:10px; line-height:1.4;" id="resume-banner-desc">Siz 20 ta savolni yakunlagansiz. Sertifikat va aniq IQ ballingizni ochishingiz mumkin.</p>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-gold" style="padding:10px 14px; font-size:12px; margin-bottom:0;" onclick="showPaywallView()">
+              <span id="btn-resume-view">🔓 Natijani ochish</span>
+            </button>
+            <button class="btn btn-glass" style="padding:10px 14px; font-size:12px; margin-bottom:0;" onclick="restartFreshTest()">
+              <span id="btn-resume-restart">🔄 Yangidan</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Main Buttons (Matching Screenshot 2) -->
         <button class="btn btn-purple" onclick="startTest('iq')">
           <span id="btn-start-iq">🏷️ To'liq IQ testni boshlash</span>
@@ -1010,6 +1027,11 @@
         </div>
 
         <div class="back-link" onclick="showLandingView()">← <span id="back-to-home">Bosh sahifaga qaytish</span></div>
+        <div style="margin-top: 10px; text-align: center;">
+          <span onclick="restartFreshTest()" style="font-size: 11.5px; color: #94a3b8; text-decoration: underline; cursor: pointer;" id="btn-restart-text">
+            🔄 Qaytadan yangi test topshirish
+          </span>
+        </div>
       </div>
     </div>
 
@@ -1195,6 +1217,11 @@
         noticeTitle: "⚠️ IQ darajangiz va sertifikatingiz xavfsiz qulflandi!",
         noticeSub: "Siz 20 ta kognitiv va Raven matritsali savollarni muvaffaqiyatli topshirdingiz. Aniq IQ ballingizni bilish va unikal QR-kodli rasmiy HD sertifikatni yuklab olish uchun to'lovni tasdiqlang:",
         inviteFreeBtn: "🎁 5 ta do'st bilan BEPUL ochish",
+      resumeBannerTitle: "Tayyor ishlangan IQ natijangiz bor!",
+      resumeBannerDesc: "Siz 20 ta savolni yakunlagansiz. Sertifikat va aniq IQ ballingizni ochishingiz mumkin.",
+      btnResumeView: "🔓 Natijani ochish",
+      btnResumeRestart: "🔄 Yangidan",
+      btnRestartText: "🔄 Qaytadan yangi test topshirish",
         modalCardTitle: "Karta orqali to'lov",
         modalCardSub: "Click, Payme yoki Uzum orqali o'tkazing",
         modalInstructions: "To'lovni amalga oshirgach, chek skrinshotini shu yerda yuklang yoki botga yuboring. Sertifikatingiz bir necha daqiqada tasdiqlanadi va yuboriladi! 📸",
@@ -1253,6 +1280,11 @@
         noticeTitle: "⚠️ Ваш балл IQ и сертификат надёжно заблокированы!",
         noticeSub: "Вы успешно завершили 20 вопросов теста. Чтобы узнать точный балл IQ и получить именной сертификат с QR-кодом, подтвердите оплату:",
         inviteFreeBtn: "🎁 БЕСПЛАТНО за 5 друзей",
+      resumeBannerTitle: "У вас есть готовый результат IQ теста!",
+      resumeBannerDesc: "Вы завершили 20 вопросов. Вы можете открыть сертификат и точный балл IQ.",
+      btnResumeView: "🔓 Открыть результат",
+      btnResumeRestart: "🔄 Заново",
+      btnRestartText: "🔄 Пройти тест заново с 1 вопроса",
         modalCardTitle: "Оплата на карту",
         modalCardSub: "Перевод через Click, Payme или Uzum",
         modalInstructions: "После оплаты отправьте скриншот чека в бот. Сертификат будет подтверждён и выдан в течение нескольких минут! 📸",
@@ -1297,6 +1329,16 @@
       document.getElementById('tab-pq-badge').innerText = t.freeBadge;
 
       document.getElementById('battle-menu-title').innerText = t.battleMenuTitle;
+      const resTitle = document.getElementById('resume-banner-title');
+      if (resTitle) resTitle.innerText = t.resumeBannerTitle;
+      const resDesc = document.getElementById('resume-banner-desc');
+      if (resDesc) resDesc.innerText = t.resumeBannerDesc;
+      const resView = document.getElementById('btn-resume-view');
+      if (resView) resView.innerText = t.btnResumeView;
+      const resRestart = document.getElementById('btn-resume-restart');
+      if (resRestart) resRestart.innerText = t.btnResumeRestart;
+      const resText = document.getElementById('btn-restart-text');
+      if (resText) resText.innerText = t.btnRestartText;
       document.getElementById('battle-menu-subtitle').innerText = t.battleMenuSub;
       document.getElementById('btn-create-code').innerText = t.btnCreateCode;
       document.getElementById('btn-join-code').innerText = t.btnJoinCode;
@@ -1333,6 +1375,17 @@
 
     function showLandingView() {
       showView('view-landing');
+      try {
+        const raw = localStorage.getItem('iqzone_saved_iq_result');
+        const banner = document.getElementById('resume-test-banner');
+        if (banner) {
+          if (raw) {
+            banner.style.display = 'block';
+          } else {
+            banner.style.display = 'none';
+          }
+        }
+      } catch(e) {}
     }
 
     function showBattleView() {
@@ -1568,8 +1621,28 @@
       if (currentTest === 'eq' || currentTest === 'pq') {
         showBonusResults();
       } else {
+        // Save test result in localStorage so user never loses their progress
+        try {
+          const savedData = {
+            test: 'iq',
+            isBattle: isBattleMode,
+            correctCount: correctCount,
+            userAnswers: userAnswers,
+            finishedAt: Date.now()
+          };
+          localStorage.setItem('iqzone_saved_iq_result', JSON.stringify(savedData));
+        } catch(e) {}
         showSuspenseScanner();
       }
+    }
+
+    function restartFreshTest() {
+      try {
+        localStorage.removeItem('iqzone_saved_iq_result');
+      } catch(e) {}
+      const banner = document.getElementById('resume-test-banner');
+      if (banner) banner.style.display = 'none';
+      startTest('iq');
     }
 
     function showSuspenseScanner() {
@@ -1585,6 +1658,18 @@
     }
 
     function showPaywallView() {
+      // Restore score from localStorage if available
+      try {
+        const rawSaved = localStorage.getItem('iqzone_saved_iq_result');
+        if (rawSaved) {
+          const saved = JSON.parse(rawSaved);
+          if (saved && saved.correctCount !== undefined) {
+            correctCount = saved.correctCount;
+            isBattleMode = Boolean(saved.isBattle);
+          }
+        }
+      } catch(e) {}
+
       showView('view-paywall');
       const uName = tg?.initDataUnsafe?.user?.first_name || (currentLang === 'ru' ? 'Участник' : 'Foydalanuvchi');
       document.getElementById('paywall-user-name').innerText = uName.toUpperCase();
@@ -1894,6 +1979,28 @@
 
       initLandingPreview();
 
+      // Check localStorage for saved IQ test result
+      let hasSavedIq = false;
+      try {
+        const rawSaved = localStorage.getItem('iqzone_saved_iq_result');
+        if (rawSaved) {
+          const saved = JSON.parse(rawSaved);
+          if (saved && saved.finishedAt && (Date.now() - saved.finishedAt < 14 * 86400 * 1000)) {
+            hasSavedIq = true;
+            correctCount = saved.correctCount || 0;
+            userAnswers = saved.userAnswers || [];
+            isBattleMode = Boolean(saved.isBattle);
+          }
+        }
+      } catch(e) {}
+
+      if (hasSavedIq) {
+        const rBanner = document.getElementById('resume-test-banner');
+        if (rBanner) rBanner.style.display = 'block';
+      }
+
+      const forceNew = params.get('new') === '1';
+
       if (urlTest === 'battle') {
         if (urlCode) {
           currentBattleCode = urlCode;
@@ -1909,6 +2016,9 @@
         startTest('eq');
       } else if (urlTest === 'pq') {
         startTest('pq');
+      } else if (hasSavedIq && !forceNew) {
+        // Seamlessly take candidate directly to their completed test result
+        showPaywallView();
       }
     });
   </script>
