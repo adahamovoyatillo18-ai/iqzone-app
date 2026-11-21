@@ -573,6 +573,61 @@
       line-height: 1.45;
     }
 
+    /* Card Payment Modal Sheet */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-sheet {
+      width: 100%;
+      max-width: 440px;
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 20px 20px 28px;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 0 auto 16px;
+    }
+    .card-detail-box {
+      background: rgba(49, 46, 129, 0.25);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .copy-pill-btn {
+      background: #4f46e5;
+      border: none;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .copy-pill-btn:active { transform: scale(0.95); }
+
     /* Toast Notification */
     .toast {
       position: fixed;
@@ -904,6 +959,41 @@
       </div>
     </div>
 
+    <!-- Card Payment Modal Sheet -->
+    <div id="card-modal-backdrop" class="modal-backdrop" style="display:none;" onclick="closeCardModal(event)">
+      <div class="modal-sheet" onclick="event.stopPropagation()">
+        <div class="modal-handle"></div>
+        <div style="font-size:32px; text-align:center; margin-bottom:8px;">💳</div>
+        <h2 style="text-align:center; font-size:18px; font-weight:800; margin-bottom:4px;" id="modal-card-title">Karta orqali to'lov</h2>
+        <p style="text-align:center; font-size:12px; color:var(--text-muted); margin-bottom:14px;" id="modal-card-sub">Click, Payme yoki Uzum orqali o'tkazing</p>
+
+        <div class="card-detail-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:11px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Karta raqami:</span>
+            <span style="font-size:11px; color:#fbbf24; font-weight:700;" id="modal-price-tag">10 000 so'm</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:15px; font-weight:800; letter-spacing:1px; color:#fff;" id="modal-card-num">6262 5701 0900 7361</span>
+            <button class="copy-pill-btn" onclick="copyCardNumber()">📋 <span id="copy-btn-text">Nusxalash</span></button>
+          </div>
+          <div style="font-size:11.5px; color:#94a3b8; margin-top:8px;">
+            👤 Karta egasi: <strong style="color:#f1f5f9;">Oyatillo Adxamov</strong>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:12px; color:#cbd5e1; line-height:1.45; margin-bottom:14px;" id="modal-instructions">
+          To'lovni amalga oshirgach, chek skrinshotini botga yuboring. Sertifikatingiz bir necha daqiqada tasdiqlanadi va yuboriladi! 📸
+        </div>
+
+        <button class="btn btn-purple" onclick="openChatForReceipt()">
+          <span id="btn-modal-receipt">📸 Chekni botga yuborish</span>
+        </button>
+        <button class="btn btn-glass" onclick="closeCardModal()">
+          <span id="btn-modal-close">✕ Yopish</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Toast Component -->
     <div id="toast" class="toast">Kod nusxalandi!</div>
 
@@ -993,7 +1083,13 @@
         lockStatus: "NATIJA QULFLANGAN 🔒",
         noticeTitle: "⚠️ IQ darajangiz va sertifikatingiz xavfsiz qulflandi!",
         noticeSub: "Siz 20 ta kognitiv va Raven matritsali savollarni muvaffaqiyatli topshirdingiz. Aniq IQ ballingizni bilish va unikal QR-kodli rasmiy HD sertifikatni yuklab olish uchun to'lovni tasdiqlang:",
-        inviteFreeBtn: "🎁 5 ta do'st bilan BEPUL ochish" 
+        inviteFreeBtn: "🎁 5 ta do'st bilan BEPUL ochish",
+        modalCardTitle: "Karta orqali to'lov",
+        modalCardSub: "Click, Payme yoki Uzum orqali o'tkazing",
+        modalInstructions: "To'lovni amalga oshirgach, chek skrinshotini botga yuboring. Sertifikatingiz bir necha daqiqada tasdiqlanadi va yuboriladi! 📸",
+        modalReceiptBtn: "📸 Chekni botga yuborish",
+        modalCloseBtn: "✕ Yopish",
+        copiedCardToast: "✅ Karta raqami nusxalandi!"  
       },
       ru: {
         landingTitle: "Определите свой уровень IQ",
@@ -1040,7 +1136,13 @@
         lockStatus: "РЕЗУЛЬТАТ ЗАБЛОКИРОВАН 🔒",
         noticeTitle: "⚠️ Ваш балл IQ и сертификат надёжно заблокированы!",
         noticeSub: "Вы успешно завершили 20 вопросов теста. Чтобы узнать точный балл IQ и получить именной сертификат с QR-кодом, подтвердите оплату:",
-        inviteFreeBtn: "🎁 БЕСПЛАТНО за 5 друзей" 
+        inviteFreeBtn: "🎁 БЕСПЛАТНО за 5 друзей",
+        modalCardTitle: "Оплата на карту",
+        modalCardSub: "Перевод через Click, Payme или Uzum",
+        modalInstructions: "После оплаты отправьте скриншот чека в бот. Сертификат будет подтверждён и выдан в течение нескольких минут! 📸",
+        modalReceiptBtn: "📸 Отправить чек в бот",
+        modalCloseBtn: "✕ Закрыть",
+        copiedCardToast: "✅ Номер карты скопирован!"  
       }
     };
 
@@ -1416,43 +1518,77 @@
 
     function payViaStars() {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-      try {
-        tg?.sendData(JSON.stringify({ event: "pay_stars", score: correctCount }));
-      } catch (e) {}
-
-      const url = 'https://t.me/Iqzonebot?start=pay_stars';
-      if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
+      const invoiceLink = isBattleMode 
+        ? 'https://t.me/$u7Am1wckEEi5FgAAftMWGFxyQ2w' 
+        : 'https://t.me/$azcAdgckEEi4FgAAUfXWBlJWXvE';
+      
+      if (tg?.openInvoice) {
+        tg.openInvoice(invoiceLink, function(status) {
+          if (status === 'paid') {
+            if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            showToast("🎉 To'lov qabul qilindi!");
+            setTimeout(() => {
+              if (tg?.close) tg.close();
+            }, 1500);
+          }
+        });
+      } else if (tg?.openTelegramLink) {
+        tg.openTelegramLink(invoiceLink);
       } else {
-        window.open(url, '_blank');
+        window.open(invoiceLink, '_blank');
       }
     }
 
     function payViaCard() {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-      try {
-        tg?.sendData(JSON.stringify({ event: "pay_click" }));
-      } catch (e) {}
+      showCardModal();
+    }
 
-      const url = 'https://t.me/Iqzonebot?start=pay_card';
-      if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url, '_blank');
+    function showCardModal() {
+      const t = I18N[currentLang];
+      document.getElementById('modal-card-title').innerText = t.modalCardTitle;
+      document.getElementById('modal-card-sub').innerText = t.modalCardSub;
+      document.getElementById('modal-instructions').innerText = t.modalInstructions;
+      document.getElementById('btn-modal-receipt').innerText = t.modalReceiptBtn;
+      document.getElementById('btn-modal-close').innerText = t.modalCloseBtn;
+      document.getElementById('modal-price-tag').innerText = isBattleMode ? "7 500 so'm" : "10 000 so'm";
+      document.getElementById('card-modal-backdrop').style.display = 'flex';
+    }
+
+    function closeCardModal(e) {
+      document.getElementById('card-modal-backdrop').style.display = 'none';
+    }
+
+    function copyCardNumber() {
+      const cardNum = "6262570109007361";
+      navigator.clipboard?.writeText(cardNum);
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      showToast(I18N[currentLang].copiedCardToast);
+      document.getElementById('copy-btn-text').innerText = "✅ Nusxalandi";
+      setTimeout(() => {
+        document.getElementById('copy-btn-text').innerText = "Nusxalash";
+      }, 2500);
+    }
+
+    function openChatForReceipt() {
+      if (tg?.close) {
+        tg.close();
       }
     }
 
     function inviteForFree() {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-      try {
-        tg?.sendData(JSON.stringify({ event: "invite_friends" }));
-      } catch (e) {}
-
-      const url = 'https://t.me/Iqzonebot?start=ref_invite';
+      const uid = tg?.initDataUnsafe?.user?.id || '';
+      const refLink = uid ? `https://t.me/Iqzonebot?start=ref_${uid}` : 'https://t.me/Iqzonebot';
+      const shareText = currentLang === 'ru'
+        ? '🧠 Я прошёл официальный IQ тест в IQzone! Проверь свой уровень интеллекта: '
+        : '🧠 Men IQzone rasmiy testida intellektimni sinab ko'rdim! Qani, siz ham o'z darajangizni tekshirib ko'ring: ';
+      
+      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(shareText)}`;
       if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
+        tg.openTelegramLink(shareUrl);
       } else {
-        window.open(url, '_blank');
+        window.open(shareUrl, '_blank');
       }
     }
 
