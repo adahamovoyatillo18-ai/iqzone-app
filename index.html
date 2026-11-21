@@ -10,8 +10,9 @@
       --bg: #090d16;
       --card-bg: rgba(17, 24, 39, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
       --gold: #f59e0b;
       --gold-light: #fbbf24;
       --text: #f8fafc;
@@ -25,7 +26,7 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
         radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.12) 0%, transparent 40%);
       color: var(--text);
       min-height: 100vh;
@@ -36,24 +37,45 @@
       user-select: none;
     }
 
-    .container { width: 100%; max-width: 480px; margin: 0 auto; }
+    .container { width: 100%; max-width: 440px; margin: 0 auto; }
     .view { display: none; width: 100%; }
-    .view.active { display: block; animation: fadeIn 0.3s ease forwards; }
+    .view.active { display: block; animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
     /* Lang Toggle */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
     .lang-bar {
       display: flex;
-      justify-content: flex-end;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 12px;
+      gap: 5px;
     }
     .lang-pill {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 999px;
-      padding: 5px 12px;
+      padding: 4px 10px;
       font-size: 11px;
       font-weight: 700;
       color: #94a3b8;
@@ -61,8 +83,8 @@
       transition: all 0.2s ease;
     }
     .lang-pill.active {
-      background: #3b82f6;
-      border-color: #60a5fa;
+      background: #6366f1;
+      border-color: #818cf8;
       color: #fff;
     }
 
@@ -70,179 +92,360 @@
     .glass-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 20px;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 18px;
+      padding: 20px;
       margin-bottom: 14px;
     }
 
-    h1 { font-size: 26px; font-weight: 800; text-align: center; letter-spacing: -0.5px; margin-bottom: 6px; }
-    .gold-gradient {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    h1 { font-size: 24px; font-weight: 800; text-align: center; letter-spacing: -0.5px; margin-bottom: 6px; line-height: 1.25; }
     .subtitle { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.4; }
 
-    /* Test Selector Tabs */
-    .tab-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      margin-bottom: 10px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .tab-item.selected {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: rgba(59, 130, 246, 0.6);
-    }
-    .tab-left { display: flex; align-items: center; gap: 12px; }
-    .tab-icon { font-size: 22px; }
-    .tab-title { font-size: 14px; font-weight: 700; color: #fff; }
-    .tab-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-    .tab-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 8px;
-    }
-    .badge-active { background: #3b82f6; color: #fff; }
-    .badge-free { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-
-    /* CTA Buttons */
-    .btn-primary {
-      width: 100%;
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      border: none;
-      border-radius: 14px;
-      padding: 16px;
-      cursor: pointer;
+    /* Buttons */
+    .btn {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
-      transition: all 0.2s ease;
-    }
-    .btn-primary:active { transform: scale(0.98); opacity: 0.95; }
-
-    .btn-secondary {
       width: 100%;
+      padding: 15px 18px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-purple {
+      background: var(--primary-gradient);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35);
+    }
+    .btn-purple:hover { box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45); }
+    .btn-glass {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #cbd5e1;
-      font-size: 14px;
-      font-weight: 600;
-      border-radius: 12px;
-      padding: 12px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: all 0.2s ease;
+      color: var(--text);
     }
-    .btn-secondary:active { background: rgba(255, 255, 255, 0.1); }
-
-    /* Trust Grid */
-    .trust-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 16px;
+    .btn-glass:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
     }
-    .trust-item {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 10px 6px;
+    .btn-gold {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+    }
+    .info-subtext {
       text-align: center;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
     }
-    .trust-val { font-size: 13px; font-weight: 800; color: #fff; }
-    .trust-lbl { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Quiz Engine */
-    .quiz-top {
+    /* 3x3 Raven Matrix Puzzles (Competitor Style) */
+    .matrix-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .matrix-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
-      font-size: 13px;
-      font-weight: 700;
     }
-    .timer-badge {
+    .matrix-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #a5b4fc;
+    }
+    .matrix-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 310px;
+      margin: 0 auto;
+    }
+    .matrix-cell {
+      aspect-ratio: 1 / 1;
+      background: #ffffff;
+      border-radius: 12px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 4px 10px;
-      border-radius: 999px;
-      color: #fbbf24;
-      font-size: 12px;
-      font-weight: 800;
+      justify-content: center;
+      padding: 5px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
-    .progress-bar-bg {
+    .matrix-cell-target {
+      background: rgba(30, 41, 59, 0.7);
+      border: 2px dashed #818cf8;
+      border-radius: 12px;
+      color: #818cf8;
+      font-size: 28px;
+      font-weight: 800;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 8px rgba(129, 140, 248, 0.2); }
+      50% { box-shadow: 0 0 18px rgba(129, 140, 248, 0.5); }
+    }
+    .matrix-prompt {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin: 14px 0 10px;
+    }
+    .matrix-opts-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 310px;
+      margin: 0 auto;
+    }
+    .matrix-opt-btn {
+      aspect-ratio: 1 / 1;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+    .matrix-opt-btn:active {
+      transform: scale(0.94);
+      border-color: #818cf8;
+    }
+    .matrix-opt-btn.correct-opt {
+      border-color: var(--success);
+      background: #ecfdf5;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
+    }
+    .matrix-opt-btn.wrong-opt {
+      border-color: #ef4444;
+      background: #fef2f2;
+      animation: shake 0.4s ease;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-4px); }
+      40%, 80% { transform: translateX(4px); }
+    }
+
+    /* Cognitive Tabs */
+    .tabs-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+    .tabs-header {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding-left: 4px;
+    }
+    .tab-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tab-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    .tab-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tab-icon {
+      font-size: 18px;
+    }
+    .tab-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .tab-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .tab-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Battle Screen */
+    .battle-center {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .battle-icon-big {
+      font-size: 48px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.4));
+    }
+    .battle-code-box {
+      background: rgba(49, 46, 129, 0.25);
+      border: 2px dashed #818cf8;
+      border-radius: 16px;
+      padding: 18px;
+      margin: 18px 0;
+      text-align: center;
+    }
+    .battle-code-num {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: #c7d2fe;
+      font-family: monospace;
+    }
+    .pulse-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #a5b4fc;
+      margin-top: 12px;
+      animation: pulseGlow 1.8s infinite ease-in-out;
+    }
+    .battle-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 18px;
+      text-align: center;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 3px;
+      margin: 16px 0;
+      outline: none;
+    }
+    .battle-input:focus {
+      border-color: #818cf8;
+      box-shadow: 0 0 12px rgba(129, 140, 248, 0.3);
+    }
+    .back-link {
+      display: inline-block;
+      text-align: center;
+      width: 100%;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-top: 14px;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: #e2e8f0; }
+
+    /* Quiz Screen Styles */
+    .quiz-progress-bar {
       width: 100%;
       height: 6px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 999px;
       overflow: hidden;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-    .progress-bar-fill {
+    .quiz-progress-fill {
       height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      width: 5%;
+      background: var(--primary-gradient);
+      border-radius: 999px;
       transition: width 0.3s ease;
     }
-
-    .question-card { margin-bottom: 16px; }
-    .q-cat {
-      display: inline-block;
+    .quiz-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .quiz-cat-pill {
       font-size: 11px;
       font-weight: 700;
-      color: #60a5fa;
-      background: rgba(59, 130, 246, 0.12);
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin-bottom: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.3);
     }
-    .q-text {
+    .quiz-timer {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .logic-q-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
       font-size: 15px;
-      font-weight: 600;
       line-height: 1.5;
-      color: #fff;
-      margin-bottom: 16px;
+      color: #f1f5f9;
       white-space: pre-line;
     }
-
-    /* Options */
-    .opt-btn {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 8px;
-      color: #e2e8f0;
-      font-size: 14px;
-      font-weight: 600;
-      text-align: left;
+    .opt-list-btn {
       display: flex;
       align-items: center;
       gap: 12px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 14.5px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.18s ease;
+      text-align: left;
     }
-    .opt-btn:active { transform: scale(0.99); background: rgba(59, 130, 246, 0.15); border-color: #3b82f6; }
-    .opt-btn.chosen { background: #2563eb !important; border-color: #60a5fa !important; color: #fff !important; }
+    .opt-list-btn:active {
+      transform: scale(0.98);
+      background: rgba(99, 102, 241, 0.15);
+      border-color: #818cf8;
+    }
     .opt-letter {
       width: 26px;
       height: 26px;
@@ -253,496 +456,321 @@
       justify-content: center;
       font-size: 12px;
       font-weight: 800;
-      color: #94a3b8;
+      color: #a5b4fc;
       flex-shrink: 0;
     }
-    .chosen .opt-letter { background: #fff; color: #1e40af; }
 
-    /* Suspense Screen */
-    .spinner-ring {
-      width: 56px;
-      height: 56px;
-      border: 4px solid rgba(59, 130, 246, 0.2);
-      border-top-color: #3b82f6;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 40px auto 20px auto;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .status-step { font-size: 13px; color: #94a3b8; margin-top: 10px; }
-
-    /* Paywall View */
-    .lock-banner {
-      background: linear-gradient(180deg, rgba(239, 68, 68, 0.15) 0%, rgba(17, 24, 39, 0.5) 100%);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 18px;
-      padding: 24px 16px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-    .lock-icon { font-size: 40px; margin-bottom: 10px; animation: bounce 2s infinite; }
-    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    .locked-score-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px dashed rgba(239, 68, 68, 0.5);
-      padding: 6px 14px;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: 900;
-      color: #f87171;
-      margin: 12px 0 6px 0;
-      letter-spacing: 2px;
-    }
-    .price-box {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 10px;
-      margin: 14px 0 10px 0;
-    }
-    .old-price { font-size: 14px; color: #94a3b8; text-decoration: line-through; }
-    .new-price { font-size: 26px; font-weight: 900; color: #10b981; }
-    .pay-btn-group { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
-
-    /* Free Bonus Result View (EQ / PQ) */
-    .bonus-banner {
-      background: linear-gradient(180deg, rgba(16, 185, 129, 0.15) 0%, rgba(17, 24, 39, 0.5) 100%);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 18px;
-      padding: 24px 16px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-    .bonus-score-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(16, 185, 129, 0.2);
-      border: 1px solid rgba(16, 185, 129, 0.5);
-      padding: 8px 18px;
-      border-radius: 12px;
-      font-size: 22px;
-      font-weight: 900;
-      color: #34d399;
-      margin: 12px 0 6px 0;
-    }
-
-    /* Modals */
-    .modal-overlay {
-      display: none;
+    /* Toast Notification */
+    .toast {
       position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(50px);
+      background: #1e1b4b;
+      border: 1px solid #6366f1;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 1000;
-      align-items: flex-end;
-      justify-content: center;
     }
-    .modal-overlay.active { display: flex; animation: slideUp 0.25s ease forwards; }
-    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-    .modal-sheet {
-      width: 100%;
-      max-width: 480px;
-      background: #111827;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 20px 18px 28px 18px;
-    }
-    .modal-handle {
-      width: 40px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 2px;
-      margin: 0 auto 16px auto;
-    }
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .modal-close-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: none;
-      color: #94a3b8;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .bank-card {
-      background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%);
-      border: 1px solid rgba(96, 165, 250, 0.3);
-      border-radius: 14px;
-      padding: 16px;
-      margin: 12px 0;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .bank-card-top { display: flex; justify-content: space-between; align-items: center; }
-    .bank-card-chip { font-size: 24px; margin: 8px 0; }
-    .bank-card-number {
-      font-family: monospace;
-      font-size: 18px;
-      letter-spacing: 2px;
-      font-weight: 700;
-      color: #fff;
-      margin: 6px 0 10px 0;
-    }
-    .bank-card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
-    .copy-card-btn {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .app-btn-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .app-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 14px;
-      text-decoration: none;
-      color: #fff;
-    }
-    .click-btn { background: #0099ff; }
-    .payme-btn { background: #00cccc; }
-    .pay-guide {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 12px;
-      color: #94a3b8;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .guide-step { display: flex; align-items: center; gap: 8px; }
-    .step-num {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #3b82f6;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
   <div class="container">
-
-    <!-- Language Toggle Top Bar -->
-    <div class="lang-bar">
-      <button id="lang-btn-uz" class="lang-pill active" onclick="setAppLang('uz')">🇺🇿 O'zbekcha</button>
-      <button id="lang-btn-ru" class="lang-pill" onclick="setAppLang('ru')">🇷🇺 Русский</button>
+    
+    <!-- Top Bar with Language Selector -->
+    <div class="top-bar">
+      <div class="brand-logo">
+        <span>🧠 IQzone</span>
+        <span class="brand-badge">Official</span>
+      </div>
+      <div class="lang-bar">
+        <div class="lang-pill active" id="lang-uz" onclick="setLanguage('uz')">🇺🇿 UZ</div>
+        <div class="lang-pill" id="lang-ru" onclick="setLanguage('ru')">🇷🇺 RU</div>
+      </div>
     </div>
 
-    <!-- VIEW 1: LANDING & TRIO BUNDLE -->
+    <!-- VIEW 1: LANDING -->
     <div id="view-landing" class="view active">
-      <h1><span class="gold-gradient">IQZONE</span> PRO</h1>
-      <p id="lbl-subtitle" class="subtitle">IQzone Rasmiy Kognitiv Intellekt Platformasi</p>
-
       <div class="glass-card">
-        <div id="lbl-bundle-head" style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px;">
-          Kognitiv Testlar To‘plami (Trio Bundle)
-        </div>
+        <h1 id="landing-title">Aql Darajangizni Aniqlang</h1>
+        <p class="subtitle" id="landing-subtitle">20 ta tasviriy mantiq va kognitiv savol.</p>
 
-        <div id="tab-1" class="tab-item selected" onclick="selectTab(1)">
-          <div class="tab-left">
-            <div class="tab-icon">🧠</div>
-            <div>
-              <div id="tab1-title" class="tab-title">Rasmiy IQ Test (21 savol)</div>
-              <div id="tab1-desc" class="tab-desc">Mantiq, fazoviy va sonlar tahlili</div>
-            </div>
-          </div>
-          <span id="tab1-badge" class="tab-badge badge-active">ASOSIY</span>
-        </div>
-
-        <div id="tab-2" class="tab-item" onclick="selectTab(2)">
-          <div class="tab-left">
-            <div class="tab-icon">🎭</div>
-            <div>
-              <div id="tab2-title" class="tab-title">EQ Test (Hissiy intellekt)</div>
-              <div id="tab2-desc" class="tab-desc">Empatiya va muloqot qobiliyati (10 savol)</div>
-            </div>
-          </div>
-          <span id="tab2-badge" class="tab-badge badge-free">BEPUL 🎁</span>
-        </div>
-
-        <div id="tab-3" class="tab-item" onclick="selectTab(3)">
-          <div class="tab-left">
-            <div class="tab-icon">⏳</div>
-            <div>
-              <div id="tab3-title" class="tab-title">PQ Test (Prokrastinatsiya)</div>
-              <div id="tab3-desc" class="tab-desc">Erinchaklik va vaqt boshqaruvi (10 savol)</div>
-            </div>
-          </div>
-          <span id="tab3-badge" class="tab-badge badge-free">BEPUL 🎁</span>
-        </div>
-      </div>
-
-      <button id="btn-start-quiz" class="btn-primary" onclick="startQuiz()">
-        <span id="lbl-start-quiz">Testni Boshlash</span>
-        <span>🚀</span>
-      </button>
-
-      <div class="trust-grid">
-        <div class="trust-item">
-          <div id="trust-1-val" class="trust-val">21 Savol</div>
-          <div id="trust-1-lbl" class="trust-lbl">~5 Daqiqa</div>
-        </div>
-        <div class="trust-item">
-          <div id="trust-2-val" class="trust-val">QR-Kodli</div>
-          <div id="trust-2-lbl" class="trust-lbl">HD Sertifikat</div>
-        </div>
-        <div class="trust-item">
-          <div id="trust-3-val" class="trust-val">CHC / Raven</div>
-          <div id="trust-3-lbl" class="trust-lbl">Metodologiya</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- VIEW 2: QUIZ ENGINE -->
-    <div id="view-quiz" class="view">
-      <div class="quiz-top">
-        <span id="q-counter" style="color: #f59e0b;">Savol 1 / 21</span>
-        <div class="timer-badge">
-          <span>⏱️</span>
-          <span id="timer-display">15:00</span>
-        </div>
-      </div>
-
-      <div class="progress-bar-bg">
-        <div id="progress-fill" class="progress-bar-fill"></div>
-      </div>
-
-      <div class="question-card glass-card">
-        <span id="q-cat" class="q-cat">Mantiqiy Tahlil</span>
-        <div id="q-text" class="q-text">Savol yuklanmoqda...</div>
-        <div id="options-container"></div>
-      </div>
-
-      <button id="btn-skip-q" class="btn-secondary" onclick="skipQuestion()">
-        ⏭️ O‘tkazib yuborish
-      </button>
-    </div>
-
-    <!-- VIEW 3: SUSPENSE / ANALYZING -->
-    <div id="view-suspense" class="view" style="justify-content: center; align-items: center; text-align: center;">
-      <div class="spinner-ring"></div>
-      <h2 id="suspense-title" style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">Natijangiz Tahlil Qilinmoqda...</h2>
-      <p id="suspense-text" class="status-step">Raven matritsalari hisoblanmoqda...</p>
-    </div>
-
-    <!-- VIEW 4: IQ PAYWALL HOOK -->
-    <div id="view-paywall" class="view">
-      <div class="lock-banner">
-        <div class="lock-icon">🔒</div>
-        <h2 id="paywall-title" style="font-size: 20px; font-weight: 800; color: #fff;">NATIJANGIZ TAYYOR — LEKIN YOPIQ!</h2>
-        <div class="locked-score-badge">
-          <span>🔒</span>
-          <span>??? BALL</span>
-        </div>
-        <p id="paywall-sub" style="font-size: 14px; color: #cbd5e1; margin-top: 6px; font-weight: 600;">
-          Siz aholining yuqori <b>5 foiziga</b> kirdim deb o‘ylaysizmi? 🤔
-        </p>
-      </div>
-
-      <div class="glass-card" style="text-align: center;">
-        <div id="lbl-cert-headline" style="font-size: 12px; font-weight: 600; color: #94a3b8;">IQZONE NING RASMIY SERTIFIKATI</div>
-        <div class="price-box">
-          <span class="old-price">45 000 so‘m</span>
-          <span class="new-price">9 900 so‘m</span>
-        </div>
-        <p id="lbl-cert-desc" style="font-size: 12px; color: #94a3b8; line-height: 1.4;">
-          Bor-yo‘g‘i 9,900 so‘m bilan o‘z intellekt darajangizni IQzone ning rasmiy sertifikati bilan tasdiqlang!
-        </p>
-
-        <div class="pay-btn-group">
-          <button id="btn-pay-card" class="btn-primary" onclick="payWithCard()">
-            💳 Click / Payme / Karta (9 900 so‘m)
-          </button>
-          <button id="btn-pay-stars" class="btn-secondary" onclick="payWithStars()">
-            ⭐ Telegram Stars (50 ⭐ — Avto)
-          </button>
-          <button id="btn-pay-free" class="btn-secondary" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);" onclick="inviteFriends()">
-            🎁 5 ta do‘st taklif qilib BEPUL ochish
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- VIEW 5: FREE BONUS RESULT (EQ & PQ) -->
-    <div id="view-bonus-result" class="view">
-      <div class="bonus-banner">
-        <div style="font-size: 40px; margin-bottom: 8px;" id="bonus-icon">🎭</div>
-        <h2 id="bonus-title" style="font-size: 20px; font-weight: 800; color: #fff;">TEST MUVAFFAQIYATLI YAKUNLANDI!</h2>
-        <div class="bonus-score-badge">
-          <span id="bonus-score-text">124 / 140 BALL</span>
-        </div>
-        <p id="bonus-desc" style="font-size: 14px; color: #cbd5e1; margin-top: 8px; font-weight: 600; line-height: 1.5;">
-          Sizning hissiy intellektingiz va empatiya darajangiz yuqori!
-        </p>
-      </div>
-
-      <div class="glass-card" style="text-align: center;">
-        <button class="btn-primary" onclick="switchView('view-landing')">
-          <span>🏠 Bosh Menyuga Qaytish</span>
+        <!-- Main Buttons (Matching Screenshot 2) -->
+        <button class="btn btn-purple" onclick="startTest('iq')">
+          <span id="btn-start-iq">🏷️ To'liq IQ testni boshlash</span>
         </button>
-        <button class="btn-secondary" style="margin-top: 10px;" onclick="shareBonusResult()">
-          <span>📲 Natijani Do‘stlarga Ulashish</span>
+        <button class="btn btn-glass" onclick="showBattleView()">
+          <span id="btn-battle">⚔️ Do'st bilan battle</span>
         </button>
+        <button class="btn btn-glass" onclick="showRestoreView()">
+          <span id="btn-restore">📜 Sertifikatni tiklash</span>
+        </button>
+        <div class="info-subtext" id="landing-info-subtext">
+          20 ta savol • Rasmiy IQzone sertifikati • 💵 10 000 so'm
+        </div>
+
+        <!-- Interactive "Bepul jumboq" (Matching Screenshot 1 & 2) -->
+        <div class="matrix-card">
+          <div class="matrix-header">
+            <span class="matrix-badge" id="preview-badge">🧩 Bepul jumboq</span>
+            <span class="matrix-sub" id="preview-sub">500 dan ortiq variant</span>
+          </div>
+          
+          <div class="matrix-grid" id="preview-matrix-grid"></div>
+          <div class="matrix-prompt" id="preview-prompt">Qaysi shakl bo'sh katakka mos keladi?</div>
+          <div class="matrix-opts-row" id="preview-opts-row"></div>
+          
+          <div id="preview-feedback" style="display:none; text-align:center; margin-top:12px; font-size:12.5px; line-height:1.4;"></div>
+        </div>
+
+        <!-- Cognitive Trio Selector (IQ, EQ, PQ) -->
+        <div class="tabs-card">
+          <div class="tabs-header" id="trio-header">Boshqa Kognitiv Testlar</div>
+          
+          <div class="tab-item" onclick="startTest('eq')">
+            <div class="tab-left">
+              <span class="tab-icon">🎭</span>
+              <div>
+                <div class="tab-title" id="tab-eq-title">EQ Test (Hissiy Intellekt)</div>
+                <div class="tab-sub" id="tab-eq-sub">Empatiya va stressga chidamlilik</div>
+              </div>
+            </div>
+            <span class="tab-badge" id="tab-eq-badge">BEPUL 🎁</span>
+          </div>
+
+          <div class="tab-item" onclick="startTest('pq')">
+            <div class="tab-left">
+              <span class="tab-icon">⏳</span>
+              <div>
+                <div class="tab-title" id="tab-pq-title">PQ Test (Intizom va Fokus)</div>
+                <div class="tab-sub" id="tab-pq-sub">Prokrastinatsiya va vaqt boshqaruvi</div>
+              </div>
+            </div>
+            <span class="tab-badge" id="tab-pq-badge">BEPUL 🎁</span>
+          </div>
+        </div>
+
       </div>
     </div>
 
-  </div>
+    <!-- VIEW 2: BATTLE VIEW (Matching Screenshots 3 & 4) -->
+    <div id="view-battle" class="view">
+      <div class="glass-card">
+        
+        <!-- Step 1: Battle Menu -->
+        <div id="battle-step-menu" class="battle-center">
+          <div class="battle-icon-big">⚔️</div>
+          <h1 id="battle-menu-title">Do'st bilan battle</h1>
+          <p class="subtitle" id="battle-menu-subtitle">
+            Bir xil testni alohida ishlaysiz. Kim aqlliroq — oxirida bilinadi. Har biringiz 7 500 so'm.
+          </p>
 
-  <!-- MODAL: KARTA & CLICK/PAYME TO'LOV -->
-  <div id="modal-card-pay" class="modal-overlay" onclick="handleModalBgClick(event, 'modal-card-pay')">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      
-      <div class="modal-header">
-        <div style="font-size: 20px;">💳</div>
-        <h3 id="lbl-modal-card-title" style="font-size: 18px; font-weight: 800; color: #fff;">Karta Orqali To‘lov</h3>
-        <button class="modal-close-btn" onclick="closeModal('modal-card-pay')">✕</button>
-      </div>
-
-      <div class="bank-card">
-        <div class="bank-card-top">
-          <span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #93c5fd;">UZCARD / HUMO</span>
-          <span style="font-size: 11px; color: #cbd5e1;">IQzone Rasmiy</span>
+          <button class="btn btn-purple" onclick="createBattleRoom()">
+            <span id="btn-create-code">🔑 Kod yaratish</span>
+          </button>
+          <button class="btn btn-glass" onclick="showJoinCodeStep()">
+            <span id="btn-join-code">🔢 Kod bilan kirish</span>
+          </button>
+          <div class="back-link" onclick="showLandingView()">← <span id="back-to-landing-1">Orqaga</span></div>
         </div>
-        <div class="bank-card-chip">💳</div>
-        <div class="bank-card-number" id="card-num-text">6262 5701 0900 7361</div>
-        <div class="bank-card-bottom">
+
+        <!-- Step 2: Battle Code Created (Screenshot 4) -->
+        <div id="battle-step-created" class="battle-center" style="display:none;">
+          <div class="battle-icon-big">⚔️</div>
+          <h1 id="battle-created-title">Do'st bilan battle</h1>
+          <p class="subtitle" id="battle-created-sub">
+            Bir xil testni alohida ishlaysiz. Kim aqlliroq — oxirida bilinadi. Har biringiz 7 500 so'm.
+          </p>
+
+          <div class="battle-code-box">
+            <div class="battle-code-num" id="battle-room-code">8678</div>
+          </div>
+          <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;" id="battle-send-hint">
+            Bu kodni do'stingizga yuboring
+          </p>
+
+          <button class="btn btn-glass" onclick="shareBattleCode()">
+            <span id="btn-send-code">📲 Kodni yuborish</span>
+          </button>
+
           <div>
-            <div style="font-size: 9px; color: #94a3b8; text-transform: uppercase;">Karta Egasi</div>
-            <div style="font-size: 13px; font-weight: 700; color: #fff;">OYATILLO ADXAMOV</div>
+            <div class="pulse-status" id="battle-waiting-status">⏳ Do'stingiz kutilmoqda...</div>
           </div>
-          <button class="copy-card-btn" id="copy-btn" onclick="copyCardNumber()">
-            📋 Nusxalash
+
+          <div style="margin-top:16px;">
+            <button class="btn btn-purple" onclick="startBattleTest()">
+              <span id="btn-launch-battle">🚀 Battleni boshlash</span>
+            </button>
+          </div>
+
+          <div class="back-link" onclick="showBattleMenu()">← <span id="back-to-menu-1">Orqaga</span></div>
+        </div>
+
+        <!-- Step 3: Enter Code to Join -->
+        <div id="battle-step-join" class="battle-center" style="display:none;">
+          <div class="battle-icon-big">⚔️</div>
+          <h1 id="battle-join-title">Kod bilan kirish</h1>
+          <p class="subtitle" id="battle-join-sub">
+            Do'stingiz yuborgan 4 xonali battle kodini kiriting:
+          </p>
+
+          <input type="number" id="input-battle-code" placeholder="8678" maxlength="4" class="battle-input" />
+
+          <button class="btn btn-purple" onclick="submitJoinCode()">
+            <span id="btn-join-submit">⚔️ Battlega qo'shilish</span>
+          </button>
+
+          <div class="back-link" onclick="showBattleMenu()">← <span id="back-to-menu-2">Orqaga</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW 3: RESTORE CERTIFICATE -->
+    <div id="view-restore" class="view">
+      <div class="glass-card battle-center">
+        <div class="battle-icon-big">📜</div>
+        <h1 id="restore-title">Sertifikatni tiklash</h1>
+        <p class="subtitle" id="restore-subtitle">
+          Avval test topshirgan bo'lsangiz, sertifikat ID raqamini kiriting yoki bot orqali tekshiring:
+        </p>
+
+        <input type="text" id="input-restore-id" placeholder="IQZ-2026-XXXX-XXXX" class="battle-input" />
+
+        <button class="btn btn-purple" onclick="verifyRestoreCert()">
+          <span id="btn-verify-cert">🔍 Sertifikatni tekshirish</span>
+        </button>
+
+        <button class="btn btn-glass" onclick="openBotCertificates()">
+          <span id="btn-bot-certs">🤖 Bot orqali barcha sertifikatlarimni ko'rish</span>
+        </button>
+
+        <div class="back-link" onclick="showLandingView()">← <span id="back-to-landing-2">Orqaga</span></div>
+      </div>
+    </div>
+
+    <!-- VIEW 4: QUIZ VIEW -->
+    <div id="view-quiz" class="view">
+      <div class="glass-card">
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quiz-progress"></div>
+        </div>
+
+        <div class="quiz-meta-row">
+          <span class="quiz-cat-pill" id="quiz-cat-badge">Kognitiv Tahlil</span>
+          <span class="quiz-timer" id="quiz-counter">1 / 20</span>
+        </div>
+
+        <!-- Container for Visual 3x3 Matrix Questions -->
+        <div id="visual-q-container" style="display:none;">
+          <div class="matrix-card" style="margin-bottom:10px;">
+            <div class="matrix-grid" id="quiz-matrix-grid"></div>
+            <div class="matrix-prompt" id="quiz-matrix-prompt">Qaysi shakl bo'sh katakka mos keladi?</div>
+            <div class="matrix-opts-row" id="quiz-matrix-opts"></div>
+          </div>
+        </div>
+
+        <!-- Container for Cognitive Logic Text Questions -->
+        <div id="logic-q-container" style="display:none;">
+          <div class="logic-q-box" id="logic-q-text"></div>
+          <div id="logic-opts-list"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW 5: SUSPENSE SCANNER -->
+    <div id="view-suspense" class="view">
+      <div class="glass-card battle-center" style="padding: 36px 20px;">
+        <div style="font-size: 50px; margin-bottom: 16px; animation: pulseGlow 1.5s infinite ease-in-out;">🧠</div>
+        <h1 id="suspense-title">Natijangiz hisoblanmoqda...</h1>
+        <p class="subtitle" id="suspense-sub">Neyrotarmoq javoblaringizni Mensa kognitiv standartlari bilan solishtirmoqda</p>
+
+        <div style="margin: 24px 0;">
+          <div class="quiz-progress-bar" style="height: 8px;">
+            <div class="quiz-progress-fill" id="suspense-bar" style="width: 15%; transition: width 0.4s ease;"></div>
+          </div>
+        </div>
+
+        <div style="font-size: 13px; color: #a5b4fc; text-align: left; padding: 0 10px;" id="suspense-checklist">
+          <div style="margin-bottom: 8px;">✓ 10 ta Raven fazoviy matritsalari tahlil qilindi</div>
+          <div style="margin-bottom: 8px;">✓ Deduktiv va miqdoriy mantiq baholandi</div>
+          <div>⏳ Rasmiy IQ indeksi shakllantirilmoqda...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 6: PAYWALL & BATTLE RESULTS -->
+    <div id="view-paywall" class="view">
+      <div class="glass-card">
+        
+        <div id="battle-result-banner" style="display:none; text-align:center; margin-bottom:14px;">
+          <div style="font-size:36px; margin-bottom:6px;">⚔️</div>
+          <h1 id="battle-fin-title">IQ Battle Yakunlandi!</h1>
+          <p class="subtitle" id="battle-fin-sub">Do'stingiz bilan bir xil 20 ta savol topshirildi</p>
+        </div>
+
+        <div id="solo-result-banner" style="text-align:center; margin-bottom:14px;">
+          <h1 id="paywall-title">Sizning IQ Natijangiz Tayyor!</h1>
+          <p class="subtitle" id="paywall-sub">Rasmiy sertifikat va to'liq kognitiv tahlilni yuklab oling</p>
+        </div>
+
+        <!-- Teaser Card -->
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:16px; padding:16px; text-align:center; margin-bottom:16px;">
+          <div style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase;" id="teaser-label">Kognitiv Darajangiz</div>
+          <div style="font-size:26px; font-weight:800; color:#fbbf24; margin:6px 0;" id="teaser-level">Yuqori Intellekt (Top 12%)</div>
+          <div style="font-size:13px; color:#cbd5e1;" id="teaser-score">20 ta savoldan to'g'ri topildi: <strong>16 / 20</strong></div>
+        </div>
+
+        <!-- Payment Actions -->
+        <div style="margin-bottom:14px;">
+          <button class="btn btn-gold" onclick="payViaStars()">
+            <span>⭐️ Telegram Stars bilan to'lash (50 ⭐️)</span>
+          </button>
+          <button class="btn btn-purple" onclick="payViaCard()">
+            <span id="btn-card-pay">💳 Click / Payme orqali (10 000 so'm)</span>
           </button>
         </div>
-      </div>
 
-      <div class="app-btn-grid">
-        <a href="https://my.click.uz/" target="_blank" class="app-btn click-btn">
-          <span>🟢</span><span>Click</span>
-        </a>
-        <a href="https://payme.uz/" target="_blank" class="app-btn payme-btn">
-          <span>🔵</span><span>Payme</span>
-        </a>
+        <div class="back-link" onclick="showLandingView()">← <span id="back-to-home">Bosh sahifaga qaytish</span></div>
       </div>
-
-      <div class="pay-guide" id="lbl-pay-guide">
-        <div class="guide-step">
-          <span class="step-num">1</span>
-          <span>Kartaga <b>9 900 so‘m</b> o‘tkazing (Click, Payme yoki Uzum)</span>
-        </div>
-        <div class="guide-step">
-          <span class="step-num">2</span>
-          <span>To‘lov chekini (skrinshot) <b>botga</b> yuboring</span>
-        </div>
-        <div class="guide-step">
-          <span class="step-num">3</span>
-          <span><b>1–2 daqiqada</b> IQzone rasmiy natijangiz va HD sertifikat ochiladi!</span>
-        </div>
-      </div>
-
-      <button id="btn-send-receipt" class="btn-primary" style="margin-top: 14px;" onclick="goToBotForReceipt()">
-        💬 Chekni Botga Yuborish 🚀
-      </button>
     </div>
-  </div>
 
-  <!-- MODAL: TELEGRAM STARS -->
-  <div id="modal-stars-pay" class="modal-overlay" onclick="handleModalBgClick(event, 'modal-stars-pay')">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-header">
-        <div style="font-size: 20px;">⭐</div>
-        <h3 id="lbl-stars-title" style="font-size: 18px; font-weight: 800; color: #fff;">Telegram Stars To‘lovi</h3>
-        <button class="modal-close-btn" onclick="closeModal('modal-stars-pay')">✕</button>
-      </div>
+    <!-- VIEW 7: BONUS FREE RESULT (EQ & PQ) -->
+    <div id="view-bonus-result" class="view">
+      <div class="glass-card battle-center">
+        <div style="font-size: 46px; margin-bottom: 10px;" id="bonus-res-icon">🎭</div>
+        <h1 id="bonus-res-title">Test Natijangiz</h1>
+        <p class="subtitle" id="bonus-res-sub">Bepul 100% kognitiv tahlil xulosasi</p>
 
-      <div style="text-align: center; padding: 14px 0;">
-        <div style="font-size: 44px; margin-bottom: 6px;">⭐</div>
-        <div style="font-size: 24px; font-weight: 900; color: #fbbf24;">50 Stars (Avto)</div>
-        <p id="lbl-stars-desc" style="font-size: 13px; color: #94a3b8; margin-top: 8px; line-height: 1.5;">
-          Telegram Stars orqali to‘lov qilganda natijangiz va rasmiy HD sertifikatingiz <b>avtomatik 1 soniyada</b> ochiladi!
-        </p>
-      </div>
-
-      <button id="btn-stars-action" class="btn-primary" onclick="goToBotStars()">
-        ⭐ Botda Stars orqali to‘lash 🚀
-      </button>
-      <button id="btn-stars-cancel" class="btn-secondary" style="margin-top: 8px;" onclick="closeModal('modal-stars-pay')">
-        ✕ Bekor qilish
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL: BEPUL OCHISH (REFERRAL) -->
-  <div id="modal-invite" class="modal-overlay" onclick="handleModalBgClick(event, 'modal-invite')">
-    <div class="modal-sheet">
-      <div class="modal-handle"></div>
-      <div class="modal-header">
-        <div style="font-size: 20px;">🎁</div>
-        <h3 id="lbl-invite-modal-title" style="font-size: 18px; font-weight: 800; color: #fff;">5 ta Do‘st — 100% Bepul</h3>
-        <button class="modal-close-btn" onclick="closeModal('modal-invite')">✕</button>
-      </div>
-
-      <div style="text-align: center; padding: 10px 0;">
-        <div style="font-size: 38px; margin-bottom: 6px;">👥</div>
-        <p id="lbl-invite-modal-desc" style="font-size: 13px; color: #cbd5e1; line-height: 1.5;">
-          5 ta do‘stingizga havola yuboring. Ular botga kirib test topshirishi bilan rasmiy sertifikatingiz <b>mutlaqo bepul</b> ochiladi!
-        </p>
-      </div>
-
-      <div class="bank-card" style="background: rgba(255,255,255,0.04); padding: 12px; margin-bottom: 12px;">
-        <div id="lbl-your-ref-link" style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Sizning taklif havolangiz:</div>
-        <div style="font-size: 13px; font-weight: 700; color: #38bdf8; word-break: break-all;" id="invite-link-text">
-          https://t.me/Iqzonebot?start=iqtest
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:16px; padding:18px; margin-bottom:16px;">
+          <div style="font-size:36px; font-weight:800; color:#34d399;" id="bonus-res-score">85%</div>
+          <div style="font-size:14px; font-weight:700; color:#f1f5f9; margin-top:4px;" id="bonus-res-status">A'lo Daraja</div>
+          <p style="font-size:12.5px; color:var(--text-muted); margin-top:10px; line-height:1.4;" id="bonus-res-desc"></p>
         </div>
-      </div>
 
-      <button id="btn-share-tg" class="btn-primary" onclick="shareToTelegram()">
-        📲 Telegram'da Do‘stlarga Ulashish
-      </button>
-      <button class="btn-secondary" id="copy-ref-btn" style="margin-top: 8px;" onclick="copyInviteLink()">
-        📋 Havolani Nusxalash
-      </button>
+        <button class="btn btn-purple" onclick="startTest('iq')">
+          <span id="btn-go-iq">🧠 Rasmiy IQ Testni Topshirish</span>
+        </button>
+
+        <div class="back-link" onclick="showLandingView()">← <span id="back-from-bonus">Bosh sahifaga</span></div>
+      </div>
     </div>
+
+    <!-- Toast Component -->
+    <div id="toast" class="toast">Kod nusxalandi!</div>
+
   </div>
 
   <script>
@@ -753,12 +781,25 @@
       tg.enableClosingConfirmation();
     }
 
-    // Question Banks
+    // State Variables
+    let currentLang = 'uz';
+    let currentTest = 'iq'; // 'iq', 'eq', 'pq'
+    let isBattleMode = false;
+    let currentBattleCode = null;
+    let currentIdx = 0;
+    let userAnswers = [];
+    let correctCount = 0;
+
+    // Load Data
+    const IQ_QUESTIONS = {
+      uz: [{"id": 1, "is_visual": true, "cat": "📐 O'lcham progressiyasi", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,8.0 50.9,23.2 42.9,47.8 17.1,47.8 9.1,23.2\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,8.0 50.9,23.2 42.9,47.8 17.1,47.8 9.1,23.2\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,8.0 50.9,23.2 42.9,47.8 17.1,47.8 9.1,23.2\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,2.0 56.6,21.3 46.5,52.7 13.5,52.7 3.4,21.3\" fill=\"#1e293b\" /></svg>"], "ans": 1}, {"id": 2, "is_visual": true, "cat": "🔄 Shakllar almashinuvi", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>"], "ans": 2}, {"id": 3, "is_visual": true, "cat": "🧭 Fazoviy aylanish (90°)", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(0 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(90 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(90 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(270 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(270 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(0 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(90 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(270 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>"], "ans": 0}, {"id": 4, "is_visual": true, "cat": "🔢 Miqdoriy progressiya", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"18\" cy=\"20\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"20\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"42\" cy=\"20\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"18\" cy=\"40\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"40\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"42\" cy=\"40\" r=\"3.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>"], "ans": 2}, {"id": 5, "is_visual": true, "cat": "📍 Fazoviy siljish", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"30\" cy=\"30\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>"], "ans": 3}, {"id": 6, "is_visual": true, "cat": "🧩 Ichki va tashqi shakllar", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"10\" y=\"10\" width=\"40\" height=\"40\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"10\" y=\"10\" width=\"40\" height=\"40\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30.0,20.0 39.5,36.5 20.5,36.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"10\" y=\"10\" width=\"40\" height=\"40\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30.0,20.0 39.5,36.5 20.5,36.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30.0,20.0 39.5,36.5 20.5,36.5\" fill=\"#1e293b\" /></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><rect x=\"22.0\" y=\"22.0\" width=\"16\" height=\"16\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>"], "ans": 1}, {"id": 7, "is_visual": true, "cat": "⚡ Chiziqlar sintezi", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"16\" y1=\"44\" x2=\"44\" y2=\"16\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"16\" y1=\"16\" x2=\"44\" y2=\"44\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>"], "ans": 2}, {"id": 8, "is_visual": true, "cat": "🎨 Tekstura va to'ldirish", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"18\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"18\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"19\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12.0\" y=\"12.0\" width=\"36\" height=\"36\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12.0\" y=\"12.0\" width=\"36\" height=\"36\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>"], "ans": 1}, {"id": 9, "is_visual": true, "cat": "📊 Ustunlar balandligi", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"27.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"23.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"23.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"14.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"14.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"14.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"9.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"18.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"45.5\" y=\"12.0\" width=\"5\" height=\"36\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"5.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"14.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"12.0\" width=\"5\" height=\"36\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"50.0\" y=\"7.0\" width=\"5\" height=\"41\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>"], "ans": 1}, {"id": 10, "is_visual": true, "cat": "🏆 Raven Grand Matritsa", "q": "Qaysi shakl bo'sh katakka mos keladi?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>"], "ans": 3}, {"id": 11, "is_visual": false, "cat": "🔢 Sonlar qonuniyati", "q": "Ketma-ketlikdagi qonuniyatni topib, so'roq belgisi o'rnidagi sonni aniqlang:\n\n3,  5,  9,  15,  23,  ?", "opts": ["29", "31", "33", "35"], "ans": 2}, {"id": 12, "is_visual": false, "cat": "🎲 Fazoviy idrok (Zar qoidasi)", "q": "Standart o'yin zarida qarama-qarshi tomonlar yig'indisi doimo 7 ga teng bo'ladi.\nAgar zarning yuqori yuzida 1 turgan bo'lsa, uning pastki yuzidagi raqam necha?", "opts": ["4", "5", "6", "3"], "ans": 2}, {"id": 13, "is_visual": false, "cat": "🧩 Mantiqiy analogiya", "q": "Mantiqiy bog'liqlikni toping:\n\nKitob : Muallif = Bino : ?", "opts": ["Quruvchi", "G'isht", "Me'mor (Arxitektor)", "Eshik"], "ans": 2}, {"id": 14, "is_visual": false, "cat": "⚖️ Tarozi muvozanati", "q": "• 1 ta Tarvuz = 2 ta Qovun vazniga teng.\n• 1 ta Qovun = 3 ta Olma vazniga teng.\n\nDemak, 1 ta Tarvuz nechta Olma vazniga teng bo'ladi?", "opts": ["4 ta", "5 ta", "6 ta", "8 ta"], "ans": 2}, {"id": 15, "is_visual": false, "cat": "📅 Taqvim mantiqi", "q": "Oylarning mantiqiy ketma-ketligini davom ettiring:\n\nYanvar,  Mart,  May,  Iyul,  ?", "opts": ["Avgust", "Sentabr", "Oktabr", "Noyabr"], "ans": 1}, {"id": 16, "is_visual": false, "cat": "🏎️ Tezlik va vaqt", "q": "Avtomobil soatiga 60 km o'rtacha tezlik bilan harakatlanmoqda. U 90 km masofani bosib o'tishi uchun necha daqiqa vaqt sarflaydi?", "opts": ["60 daqiqa", "80 daqiqa", "90 daqiqa", "120 daqiqa"], "ans": 2}, {"id": 17, "is_visual": false, "cat": "📐 Geometrik deduksiya", "q": "Oddiy qavariq kvadratning qarama-qarshi burchaklari tutashtirilsa, jami nechta diagonal hosil bo'ladi?", "opts": ["1 ta", "2 ta", "4 ta", "8 ta"], "ans": 1}, {"id": 18, "is_visual": false, "cat": "🔍 Ortiqchasini topish", "q": "Quyidagi ro'yxatda qaysi so'z mantiqiy jihatdan qolganlaridan tubdan farq qiladi?", "opts": ["Mars", "Venera", "Oy", "Yupiter"], "ans": 2}, {"id": 19, "is_visual": false, "cat": "👥 Qarindoshlik mantiqi", "q": "«U mening otamning yagona o'g'li, lekin men o'g'il bola emasman». Bu so'zlovchi shaxs kim?", "opts": ["Uning singlisi / opasi", "Uning onasi", "Uning ammasi", "Uning qizi"], "ans": 0}, {"id": 20, "is_visual": false, "cat": "👑 Mensa Tub Sonlar Qoidasi", "q": "Mensa kognitiv ketma-ketligining keyingi hadini aniqlang:\n\n2,  3,  5,  7,  11,  13,  ?", "opts": ["15", "16", "17", "19"], "ans": 2}],
+      ru: [{"id": 1, "is_visual": true, "cat": "📐 Прогрессия размеров", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,8.0 50.9,23.2 42.9,47.8 17.1,47.8 9.1,23.2\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,8.0 50.9,23.2 42.9,47.8 17.1,47.8 9.1,23.2\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 37.6,27.5 34.7,36.5 25.3,36.5 22.4,27.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,8.0 50.9,23.2 42.9,47.8 17.1,47.8 9.1,23.2\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,15.0 44.3,25.4 38.8,42.1 21.2,42.1 15.7,25.4\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,2.0 56.6,21.3 46.5,52.7 13.5,52.7 3.4,21.3\" fill=\"#1e293b\" /></svg>"], "ans": 1}, {"id": 2, "is_visual": true, "cat": "🔄 Цикличность фигур", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>"], "ans": 2}, {"id": 3, "is_visual": true, "cat": "🧭 Пространственное вращение (90°)", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(0 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(90 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(90 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(270 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(270 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(0 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(180 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(90 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><g transform=\"rotate(270 30 30)\"><polygon points=\"30,12 44,28 35,28 35,46 25,46 25,28 16,28\" fill=\"#1e293b\" /></g></svg>"], "ans": 0}, {"id": 4, "is_visual": true, "cat": "🔢 Количественная прогрессия", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"30\" r=\"5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"18\" cy=\"20\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"20\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"42\" cy=\"20\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"18\" cy=\"40\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"40\" r=\"3.5\" fill=\"#1e293b\"/><circle cx=\"42\" cy=\"40\" r=\"3.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"20\" cy=\"20\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"20\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"20\" cy=\"40\" r=\"4\" fill=\"#1e293b\"/><circle cx=\"40\" cy=\"40\" r=\"4\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"16\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"30\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/><circle cx=\"44\" cy=\"30\" r=\"4.5\" fill=\"#1e293b\"/></svg>"], "ans": 2}, {"id": 5, "is_visual": true, "cat": "📍 Пространственное перемещение", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"30\" cy=\"30\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"40\" cy=\"40\" r=\"5.5\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2\"/><circle cx=\"20\" cy=\"20\" r=\"5.5\" fill=\"#1e293b\"/></svg>"], "ans": 3}, {"id": 6, "is_visual": true, "cat": "🧩 Вложенные фигуры", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"10\" y=\"10\" width=\"40\" height=\"40\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"10\" y=\"10\" width=\"40\" height=\"40\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30.0,20.0 39.5,36.5 20.5,36.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"10\" y=\"10\" width=\"40\" height=\"40\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30.0,20.0 39.5,36.5 20.5,36.5\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30.0,20.0 39.5,36.5 20.5,36.5\" fill=\"#1e293b\" /></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><rect x=\"22.0\" y=\"22.0\" width=\"16\" height=\"16\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"21\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><polygon points=\"30,20 40,30 30,40 20,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,8 52,30 30,52 8,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><circle cx=\"30\" cy=\"30\" r=\"9\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>"], "ans": 1}, {"id": 7, "is_visual": true, "cat": "⚡ Синтез линий", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"16\" y1=\"44\" x2=\"44\" y2=\"16\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><line x1=\"16\" y1=\"16\" x2=\"44\" y2=\"44\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"3.5\" stroke-linecap=\"round\"/></svg>"], "ans": 2}, {"id": 8, "is_visual": true, "cat": "🎨 Текстура и заполнение", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"18\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"18\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"19\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12\" y=\"12\" width=\"36\" height=\"36\" rx=\"4\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12.0\" y=\"12.0\" width=\"36\" height=\"36\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"12.0\" y=\"12.0\" width=\"36\" height=\"36\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,9 51,30 30,51 9,30\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\"/><line x1=\"24\" y1=\"12\" x2=\"24\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/><line x1=\"36\" y1=\"12\" x2=\"36\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\"/></svg>"], "ans": 1}, {"id": 9, "is_visual": true, "cat": "📊 Высота столбцов", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"27.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"23.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"23.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"14.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"14.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"14.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"9.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"18.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"45.5\" y=\"12.0\" width=\"5\" height=\"36\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"5.0\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"14.0\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"23.0\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"32.0\" y=\"17.0\" width=\"5\" height=\"31\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"41.0\" y=\"12.0\" width=\"5\" height=\"36\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"50.0\" y=\"7.0\" width=\"5\" height=\"41\" rx=\"2\" fill=\"#1e293b\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"18.5\" y=\"32.0\" width=\"5\" height=\"16\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"27.5\" y=\"27.0\" width=\"5\" height=\"21\" rx=\"2\" fill=\"#1e293b\"/><rect x=\"36.5\" y=\"22.0\" width=\"5\" height=\"26\" rx=\"2\" fill=\"#1e293b\"/></svg>"], "ans": 1}, {"id": 10, "is_visual": true, "cat": "🏆 Гранд Матрица Равена", "q": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"14\" x2=\"46\" y2=\"46\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30,12 48,30 30,48 12,30\" fill=\"#1e293b\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,13.0 46.5,41.5 13.5,41.5\" fill=\"#1e293b\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"16\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"14\" y1=\"46\" x2=\"46\" y2=\"14\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"17.0\" y=\"17.0\" width=\"26\" height=\"26\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /><line x1=\"12\" y1=\"30\" x2=\"48\" y2=\"30\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"12\" x2=\"30\" y2=\"48\" stroke=\"#1e293b\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>"], "ans": 3}, {"id": 11, "is_visual": false, "cat": "🔢 Закономерность чисел", "q": "Найдите закономерность и определите следующее число:\n\n3,  5,  9,  15,  23,  ?", "opts": ["29", "31", "33", "35"], "ans": 2}, {"id": 12, "is_visual": false, "cat": "🎲 Пространственное мышление", "q": "На стандартном игральном кубике сумма противоположных граней всегда равна 7.\nЕсли сверху выпало 1, какое число находится на нижней грани?", "opts": ["4", "5", "6", "3"], "ans": 2}, {"id": 13, "is_visual": false, "cat": "🧩 Логическая аналогия", "q": "Определите логическую взаимосвязь:\n\nКнига : Автор = Здание : ?", "opts": ["Строитель", "Кирпич", "Архитектор", "Дверь"], "ans": 2}, {"id": 14, "is_visual": false, "cat": "⚖️ Баланс весов", "q": "• 1 Арбуз = 2 Дыни.\n• 1 Дыня = 3 Яблока.\n\nСкольким яблокам по весу равен 1 Арбуз?", "opts": ["4 яблока", "5 яблок", "6 яблок", "8 яблок"], "ans": 2}, {"id": 15, "is_visual": false, "cat": "📅 Логика календаря", "q": "Продолжите последовательность месяцев:\n\nЯнварь,  Март,  Май,  Июль,  ?", "opts": ["Август", "Сентябрь", "Октябрь", "Ноябрь"], "ans": 1}, {"id": 16, "is_visual": false, "cat": "🏎️ Скорость и время", "q": "Автомобиль едет со средней скоростью 60 км/ч. За сколько минут он преодолеет расстояние 90 км?", "opts": ["60 минут", "80 минут", "90 минут", "120 минут"], "ans": 2}, {"id": 17, "is_visual": false, "cat": "📐 Геометрическая дедукция", "q": "Сколько диагоналей образуется при соединении противоположных углов обычного квадрата?", "opts": ["1", "2", "4", "8"], "ans": 1}, {"id": 18, "is_visual": false, "cat": "🔍 Поиск лишнего", "q": "Какое слово логически принципиально отличается от остальных?", "opts": ["Марс", "Венера", "Луна", "Юпитер"], "ans": 2}, {"id": 19, "is_visual": false, "cat": "👥 Семейная логика", "q": "«Он единственный сын моего отца, но я не мужчина». Кем приходится этот человек говорящей?", "opts": ["Её брат (говорящая — сестра)", "Её мать", "Её тетя", "Её дочь"], "ans": 0}, {"id": 20, "is_visual": false, "cat": "👑 Простые числа Mensa", "q": "Определите следующее число в ряду простых чисел Mensa:\n\n2,  3,  5,  7,  11,  13,  ?", "opts": ["15", "16", "17", "19"], "ans": 2}]
+    };
+
+    const LANDING_PUZZLE = {"cat_uz": "🧩 Bepul jumboq", "cat_ru": "🧩 Бесплатная головоломка", "sub_uz": "Har safar yangi jumboq — 500 dan ortiq", "sub_ru": "Каждый раз новая головоломка — более 500 вариантов", "prompt_uz": "Qaysi shakl bo'sh katakka mos keladi?", "prompt_ru": "Какая фигура подходит в пустую клетку?", "matrix": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"8\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"14\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><circle cx=\"30\" cy=\"30\" r=\"20\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"23.0\" y=\"23.0\" width=\"14\" height=\"14\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"19.0\" y=\"19.0\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"15.0\" y=\"15.0\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 38.7,37.0 21.3,37.0\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,16.0 43.9,40.0 16.1,40.0\" fill=\"#1e293b\" /></svg>", "?"], "opts": ["<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,22.0 38.7,37.0 21.3,37.0\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,10.0 49.1,43.0 10.9,43.0\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><polygon points=\"30.0,16.0 43.9,40.0 16.1,40.0\" fill=\"#1e293b\" /></svg>", "<svg viewBox=\"0 0 60 60\" style=\"width:100%;height:100%;display:block;\"><rect x=\"19.0\" y=\"19.0\" width=\"22\" height=\"22\" rx=\"3\" fill=\"#1e293b\" stroke=\"none\" stroke-width=\"0\" /></svg>"], "ans": 1};
+
     const QUESTIONS_DATA = {
-      iq: {
-        uz: [{"id": 1, "arch": 1, "q": "🔢 **1. Sonlar qonuniyati:**\n\n`3,  5,  9,  15,  23,  ?`\n\nKetma-ketlikdagi keyingi sonni toping:", "opts": ["29", "39", "31", "33"], "ans": 3}, {"id": 13, "arch": 2, "q": "📐 **2. Geometrik fazo:**\n\nQavariq **Kvadrat (To'rtburchak)**ning barcha burchaklarini o'zaro to'g'ri chiziqlar bilan tutashtirilsa, jami nechta **diagonal** hosil bo'ladi?", "opts": ["5", "2", "7", "8"], "ans": 1}, {"id": 25, "arch": 3, "q": "🧩 **3. Mantiqiy analogiya:**\n\n**Kitob** : **Muallif** = **Bino** : **?**\n\nMantiqiy bog'liqlikka ko'ra to'g'ri variantni tanlang:", "opts": ["Quruvchi", "Eshik", "G'isht", "Me'mor (Arxitektor)"], "ans": 3}, {"id": 37, "arch": 4, "q": "🎲 **4. Fazoviy idrok (Zar qoidasi):**\n\nStandart o'yin zarida qarama-qarshi tomonlar yig'indisi har doim **7** ga teng bo'ladi.\nAgar zarning yuqori yuzida **1** turgan bo'lsa, pastki yuzidagi raqam necha?", "opts": ["4", "3", "6"], "ans": 2}, {"id": 49, "arch": 5, "q": "⚖️ **5. Tarozi muvozanati:**\n\n• 1 ta Tarvuz = 2 ta Qovun vazniga teng.\n• 1 ta Qovun = 3 ta Olma vazniga teng.\n\nDemak, **1 ta Tarvuz** nechta Olma vazniga teng bo'ladi?", "opts": ["8 ta", "6 ta", "11 ta", "3 ta"], "ans": 1}, {"id": 61, "arch": 6, "q": "📅 **6. Taqvim mantiqi:**\n\n`Yanvar,  Mart,  May,  Iyul,  ?`\n\nUshbu ketma-ketlikdagi keyingi oy qaysi?", "opts": ["Noyabr", "Avgust", "Oktabr", "Sentabr"], "ans": 3}, {"id": 73, "arch": 7, "q": "🏝️ **7. Rost va yolg'on jumboqi:**\n\nBir orolda faqat rostgo'ylar va yolg'onchilar yashaydi. Bir kishi: 'Men yolg'onchiman' dedi.\n\nMantiqan to'g'ri xulosa qaysi?", "opts": ["U rostgo'y", "Bu mantiqiy paradoks (mumkin emas)", "U yolg'onchi", "U mehmon"], "ans": 1}, {"id": 85, "arch": 8, "q": "🧭 **8. Yo'nalish va kompas:**\n\nSiz **Shimol** tomonga qarab turibsiz. Keyin o'ng tomonga **90°** burildingiz.\nHozir qaysi tomonga qarab turibsiz?", "opts": ["Sharq", "Janub", "G'arb", "Shimol"], "ans": 0}, {"id": 97, "arch": 9, "q": "⏰ **9. Soat millari burchagi:**\n\nSoat roppa-rosa **01:00** bo'lganda, soat va daqiqa millari orasidagi eng kichik burchak necha gradus bo'ladi?", "opts": ["15°", "60°", "30°", "75°"], "ans": 2}, {"id": 109, "arch": 10, "q": "🧠 **10. Mantiqiy silogizm:**\n\n• Barcha metallar issiqlikni o'tkazadi. Mis — metall.\n\nUshbu shartlardan kelib chiqadigan **qat'iy to'g'ri xulosa** qaysi?", "opts": ["Hamma metall misdir", "Issiqlik faqat misda bo'ladi", "Mis issiqlikni o'tkazadi", "Mis metall emas"], "ans": 2}, {"id": 121, "arch": 11, "q": "🔤 **11. Harfli shifr zanjiri:**\n\n`A,  C,  E,  G,  ?`\n\nQonuniyat bo'yicha keyingi harfni toping:", "opts": ["I", "H", "K", "J"], "ans": 0}, {"id": 133, "arch": 12, "q": "🧊 **12. 3D Fazoviy bloklar:**\n\nBir qatorda bir-biriga yopishtirib terilgan **3 ta bir xil kub** mavjud.\nUshbu yangi jismning jami nechta tashqi (ochiq) yoqlari bor?", "opts": ["18", "20", "14", "12"], "ans": 2}, {"id": 145, "arch": 13, "q": "🏃 **13. Musobaqa va o'rinlar:**\n\nMarafon yugurishida 2-o'rindagi yuguruvchini quvib o'tdingiz. Hozir nechanchi o'rindasiz?", "opts": ["G'olibsiz", "3-o'rinda", "1-o'rinda", "2-o'rinda"], "ans": 3}, {"id": 157, "arch": 14, "q": "🔍 **14. Ortiqchasini toping:**\n\nQuyidagi to'rttalikdan qaysi biri qolgan 3 tasi bilan bir xil mantiqiy toifaga kirmaydi?", "opts": ["Tyulen", "Akula", "Delfin", "Kit"], "ans": 1}, {"id": 169, "arch": 15, "q": "🔢 **15. Murakkab qonuniyat:**\n\n`2,  6,  12,  20,  ?`\n\nKeyingi sonni aniqlang:", "opts": ["30", "24", "34", "38"], "ans": 0}, {"id": 181, "arch": 16, "q": "💧 **16. Hajm va idishlar mantiqi:**\n\nSizda faqat 3 litrlik va 5 litrlik ikkita idish bor. Roppa-rosa 4 litr suvni o'lchash mumkinmi?", "opts": ["Yo'q, mutlaqo iloji yo'q", "Ha, 5L idishni 3L ga to'kish orqali", "Faqat tarozi bo'lsa", "Faqat 3L likni to'ldirib"], "ans": 1}, {"id": 193, "arch": 17, "q": "🔢 **17. Arifmetik matritsa:**\n\n`[ 2 ]  [ 4 ]  ➔  [  ?  ]`\n\nAgar birinchi son 2 barobar oshirilib, ikkinchisi qo'shilsa, natija necha bo'ladi?", "opts": ["12", "15", "8", "5"], "ans": 2}, {"id": 205, "arch": 18, "q": "👥 **18. Qarindoshlik mantiqi:**\n\nSuratdagi odamga qarab: 'Bu odamning otasi mening otamning yolg'iz o'g'lidir' dedi (gapiruvchining akasi yo'q).\n\nMantiqiy xulosa qaysi?", "opts": ["Otasi", "O'zi", "O'g'li", "Akasi"], "ans": 2}, {"id": 217, "arch": 19, "q": "🔢 **19. Fibonachchi uslubidagi zanjir:**\n\n`1,  2,  3,  5,  8,  13,  ?`\n\nKeyingi sonni toping:", "opts": ["25", "30", "18", "21"], "ans": 3}, {"id": 229, "arch": 20, "q": "📊 **20. To'plamlar (Venn diagrammasi):**\n\nGuruhda jami **30 nafar** talaba bor. Ulardan **18 nafari** ingliz tilini, **15 nafari** rus tilini biladi. 3 nafari ikkala tilni ham bilmaydi.\nNechta talaba **ikkala tilni ham** biladi?", "opts": ["4", "8", "6", "11"], "ans": 2}, {"id": 241, "arch": 21, "q": "🚗 **21. Harakat va tezlik mantiqi:**\n\nIkki shahar orasidagi masofa **120 km**. Bir-biriga qarab ikki mashina 60 km/soat va 40 km/soat tezlikda bir vaqtda yo'lga chiqdi.\nUlar necha soatdan keyin uchrashadi?", "opts": ["3 soat", "2 soat", "1.2 soat", "1 soat"], "ans": 2}],
-        ru: [{"id": 1, "q": "🔢 **1. Числовая закономерность:**\n\n`3,  5,  9,  15,  23,  ?`\n\nКакое следующее число в последовательности?", "opts": ["29", "39", "31", "33"], "ans": 3}, {"id": 2, "q": "📐 **2. Геометрия:**\n\nСколько диагоналей можно провести в выпуклом четырехугольнике (квадрате)?", "opts": ["5", "2", "7", "8"], "ans": 1}, {"id": 3, "q": "🧩 **3. Логическая аналогия:**\n\n**Книга** : **Автор** = **Здание** : **?**\n\nВыберите верное по логике соответствие:", "opts": ["Строитель", "Дверь", "Кирпич", "Архитектор"], "ans": 3}, {"id": 4, "q": "🎲 **4. Пространственное мышление:**\n\nВ стандартной игральной кости сумма противоположных граней всегда равна **7**.\nЕсли сверху выпало **1**, какое число снизу?", "opts": ["4", "3", "6"], "ans": 2}, {"id": 5, "q": "⚖️ **5. Баланс весов:**\n\n• 1 Арбуз = 2 Дыни.\n• 1 Дыня = 3 Яблока.\n\nСкольким яблокам равен вес **1 Арбуза**?", "opts": ["8 шт.", "6 шт.", "11 шт.", "3 шт."], "ans": 1}, {"id": 6, "q": "📅 **6. Логика календаря:**\n\n`Январь,  Март,  Май,  Июль,  ?`\n\nКакой месяц следующий в ряду?", "opts": ["Ноябрь", "Август", "Октябрь", "Сентябрь"], "ans": 3}, {"id": 7, "q": "🏝️ **7. Загадка правды и лжи:**\n\nНа острове живут рыцари (всегда говорят правду) и лжецы (всегда лгут). Человек сказал: «Я лжец».\n\nКакой вывод верный?", "opts": ["Он рыцарь", "Это логический парадокс (невозможно)", "Он лжец", "Он турист"], "ans": 1}, {"id": 8, "q": "🧭 **8. Направление и компас:**\n\nВы смотрите на **Север**. Затем повернулись на **90° вправо**.\nКуда вы теперь смотрите?", "opts": ["Восток", "Юг", "Запад", "Север"], "ans": 0}, {"id": 9, "q": "⏰ **9. Угол стрелок часов:**\n\nКогда часы показывают ровно **01:00**, какой наименьший угол между стрелками?", "opts": ["15°", "60°", "30°", "75°"], "ans": 2}, {"id": 10, "q": "🧠 **10. Логический силлогизм:**\n\n• Все металлы проводят тепло. Медь — металл.\n\nКакой **строгий вывод** следует из этих условий?", "opts": ["Любой металл — медь", "Тепло есть только в меди", "Медь проводит тепло", "Медь не металл"], "ans": 2}, {"id": 11, "q": "🔤 **11. Буквенный ряд:**\n\n`A,  C,  E,  G,  ?`\n\nКакая буква следующая в латинском алфавите?", "opts": ["I", "H", "K", "J"], "ans": 0}, {"id": 12, "q": "🧊 **12. 3D Пространство:**\n\n3 одинаковых кубика склеены в один прямой ряд.\nСколько внешних (открытых) граней у полученного тела?", "opts": ["18", "20", "14", "12"], "ans": 2}, {"id": 13, "q": "🏃 **13. Забег и позиции:**\n\nНа марафоне вы обогнали бегуна, который шел вторым. На каком вы сейчас месте?", "opts": ["Победитель", "3-е место", "1-е место", "2-е место"], "ans": 3}, {"id": 14, "q": "🔍 **14. Лишнее звено:**\n\nКто из четырех не относится к той же биологической группе, что остальные три?", "opts": ["Тюлень", "Акула", "Дельфин", "Кит"], "ans": 1}, {"id": 15, "q": "🔢 **15. Сложная закономерность:**\n\n`2,  6,  12,  20,  ?`\n\nОпределите следующее число:", "opts": ["30", "24", "34", "38"], "ans": 0}, {"id": 16, "q": "💧 **16. Логика переливаний:**\n\nУ вас есть только кувшины 3 литра и 5 литров. Можно ли точно отмерить ровно 4 литра?", "opts": ["Нет, невозможно", "Да, переливанием из 5л в 3л", "Только с весами", "Только наполняя 3л"], "ans": 1}, {"id": 17, "q": "🔢 **17. Арифметическая матрица:**\n\n`[ 2 ]  [ 4 ]  ➔  [  ?  ]`\n\nЕсли первое число умножить на 2 и прибавить второе, чему равен результат?", "opts": ["12", "15", "8", "5"], "ans": 2}, {"id": 18, "q": "👥 **18. Логика родства:**\n\nГлядя на портрет, мужчина сказал: «Отец этого человека — единственный сын моего отца» (у него нет братьев). Кто на портрете?", "opts": ["Отец", "Он сам", "Его сын", "Дядя"], "ans": 2}, {"id": 19, "q": "🔢 **19. Ряд чисел:**\n\n`1,  2,  3,  5,  8,  13,  ?`\n\nКакое следующее число в ряду Фибоначчи?", "opts": ["25", "30", "18", "21"], "ans": 3}, {"id": 20, "q": "📊 **20. Множества (Венн):**\n\nВ группе 30 студентов. 18 знают английский, 15 знают русский. 3 не знают ни один. Сколько студентов знают **оба языка**?", "opts": ["4", "8", "6", "11"], "ans": 2}, {"id": 21, "q": "🚗 **21. Скорость и движение:**\n\nРасстояние между городами 120 км. Навстречу друг другу выехали машины со скоростями 60 км/ч и 40 км/ч. Через сколько часов они встретятся?", "opts": ["3 часа", "2 часа", "1.2 часа", "1 час"], "ans": 2}]
-      },
+      iq: IQ_QUESTIONS,
       eq: {
         uz: [{"q": "💼 Ish joyingizda muhim loyihangiz keskin tanqid qilindi. Sizning birinchi reaksiyangiz:", "opts": ["Jahlim chiqadi va tanqidchini obro‘sizlantirishga harakat qilaman", "Bosiqlik bilan asosli tanqidni tinglab, takomillashtirish yo‘llarini izlayman", "Xafa bo‘lib, o‘zimni himoya qilishdan butunlay to‘xtayman", "Loyiha ustida ishlashni tashlab ketaman"], "ans": 1}, {"q": "😔 Yaqin do‘stingiz tushkun holatda, lekin gapirishni istamayapti. Nima qilasiz?", "opts": ["Sababini aytmaguncha qistayveraman", "Beparvo bo‘lib, o‘z ishlarim bilan band bo‘laman", "Har qanday paytda yordamga tayyorligimni bildirib, unga vaqt beraman", "Mening ham muammolarim ko‘pligini aytib noliyman"], "ans": 2}, {"q": "⚡ Kutilmagan qiyinchilik sababli muhim rejangiz butunlay buzildi. O‘zingizni qanday tutasiz?", "opts": ["Vahimaga tushib, sarosima ichida qolaman", "Vaziyatni xotirjam qabul qilib, tezda muqobil yechim ishlab chiqaman", "Aybdorlarni qidirishga tushaman", "Taqdirga tan berib qo‘l siltayman"], "ans": 1}, {"q": "🗣️ Bahs paytida suhbatdoshingiz his-tuyg‘ularini jilovlay olmay ovozini ko‘tardi:", "opts": ["Men ham undan balandroq baqirib javob beraman", "Xotirjam ohangda: «Keling, xotirjam gaplashaylik» deb vaziyatni sovutaman", "Shikoyat qilishga shoshilaman", "Indamay xonani tark etaman"], "ans": 1}, {"q": "👥 Yangi jamoaga kelganingizda atrofdagilar bilan qanday munosabat o‘rnatasiz?", "opts": ["O‘zlari birinchi bo‘lib kelib tanishishlarini kutaman", "Samimiy tabassum bilan tanishib, ularning tajribasini hurmat bilan o‘rganaman", "O‘zimning avvalgi yutuqlarim haqida to‘xtovsiz maqtanaman", "Hech kim bilan gaplashmaslikka harakat qilaman"], "ans": 1}, {"q": "🏆 Rejalashtirilgan ishda xatoga yo‘l qo‘ydingiz. O‘y-fikrlaringiz qanday bo‘ladi?", "opts": ["«Men hech narsaga yaramayman» deb tushkunlikka tushaman", "Xatoning sababini aniqlab, uni kelajak uchun muhim saboq deb bilaman", "Xatoni boshqa birovning bo‘yniga qo‘yishga urinaman", "Hammasini unutib, tavakkaliga yashayveraman"], "ans": 1}, {"q": "🎯 Qiyin hayotiy qaror qabul qilishda asosan nimaga tayanasiz?", "opts": ["Bir daqiqalik qizg‘in hissiyotlar va daf’iy kayfiyatga", "Mantiqiy dalillar va ichki hissiy xotirjamlik uyg‘unligiga", "Tavakkalga (tanga tashlashga)", "Boshqalar nima desa shunga"], "ans": 1}, {"q": "🤝 Do‘stingiz juda katta yutug‘ini aytganida ichingizdan qanday tuyg‘u o‘tadi?", "opts": ["Yashirin hasad va noqulaylik", "Uning uchun chin dildan quvonch va samimiy faxr tuyg‘usi", "O‘zimning undan ustun ekanimni ko‘rsatishga intilish", "Mutlaq befarqlik"], "ans": 1}, {"q": "🛑 Qattiq asabiylashish va g‘azablanish paytida o‘zingizni qanday jilovlaysiz?", "opts": ["Qo‘limga tushgan buyumni uloqtiraman yoki jahl sochaman", "Chuqur nafas olib, bir necha daqiqa tanaffus bilan hislarni boshqaraman", "G‘azabimni ichimga yutib, o‘zimni eyman", "Boshqalarni haqoratlayman"], "ans": 1}, {"q": "💬 Atrofdagi do‘stlaringiz va hamkasblaringiz sizni qanday ta’riflaydi?", "opts": ["Tez jahli chiqadigan va kayfiyati noaniq inson", "Bosiq, ishonchli va yaxshi tinglay oladigan maslahatgo‘y", "O‘ziga bino qo‘ygan va quloq solmaydigan", "Sovuq va e’tiborsiz"], "ans": 1}],
         ru: [{"q": "💼 На работе ваш проект подвергся резкой критике. Ваша первая реакция:", "opts": ["Вспылю и начну доказывать чужую некомпетентность", "Спокойно выслушаю замечания и проанализирую точки роста", "Обижусь и полностью перестану защищать свои идеи", "Брошу работу над проектом"], "ans": 1}, {"q": "😔 Близкий друг подавлен, но не хочет говорить. Что вы предпримете?", "opts": ["Буду настойчиво выспрашивать, пока не признается", "Пройду мимо, сославшись на занятость", "Дам понять, что я рядом в любую минуту, и дам ему время", "Начну жаловаться на свои проблемы"], "ans": 2}, {"q": "⚡ Из-за непредвиденных обстоятельств сорвался важный план. Ваше поведение:", "opts": ["Впаду в панику и растерянность", "Спокойно оценю обстановку и оперативно разработаю план Б", "Начну обвинять обстоятельства и окружающих", "Опущу руки"], "ans": 1}, {"q": "🗣️ В споре собеседник сорвался и перешел на повышенные тона:", "opts": ["Начну кричать в ответ еще громче", "Спокойно предложу: «Давайте сделаем паузу и обсудим без эмоций»", "Побегу жаловаться руководству", "Молча хлопну дверью"], "ans": 1}, {"q": "👥 Приходя в новый коллектив, как вы выстраиваете отношения?", "opts": ["Жду, пока другие первыми подойдут знакомиться", "С искренней улыбкой знакомлюсь и уважительно перенимаю опыт", "Хвастаюсь прошлыми заслугами, чтобы запугать", "Держусь подчеркнуто отстраненно"], "ans": 1}, {"q": "🏆 Вы допустили ошибку в важном деле. Ваши мысли в этот момент:", "opts": ["«Я ни на что не гожусь» — впадаю в уныние", "Анализирую причину и воспринимаю ошибку как ценный урок", "Пытаюсь свалить вину на коллегу", "Делаю вид, что ничего не произошло"], "ans": 1}, {"q": "🎯 Принимая судьбоносное решение, на что вы опираетесь прежде всего?", "opts": ["На сиюминутные эмоции и настроение", "На баланс трезвой логики и внутреннего эмоционального согласия", "На авось", "На мнение первого попавшегося человека"], "ans": 1}, {"q": "🤝 Друг делится своим триумфом. Какое чувство рождается внутри?", "opts": ["Скрытая зависть и досада", "Искренняя радость за него и гордость", "Желание доказать, что мои успехи гораздо круче", "Полное безразличие"], "ans": 1}, {"q": "🛑 В момент сильного раздражения и гнева, как вы берете контроль?", "opts": ["Срываю злость на близких или вещах", "Делаю глубокий вдох, беру паузу и восстанавливаю самообладание", "Коплю гнев в себе, разрушая здоровье", "Оскорбляю окружающих"], "ans": 1}, {"q": "💬 Как вас чаще всего характеризуют близкие и коллеги?", "opts": ["Вспыльчивый и эмоционально непредсказуемый", "Уравновешенный, надежный и чуткий собеседник", "Эгоцентричный и глухой к чужому мнению", "Холодный и равнодушный"], "ans": 1}]
@@ -769,457 +810,507 @@
       }
     };
 
-    // I18N Text Dictionary
+    // Translations Dictionary
     const I18N = {
       uz: {
-        subtitle: "IQzone Rasmiy Kognitiv Intellekt Platformasi",
-        bundleHead: "Kognitiv Testlar To‘plami (Trio Bundle)",
-        tab1Title: "Rasmiy IQ Test (21 savol)",
-        tab1Desc: "Mantiq, fazoviy va sonlar tahlili",
-        tab1Badge: "ASOSIY",
-        tab2Title: "EQ Test (Hissiy intellekt)",
-        tab2Desc: "Empatiya va muloqot qobiliyati (10 savol)",
-        tab2Badge: "BEPUL 🎁",
-        tab3Title: "PQ Test (Prokrastinatsiya)",
-        tab3Desc: "Erinchaklik va vaqt boshqaruvi (10 savol)",
-        tab3Badge: "BEPUL 🎁",
-        startBtn: "Testni Boshlash",
-        trust1Val: "21 Savol",
-        trust1Lbl: "~5 Daqiqa",
-        trust2Val: "QR-Kodli",
-        trust2Lbl: "HD Sertifikat",
-        trust3Val: "CHC / Raven",
-        trust3Lbl: "Metodologiya",
-        qWord: "Savol",
-        skipBtn: "⏭️ O‘tkazib yuborish",
-        suspenseTitle: "Natijangiz Tahlil Qilinmoqda...",
-        suspenseSteps: [
-          "Kognitiv matritsalar tahlil qilinmoqda...",
-          "Mantiqiy xatolar va javob tezligi tekshirilmoqda...",
-          "Kognitiv foiz (Percentile) hisoblanmoqda...",
-          "Rasmiy hisobot tayyorlanmoqda..."
-        ],
-        paywallTitle: "NATIJANGIZ TAYYOR — LEKIN YOPIQ!",
-        paywallSub: "Siz aholining yuqori <b>5 foiziga</b> kirdim deb o‘ylaysizmi? 🤔",
-        certHead: "IQZONE NING RASMIY SERTIFIKATI",
-        certDesc: "Bor-yo‘g‘i 9,900 so‘m bilan o‘z intellekt darajangizni IQzone ning rasmiy sertifikati bilan tasdiqlang!",
-        payCard: "💳 Click / Payme / Karta (9 900 so‘m)",
-        payStars: "⭐ Telegram Stars (50 ⭐ — Avto)",
-        payFree: "🎁 5 ta do‘st taklif qilib BEPUL ochish",
-        modalCardTitle: "Karta Orqali To‘lov",
-        modalStarsTitle: "Telegram Stars To‘lovi",
-        modalStarsDesc: "Telegram Stars orqali to‘lov qilganda natijangiz va rasmiy HD sertifikatingiz <b>avtomatik 1 soniyada</b> ochiladi!",
-        modalStarsBtn: "⭐ Botda Stars orqali to‘lash 🚀",
-        modalCancel: "✕ Bekor qilish",
-        modalInviteTitle: "5 ta Do‘st — 100% Bepul",
-        modalInviteDesc: "5 ta do‘stingizga havola yuboring. Ular botga kirib test topshirishi bilan rasmiy sertifikatingiz <b>mutlaqo bepul</b> ochiladi!",
-        modalInviteShare: "📲 Telegram'da Do‘stlarga Ulashish",
-        payGuideHtml: `
-          <div class="guide-step"><span class="step-num">1</span><span>Kartaga <b>9 900 so‘m</b> o‘tkazing (Click, Payme yoki Uzum)</span></div>
-          <div class="guide-step"><span class="step-num">2</span><span>To‘lov chekini (skrinshot) <b>botga</b> yuboring</span></div>
-          <div class="guide-step"><span class="step-num">3</span><span><b>1–2 daqiqada</b> IQzone rasmiy natijangiz va HD sertifikat ochiladi!</span></div>
-        `,
-        sendReceiptBtn: "💬 Chekni Botga Yuborish 🚀",
-        bonusDone: "TEST MUVAFFAQIYATLI YAKUNLANDI!",
-        bonusBack: "🏠 Bosh Menyuga Qaytish",
-        bonusShare: "📲 Natijani Do‘stlarga Ulashish"
+        landingTitle: "Aql Darajangizni Aniqlang",
+        landingSub: "20 ta tasviriy mantiq va kognitiv savol.",
+        btnStartIq: "🏷️ To'liq IQ testni boshlash",
+        btnBattle: "⚔️ Do'st bilan battle",
+        btnRestore: "📜 Sertifikatni tiklash",
+        infoSubtext: "20 ta savol • Rasmiy IQzone sertifikati • 💵 10 000 so'm",
+        previewBadge: "🧩 Bepul jumboq",
+        previewSub: "500 dan ortiq variant",
+        previewPrompt: "Qaysi shakl bo'sh katakka mos keladi?",
+        trioHeader: "Boshqa Kognitiv Testlar",
+        tabEqTitle: "EQ Test (Hissiy Intellekt)",
+        tabEqSub: "Empatiya va stressga chidamlilik",
+        tabPqTitle: "PQ Test (Intizom va Fokus)",
+        tabPqSub: "Prokrastinatsiya va vaqt boshqaruvi",
+        freeBadge: "BEPUL 🎁",
+        battleMenuTitle: "Do'st bilan battle",
+        battleMenuSub: "Bir xil testni alohida ishlaysiz. Kim aqlliroq — oxirida bilinadi. Har biringiz 7 500 so'm.",
+        btnCreateCode: "🔑 Kod yaratish",
+        btnJoinCode: "🔢 Kod bilan kirish",
+        battleSendHint: "Bu kodni do'stingizga yuboring",
+        btnSendCode: "📲 Kodni yuborish",
+        battleWaiting: "⏳ Do'stingiz kutilmoqda...",
+        btnLaunchBattle: "🚀 Battleni boshlash",
+        battleJoinTitle: "Kod bilan kirish",
+        battleJoinSub: "Do'stingiz yuborgan 4 xonali battle kodini kiriting:",
+        btnJoinSubmit: "⚔️ Battlega qo'shilish",
+        restoreTitle: "Sertifikatni tiklash",
+        restoreSub: "Avval test topshirgan bo'lsangiz, sertifikat ID raqamini kiriting yoki bot orqali tekshiring:",
+        btnVerifyCert: "🔍 Sertifikatni tekshirish",
+        btnBotCerts: "🤖 Bot orqali barcha sertifikatlarimni ko'rish",
+        back: "Orqaga",
+        backToHome: "Bosh sahifaga qaytish",
+        correctFeedback: "🎉 Barakalla! To'g'ri topdingiz! Sizda fazoviy mantiq juda kuchli rivojlangan.",
+        wrongFeedback: "Qayta urinib ko'ring yoki to'liq testni boshlang!",
+        copiedToast: "✅ Kod nusxalandi va ulashish oynasi ochildi!",
+        codeEmptyToast: "Iltimos, 4 xonali kodni kiriting!",
+        starsBtn: "⭐️ Telegram Stars bilan to'lash (50 ⭐️)",
+        cardBtn: "💳 Click / Payme orqali (10 000 so'm)",
+        battleCardBtn: "💳 Click / Payme orqali (7 500 so'm)"
       },
       ru: {
-        subtitle: "IQzone Официальная платформа когнитивного интеллекта",
-        bundleHead: "Пакет когнитивных тестов (Trio Bundle)",
-        tab1Title: "Официальный IQ Тест (21 вопрос)",
-        tab1Desc: "Логика, пространственный и числовой интеллект",
-        tab1Badge: "ОСНОВНОЙ",
-        tab2Title: "EQ Тест (Эмоциональный интеллект)",
-        tab2Desc: "Эмпатия и навыки коммуникации (10 вопр.)",
-        tab2Badge: "БЕСПЛАТНО 🎁",
-        tab3Title: "PQ Тест (Прокрастинация)",
-        tab3Desc: "Самодисциплина и тайм-менеджмент (10 вопр.)",
-        tab3Badge: "БЕСПЛАТНО 🎁",
-        startBtn: "Начать тестирование",
-        trust1Val: "21 Вопрос",
-        trust1Lbl: "~5 Минут",
-        trust2Val: "С QR-кодом",
-        trust2Lbl: "HD Сертификат",
-        trust3Val: "CHC / Raven",
-        trust3Lbl: "Методология",
-        qWord: "Вопрос",
-        skipBtn: "⏭️ Пропустить вопрос",
-        suspenseTitle: "Анализ ваших результатов...",
-        suspenseSteps: [
-          "Анализ когнитивных матриц...",
-          "Оценка логических ошибок и скорости...",
-          "Расчет процентиля интеллекта...",
-          "Формирование официального отчета..."
-        ],
-        paywallTitle: "ВАШ РЕЗУЛЬТАТ ГОТОВ — НО ЗАКРЫТ!",
-        paywallSub: "Как вы думаете, вошли ли вы в топ <b>5% людей</b>? 🤔",
-        certHead: "ОФИЦИАЛЬНЫЙ СЕРТИФИКАТ IQZONE",
-        certDesc: "Всего за 9 900 сум подтвердите свой результат официальным HD сертификатом с QR-кодом!",
-        payCard: "💳 Click / Payme / Карта (9 900 сум)",
-        payStars: "⭐ Telegram Stars (50 ⭐ — Авто)",
-        payFree: "🎁 Пригласить 5 друзей — БЕСПЛАТНО",
-        modalCardTitle: "Оплата картой",
-        modalStarsTitle: "Оплата Telegram Stars",
-        modalStarsDesc: "При оплате через Telegram Stars ваш результат и сертификат откроются <b>автоматически за 1 секунду</b>!",
-        modalStarsBtn: "⭐ Оплатить через Stars в боте 🚀",
-        modalCancel: "✕ Отмена",
-        modalInviteTitle: "5 Друзей — 100% Бесплатно",
-        modalInviteDesc: "Отправьте ссылку 5 друзьям. Когда они начнут тест, ваш сертификат откроется <b>абсолютно бесплатно</b>!",
-        modalInviteShare: "📲 Поделиться в Telegram",
-        payGuideHtml: `
-          <div class="guide-step"><span class="step-num">1</span><span>Переведите <b>9 900 сум</b> на карту (Click, Payme, Uzum)</span></div>
-          <div class="guide-step"><span class="step-num">2</span><span>Отправьте чек (скриншот) <b>в бот</b></span></div>
-          <div class="guide-step"><span class="step-num">3</span><span>За <b>1–2 минуты</b> откроется ваш официальный сертификат!</span></div>
-        `,
-        sendReceiptBtn: "💬 Отправить чек в бот 🚀",
-        bonusDone: "ТЕСТ УСПЕШНО ЗАВЕРШЕН!",
-        bonusBack: "🏠 Вернуться в главное меню",
-        bonusShare: "📲 Поделиться результатом с друзьями"
+        landingTitle: "Определите свой уровень IQ",
+        landingSub: "20 визуальных и логических вопросов.",
+        btnStartIq: "🏷️ Начать полный IQ тест",
+        btnBattle: "⚔️ Битва с другом",
+        btnRestore: "📜 Восстановить сертификат",
+        infoSubtext: "20 вопросов • Официальный сертификат IQzone • 💵 10 000 сум",
+        previewBadge: "🧩 Бесплатная головоломка",
+        previewSub: "Более 500 вариантов",
+        previewPrompt: "Какая фигура подходит в пустую клетку?",
+        trioHeader: "Другие когнитивные тесты",
+        tabEqTitle: "EQ Тест (Эмоциональный Интеллект)",
+        tabEqSub: "Эмпатия и стрессоустойчивость",
+        tabPqTitle: "PQ Тест (Дисциплина и Фокус)",
+        tabPqSub: "Прокрастинация и тайм-менеджмент",
+        freeBadge: "БЕСПЛАТНО 🎁",
+        battleMenuTitle: "Битва с другом",
+        battleMenuSub: "Проходите одинаковый тест по отдельности. Кто умнее — покажет результат. Для каждого 7 500 сум.",
+        btnCreateCode: "🔑 Создать код",
+        btnJoinCode: "🔢 Войти по коду",
+        battleSendHint: "Отправьте этот код другу",
+        btnSendCode: "📲 Отправить код",
+        battleWaiting: "⏳ Ожидание друга...",
+        btnLaunchBattle: "🚀 Начать битву",
+        battleJoinTitle: "Войти по коду",
+        battleJoinSub: "Введите 4-значный код битвы от друга:",
+        btnJoinSubmit: "⚔️ Войти в битву",
+        restoreTitle: "Восстановить сертификат",
+        restoreSub: "Если вы уже проходили тест, введите ID сертификата или проверьте через бота:",
+        btnVerifyCert: "🔍 Проверить сертификат",
+        btnBotCerts: "🤖 Смотреть все сертификаты в боте",
+        back: "Назад",
+        backToHome: "На главную",
+        correctFeedback: "🎉 Отлично! Правильный ответ! У вас превосходно развито пространственное мышление.",
+        wrongFeedback: "Попробуйте ещё раз или начните полный тест!",
+        copiedToast: "✅ Код скопирован в буфер!",
+        codeEmptyToast: "Пожалуйста, введите 4-значный код!",
+        starsBtn: "⭐️ Оплата Telegram Stars (50 ⭐️)",
+        cardBtn: "💳 Оплата через Click / Payme (10 000 сум)",
+        battleCardBtn: "💳 Оплата через Click / Payme (7 500 сум)"
       }
     };
 
-    // State
-    const urlParams = new URLSearchParams(window.location.search);
-    let currentLang = urlParams.get('lang') === 'ru' ? 'ru' : (tg?.initDataUnsafe?.user?.language_code === 'ru' ? 'ru' : 'uz');
-    let currentTest = urlParams.get('test') || 'iq';
-    if (!['iq', 'eq', 'pq'].includes(currentTest)) currentTest = 'iq';
-
-    let currentQuestions = [];
-    let currentIdx = 0;
-    let correctCount = 0;
-    let timerSeconds = 15 * 60;
-    let timerInterval = null;
-
-    function applyTranslations() {
-      const t = I18N[currentLang];
-      document.getElementById('lbl-subtitle').innerText = t.subtitle;
-      document.getElementById('lbl-bundle-head').innerText = t.bundleHead;
-      document.getElementById('tab1-title').innerText = t.tab1Title;
-      document.getElementById('tab1-desc').innerText = t.tab1Desc;
-      document.getElementById('tab1-badge').innerText = t.tab1Badge;
-      document.getElementById('tab2-title').innerText = t.tab2Title;
-      document.getElementById('tab2-desc').innerText = t.tab2Desc;
-      document.getElementById('tab2-badge').innerText = t.tab2Badge;
-      document.getElementById('tab3-title').innerText = t.tab3Title;
-      document.getElementById('tab3-desc').innerText = t.tab3Desc;
-      document.getElementById('tab3-badge').innerText = t.tab3Badge;
-      document.getElementById('lbl-start-quiz').innerText = t.startBtn;
-      document.getElementById('trust-1-val').innerText = t.trust1Val;
-      document.getElementById('trust-1-lbl').innerText = t.trust1Lbl;
-      document.getElementById('trust-2-val').innerText = t.trust2Val;
-      document.getElementById('trust-2-lbl').innerText = t.trust2Lbl;
-      document.getElementById('trust-3-val').innerText = t.trust3Val;
-      document.getElementById('trust-3-lbl').innerText = t.trust3Lbl;
-      document.getElementById('btn-skip-q').innerText = t.skipBtn;
-      document.getElementById('suspense-title').innerText = t.suspenseTitle;
-      document.getElementById('paywall-title').innerText = t.paywallTitle;
-      document.getElementById('paywall-sub').innerHTML = t.paywallSub;
-      document.getElementById('lbl-cert-headline').innerText = t.certHead;
-      document.getElementById('lbl-cert-desc').innerText = t.certDesc;
-      document.getElementById('btn-pay-card').innerText = t.payCard;
-      document.getElementById('btn-pay-stars').innerText = t.payStars;
-      document.getElementById('btn-pay-free').innerText = t.payFree;
-      document.getElementById('lbl-modal-card-title').innerText = t.modalCardTitle;
-      document.getElementById('lbl-stars-title').innerText = t.modalStarsTitle;
-      document.getElementById('lbl-stars-desc').innerHTML = t.modalStarsDesc;
-      document.getElementById('btn-stars-action').innerText = t.modalStarsBtn;
-      document.getElementById('btn-stars-cancel').innerText = t.modalCancel;
-      document.getElementById('lbl-invite-modal-title').innerText = t.modalInviteTitle;
-      document.getElementById('lbl-invite-modal-desc').innerHTML = t.modalInviteDesc;
-      document.getElementById('btn-share-tg').innerText = t.modalInviteShare;
-      document.getElementById('lbl-pay-guide').innerHTML = t.payGuideHtml;
-      document.getElementById('btn-send-receipt').innerText = t.sendReceiptBtn;
-      document.getElementById('bonus-title').innerText = t.bonusDone;
-
-      // Toggle pills styling
-      document.getElementById('lang-btn-uz').classList.toggle('active', currentLang === 'uz');
-      document.getElementById('lang-btn-ru').classList.toggle('active', currentLang === 'ru');
+    // Show Toast
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
     }
 
-    function setAppLang(lang) {
+    // Switch Language
+    function setLanguage(lang) {
       currentLang = lang;
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-      applyTranslations();
-      // If quiz is actively running, re-render question in new language
-      if (document.getElementById('view-quiz').classList.contains('active')) {
-        currentQuestions = QUESTIONS_DATA[currentTest][currentLang];
-        renderQuestion();
-      }
+      document.getElementById('lang-uz').classList.toggle('active', lang === 'uz');
+      document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
+      
+      const t = I18N[lang];
+      document.getElementById('landing-title').innerText = t.landingTitle;
+      document.getElementById('landing-subtitle').innerText = t.landingSub;
+      document.getElementById('btn-start-iq').innerText = t.btnStartIq;
+      document.getElementById('btn-battle').innerText = t.btnBattle;
+      document.getElementById('btn-restore').innerText = t.btnRestore;
+      document.getElementById('landing-info-subtext').innerText = t.infoSubtext;
+      
+      document.getElementById('preview-badge').innerText = t.previewBadge;
+      document.getElementById('preview-sub').innerText = t.previewSub;
+      document.getElementById('preview-prompt').innerText = t.previewPrompt;
+      
+      document.getElementById('trio-header').innerText = t.trioHeader;
+      document.getElementById('tab-eq-title').innerText = t.tabEqTitle;
+      document.getElementById('tab-eq-sub').innerText = t.tabEqSub;
+      document.getElementById('tab-pq-title').innerText = t.tabPqTitle;
+      document.getElementById('tab-pq-sub').innerText = t.tabPqSub;
+      document.getElementById('tab-eq-badge').innerText = t.freeBadge;
+      document.getElementById('tab-pq-badge').innerText = t.freeBadge;
+
+      document.getElementById('battle-menu-title').innerText = t.battleMenuTitle;
+      document.getElementById('battle-menu-subtitle').innerText = t.battleMenuSub;
+      document.getElementById('btn-create-code').innerText = t.btnCreateCode;
+      document.getElementById('btn-join-code').innerText = t.btnJoinCode;
+      document.getElementById('battle-created-title').innerText = t.battleMenuTitle;
+      document.getElementById('battle-created-sub').innerText = t.battleMenuSub;
+      document.getElementById('battle-send-hint').innerText = t.battleSendHint;
+      document.getElementById('btn-send-code').innerText = t.btnSendCode;
+      document.getElementById('battle-waiting-status').innerText = t.battleWaiting;
+      document.getElementById('btn-launch-battle').innerText = t.btnLaunchBattle;
+      document.getElementById('battle-join-title').innerText = t.battleJoinTitle;
+      document.getElementById('battle-join-sub').innerText = t.battleJoinSub;
+      document.getElementById('btn-join-submit').innerText = t.btnJoinSubmit;
+
+      document.getElementById('restore-title').innerText = t.restoreTitle;
+      document.getElementById('restore-subtitle').innerText = t.restoreSub;
+      document.getElementById('btn-verify-cert').innerText = t.btnVerifyCert;
+      document.getElementById('btn-bot-certs').innerText = t.btnBotCerts;
+
+      ['back-to-landing-1', 'back-to-landing-2', 'back-to-menu-1', 'back-to-menu-2', 'back-to-home', 'back-from-bonus'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = t.back;
+      });
+
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     }
 
-    function switchView(viewId) {
+    // Navigation Switcher
+    function showView(viewId) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       const target = document.getElementById(viewId);
       if (target) target.classList.add('active');
+      window.scrollTo(0, 0);
     }
 
-    function selectTab(num) {
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-      document.querySelectorAll('.tab-item').forEach((t, i) => {
-        t.classList.toggle('selected', i + 1 === num);
+    function showLandingView() {
+      showView('view-landing');
+    }
+
+    function showBattleView() {
+      showView('view-battle');
+      showBattleMenu();
+    }
+
+    function showBattleMenu() {
+      document.getElementById('battle-step-menu').style.display = 'block';
+      document.getElementById('battle-step-created').style.display = 'none';
+      document.getElementById('battle-step-join').style.display = 'none';
+    }
+
+    function showJoinCodeStep() {
+      document.getElementById('battle-step-menu').style.display = 'none';
+      document.getElementById('battle-step-created').style.display = 'none';
+      document.getElementById('battle-step-join').style.display = 'block';
+      document.getElementById('input-battle-code').focus();
+    }
+
+    function createBattleRoom() {
+      const code = Math.floor(1000 + Math.random() * 9000);
+      currentBattleCode = code;
+      document.getElementById('battle-room-code').innerText = code;
+      document.getElementById('battle-step-menu').style.display = 'none';
+      document.getElementById('battle-step-join').style.display = 'none';
+      document.getElementById('battle-step-created').style.display = 'block';
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+    }
+
+    function shareBattleCode() {
+      const code = currentBattleCode || '8678';
+      const textUz = `⚔️ Men sizni IQ Battlega chaqiryapman! Kod: ${code}. Qani, kim aqlliroq ekanini aniqlaymiz! 🧠`;
+      const textRu = `⚔️ Я вызываю тебя на IQ Битву! Код: ${code}. Давай проверим, кто умнее! 🧠`;
+      const shareText = currentLang === 'ru' ? textRu : textUz;
+      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent('https://t.me/Iqzonebot?start=battle_' + code)}&text=${encodeURIComponent(shareText)}`;
+      
+      // Copy to clipboard
+      navigator.clipboard?.writeText(code.toString());
+      showToast(I18N[currentLang].copiedToast);
+
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink(shareUrl);
+      } else {
+        window.open(shareUrl, '_blank');
+      }
+    }
+
+    function submitJoinCode() {
+      const val = document.getElementById('input-battle-code').value.trim();
+      if (!val || val.length < 3) {
+        showToast(I18N[currentLang].codeEmptyToast);
+        return;
+      }
+      currentBattleCode = val;
+      startBattleTest();
+    }
+
+    function showRestoreView() {
+      showView('view-restore');
+    }
+
+    function verifyRestoreCert() {
+      const id = document.getElementById('input-restore-id').value.trim();
+      if (!id) {
+        showToast('Iltimos, ID kiriting!');
+        return;
+      }
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink(`https://t.me/Iqzonebot?start=verify_${encodeURIComponent(id)}`);
+      } else {
+        showToast(`Sertifikat ID: ${id} botda tekshirilmoqda...`);
+      }
+    }
+
+    function openBotCertificates() {
+      if (tg?.sendData) {
+        tg.sendData(JSON.stringify({ action: "my_certs" }));
+      }
+      if (tg?.close) tg.close();
+    }
+
+    // Interactive Landing Preview Matrix
+    function initLandingPreview() {
+      const grid = document.getElementById('preview-matrix-grid');
+      const optsRow = document.getElementById('preview-opts-row');
+      grid.innerHTML = '';
+      optsRow.innerHTML = '';
+
+      LANDING_PUZZLE.matrix.forEach((cellSvg, idx) => {
+        const cell = document.createElement('div');
+        if (cellSvg === '?') {
+          cell.className = 'matrix-cell matrix-cell-target';
+          cell.innerText = '?';
+        } else {
+          cell.className = 'matrix-cell';
+          cell.innerHTML = cellSvg;
+        }
+        grid.appendChild(cell);
       });
 
-      if (num === 1) currentTest = 'iq';
-      else if (num === 2) currentTest = 'eq';
-      else if (num === 3) currentTest = 'pq';
+      LANDING_PUZZLE.opts.forEach((optSvg, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'matrix-opt-btn';
+        btn.innerHTML = optSvg;
+        btn.onclick = () => {
+          if (idx === LANDING_PUZZLE.ans) {
+            btn.classList.add('correct-opt');
+            if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+            const fb = document.getElementById('preview-feedback');
+            fb.style.display = 'block';
+            fb.innerHTML = `<span style="color:#34d399; font-weight:700;">${I18N[currentLang].correctFeedback}</span><br><button class="btn btn-purple" style="margin-top:8px; padding:10px 14px; font-size:13px;" onclick="startTest('iq')">🚀 ${I18N[currentLang].btnStartIq}</button>`;
+          } else {
+            btn.classList.add('wrong-opt');
+            if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+            const fb = document.getElementById('preview-feedback');
+            fb.style.display = 'block';
+            fb.innerHTML = `<span style="color:#f87171;">${I18N[currentLang].wrongFeedback}</span>`;
+          }
+        };
+        optsRow.appendChild(btn);
+      });
     }
 
-    function startQuiz() {
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-      currentQuestions = QUESTIONS_DATA[currentTest][currentLang];
+    // Start Test Engine
+    function startTest(testType) {
+      currentTest = testType;
+      isBattleMode = false;
       currentIdx = 0;
+      userAnswers = [];
       correctCount = 0;
-      timerSeconds = (currentTest === 'iq' ? 15 : 10) * 60;
-      switchView('view-quiz');
+      showView('view-quiz');
       renderQuestion();
-      startTimer();
     }
 
-    function startTimer() {
-      clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        if (timerSeconds <= 0) {
-          clearInterval(timerInterval);
-          finishQuiz();
-          return;
-        }
-        timerSeconds--;
-        const m = Math.floor(timerSeconds / 60);
-        const s = timerSeconds % 60;
-        document.getElementById('timer-display').innerText = 
-          (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-      }, 1000);
+    function startBattleTest() {
+      currentTest = 'iq';
+      isBattleMode = true;
+      currentIdx = 0;
+      userAnswers = [];
+      correctCount = 0;
+      showView('view-quiz');
+      renderQuestion();
     }
 
     function renderQuestion() {
-      if (currentIdx >= currentQuestions.length) {
-        finishQuiz();
+      const questions = QUESTIONS_DATA[currentTest][currentLang];
+      if (currentIdx >= questions.length) {
+        finishTest();
         return;
       }
-      const q = currentQuestions[currentIdx];
-      const t = I18N[currentLang];
-      document.getElementById('q-counter').innerText = `${t.qWord} ${currentIdx + 1} / ${currentQuestions.length}`;
-      const pct = Math.round(((currentIdx + 1) / currentQuestions.length) * 100);
-      document.getElementById('progress-fill').style.width = pct + '%';
-      
-      let catName = 'Mantiqiy Tahlil';
-      if (currentTest === 'eq') catName = currentLang === 'ru' ? '🎭 Эмоциональный интеллект' : '🎭 Hissiy Intellekt va Empatiya';
-      else if (currentTest === 'pq') catName = currentLang === 'ru' ? '⏳ Самодисциплина и тайм-менеджмент' : '⏳ Prokrastinatsiya va Vaqt';
-      else {
-        const catsUz = ['🔢 Sonlar mantiqi', '🧩 Fazoviy idrok', '⚖️ Mantiqiy deduksiya', '🔍 Kognitiv qoliplar'];
-        const catsRu = ['🔢 Логика чисел', '🧩 Пространственное мышление', '⚖️ Дедукция', '🔍 Когнитивные паттерны'];
-        catName = currentLang === 'ru' ? catsRu[currentIdx % catsRu.length] : catsUz[currentIdx % catsUz.length];
-      }
-      document.getElementById('q-cat').innerText = catName;
-      document.getElementById('q-text').innerText = q.q;
 
-      const optsBox = document.getElementById('options-container');
-      optsBox.innerHTML = '';
-      const letters = ['A', 'B', 'C', 'D'];
-      q.opts.forEach((optText, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${optText}</span>`;
-        btn.onclick = () => selectAnswer(i, btn);
-        optsBox.appendChild(btn);
-      });
+      const q = questions[currentIdx];
+      const total = questions.length;
+      
+      // Update Progress
+      const pct = Math.round(((currentIdx + 1) / total) * 100);
+      document.getElementById('quiz-progress').style.width = pct + '%';
+      document.getElementById('quiz-counter').innerText = `${currentIdx + 1} / ${total}`;
+      
+      let catText = q.cat || 'Kognitiv Mantiq';
+      if (isBattleMode) catText = `⚔️ BATTLE #${currentBattleCode || '8678'} • ` + catText;
+      document.getElementById('quiz-cat-badge').innerText = catText;
+
+      const visualContainer = document.getElementById('visual-q-container');
+      const logicContainer = document.getElementById('logic-q-container');
+
+      if (q.is_visual) {
+        visualContainer.style.display = 'block';
+        logicContainer.style.display = 'none';
+        
+        document.getElementById('quiz-matrix-prompt').innerText = q.q || I18N[currentLang].previewPrompt;
+        const grid = document.getElementById('quiz-matrix-grid');
+        const optsRow = document.getElementById('quiz-matrix-opts');
+        grid.innerHTML = '';
+        optsRow.innerHTML = '';
+
+        q.matrix.forEach(cellSvg => {
+          const cell = document.createElement('div');
+          if (cellSvg === '?') {
+            cell.className = 'matrix-cell matrix-cell-target';
+            cell.innerText = '?';
+          } else {
+            cell.className = 'matrix-cell';
+            cell.innerHTML = cellSvg;
+          }
+          grid.appendChild(cell);
+        });
+
+        q.opts.forEach((optSvg, optIdx) => {
+          const btn = document.createElement('button');
+          btn.className = 'matrix-opt-btn';
+          btn.innerHTML = optSvg;
+          btn.onclick = () => selectOption(optIdx, btn);
+          optsRow.appendChild(btn);
+        });
+
+      } else {
+        visualContainer.style.display = 'none';
+        logicContainer.style.display = 'block';
+
+        document.getElementById('logic-q-text').innerText = q.q;
+        const list = document.getElementById('logic-opts-list');
+        list.innerHTML = '';
+
+        const letters = ['A', 'B', 'C', 'D'];
+        q.opts.forEach((optText, optIdx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-list-btn';
+          btn.innerHTML = `<span class="opt-letter">${letters[optIdx]}</span><span>${optText}</span>`;
+          btn.onclick = () => selectOption(optIdx, btn);
+          list.appendChild(btn);
+        });
+      }
     }
 
-    function selectAnswer(optIdx, btnEl) {
-      btnEl.classList.add('chosen');
+    function selectOption(optIdx, btnEl) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      const questions = QUESTIONS_DATA[currentTest][currentLang];
+      const q = questions[currentIdx];
       
-      const q = currentQuestions[currentIdx];
-      if (optIdx === q.ans) {
-        correctCount++;
+      const isCorrect = (optIdx === q.ans);
+      if (isCorrect) correctCount++;
+      userAnswers.push({ qId: q.id, optIdx, isCorrect });
+
+      currentIdx++;
+      setTimeout(() => {
+        renderQuestion();
+      }, 160);
+    }
+
+    function finishTest() {
+      if (currentTest === 'eq' || currentTest === 'pq') {
+        showBonusResults();
+      } else {
+        showSuspenseScanner();
       }
+    }
+
+    function showSuspenseScanner() {
+      showView('view-suspense');
+      const bar = document.getElementById('suspense-bar');
+      bar.style.width = '30%';
+      setTimeout(() => bar.style.width = '65%', 1000);
+      setTimeout(() => bar.style.width = '100%', 2200);
 
       setTimeout(() => {
-        currentIdx++;
-        renderQuestion();
-      }, 200);
+        showPaywallView();
+      }, 3200);
     }
 
-    function skipQuestion() {
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-      currentIdx++;
-      renderQuestion();
+    function showPaywallView() {
+      showView('view-paywall');
+      const total = 20;
+      const score = correctCount;
+      const estimatedIq = 95 + Math.round((score / total) * 45);
+
+      if (isBattleMode) {
+        document.getElementById('battle-result-banner').style.display = 'block';
+        document.getElementById('solo-result-banner').style.display = 'none';
+        document.getElementById('btn-card-pay').innerText = I18N[currentLang].battleCardBtn;
+      } else {
+        document.getElementById('battle-result-banner').style.display = 'none';
+        document.getElementById('solo-result-banner').style.display = 'block';
+        document.getElementById('btn-card-pay').innerText = I18N[currentLang].cardBtn;
+      }
+
+      document.getElementById('teaser-level').innerText = `IQ ~${estimatedIq} (Top ${Math.max(5, 30 - score * 1.2).toFixed(0)}%)`;
+      document.getElementById('teaser-score').innerHTML = currentLang === 'ru' 
+        ? `Из 20 вопросов верно: <strong>${score} / 20</strong>`
+        : `20 ta savoldan to'g'ri topildi: <strong>${score} / 20</strong>`;
     }
 
-    function finishQuiz() {
-      clearInterval(timerInterval);
-      switchView('view-suspense');
-      const t = I18N[currentLang];
-      const steps = t.suspenseSteps;
-      let stepIdx = 0;
-      const stepInt = setInterval(() => {
-        stepIdx++;
-        if (stepIdx < steps.length) {
-          document.getElementById('suspense-text').innerText = steps[stepIdx];
-        } else {
-          clearInterval(stepInt);
-          if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    function showBonusResults() {
+      showView('view-bonus-result');
+      const questions = QUESTIONS_DATA[currentTest][currentLang];
+      const pct = Math.round((correctCount / questions.length) * 100);
+      document.getElementById('bonus-res-score').innerText = pct + '%';
 
-          if (currentTest === 'iq') {
-            switchView('view-paywall');
-            try {
-              tg?.sendData(JSON.stringify({ event: 'quiz_finished', score: correctCount, total: currentQuestions.length }));
-            } catch (e) {}
-          } else {
-            // EQ or PQ is 100% FREE! Show Instant Cognitive Bonus Report
-            showBonusResult();
-          }
-        }
-      }, 600);
-    }
-
-    function showBonusResult() {
-      switchView('view-bonus-result');
-      const isRu = currentLang === 'ru';
       if (currentTest === 'eq') {
-        document.getElementById('bonus-icon').innerText = '🎭';
-        const eqScore = 95 + Math.round(correctCount * 3.5);
-        document.getElementById('bonus-score-text').innerText = `EQ: ${eqScore} / 135`;
-        document.getElementById('bonus-desc').innerHTML = isRu
-          ? `У вас <b>высокий уровень эмоциональной зрелости</b>! Вы отлично управляете своими эмоциями в стрессовых ситуациях и глубоко чувствуете собеседника.`
-          : `Sizda <b>yuqori hissiy yetuklik va empatiya</b> mavjud! Stressli vaziyatlarda his-tuyg‘ularni aql bilan boshqara olasiz va odamlarni chuqur tushunasiz.`;
+        document.getElementById('bonus-res-icon').innerText = '🎭';
+        document.getElementById('bonus-res-title').innerText = currentLang === 'ru' ? 'Результат EQ Теста' : 'EQ Test Natijangiz';
+        document.getElementById('bonus-res-status').innerText = pct >= 70 ? (currentLang === 'ru' ? 'Высокая эмпатия' : 'Yuqori Empatiya') : (currentLang === 'ru' ? 'Базовый уровень' : 'Rivojlanayotgan daraja');
+        document.getElementById('bonus-res-desc').innerText = currentLang === 'ru' 
+          ? 'Вы отлично распознаете эмоции собеседников и умеете сохранять баланс в стрессовых ситуациях.'
+          : 'Siz boshqalar his-tuyg‘ularini chuqur his qila olasiz va kutilmagan vaziyatlarda xotirjamlikni saqlaysiz.';
       } else {
-        document.getElementById('bonus-icon').innerText = '⏳';
-        const pqPct = 60 + Math.round(correctCount * 4);
-        document.getElementById('bonus-score-text').innerText = `PQ: ${pqPct}% (${isRu ? 'Дисциплина' : 'Intizom'})`;
-        document.getElementById('bonus-desc').innerHTML = isRu
-          ? `Уровень вашей самодисциплины: <b>${pqPct}%</b>. Вы умеете ставить цели и фокусироваться на главном, минимизируя прокрастинацию!`
-          : `Sizning iroda kuchi va intizom ko‘rsatkichingiz: <b>${pqPct}%</b>. Siz vaqtingizni qadrlaysiz va maqsad sari barqaror harakat qilasiz!`;
+        document.getElementById('bonus-res-icon').innerText = '⏳';
+        document.getElementById('bonus-res-title').innerText = currentLang === 'ru' ? 'Результат PQ Теста' : 'PQ Test Natijangiz';
+        document.getElementById('bonus-res-status').innerText = pct >= 70 ? (currentLang === 'ru' ? 'Железная дисциплина' : 'Kuchli Intizom') : (currentLang === 'ru' ? 'Умеренный фокус' : 'O‘rtacha diqqat');
+        document.getElementById('bonus-res-desc').innerText = currentLang === 'ru'
+          ? 'У вас высокий уровень самоконтроля и грамотный тайм-менеджмент. Прокрастинация редко мешает вашим целям.'
+          : 'Siz maqsadlarga intizom bilan yondashasiz. Prokrastinatsiya va chalg‘ishlar ustidan nazorat yuqori.';
       }
     }
 
-    function shareBonusResult() {
-      const userId = tg?.initDataUnsafe?.user?.id;
-      const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
-      const isRu = currentLang === 'ru';
-      const text = encodeURIComponent(isRu
-        ? `🧠 Я успешно прошел когнитивный тест в IQzone! Проверь свой уровень IQ и эмоционального интеллекта! 👉 ${refLink}`
-        : `🧠 Men IQzone kognitiv testidan o'tdim! Qani, o'z intellektingizni sinab ko'ring! 👉 ${refLink}`);
-      const url = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${text}`;
-      if (tg?.openTelegramLink) tg.openTelegramLink(url);
-      else window.open(url, '_blank');
-    }
-
-    function openModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) {
-        modal.classList.add('active');
-        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-      }
-    }
-
-    function closeModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.classList.remove('active');
-    }
-
-    function handleModalBgClick(e, id) {
-      if (e.target.id === id) closeModal(id);
-    }
-
-    function payWithCard() { openModal('modal-card-pay'); }
-    function payWithStars() { openModal('modal-stars-pay'); }
-    function inviteFriends() {
-      const userId = tg?.initDataUnsafe?.user?.id;
-      const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
-      const linkElem = document.getElementById('invite-link-text');
-      if (linkElem) linkElem.innerText = refLink;
-      openModal('modal-invite');
-    }
-
-    function copyCardNumber() {
-      const cardNum = "6262570109007361";
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(cardNum).then(() => showCardCopied()).catch(() => fallbackCopy(cardNum));
+    function payViaStars() {
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink('https://t.me/Iqzonebot?start=pay_stars');
       } else {
-        fallbackCopy(cardNum);
+        window.open('https://t.me/Iqzonebot?start=pay_stars', '_blank');
       }
     }
 
-    function fallbackCopy(text) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand('copy');
-        showCardCopied();
-      } catch (err) {
-        prompt('Karta raqamini nusxalang:', text);
-      }
-      document.body.removeChild(ta);
-    }
-
-    function showCardCopied() {
-      const btn = document.getElementById('copy-btn');
-      if (btn) {
-        btn.innerText = currentLang === 'ru' ? '✅ Скопировано!' : '✅ Nusxalandi!';
-        btn.style.background = '#10b981';
-        btn.style.borderColor = '#34d399';
-        btn.style.color = '#fff';
-        setTimeout(() => {
-          btn.innerText = currentLang === 'ru' ? '📋 Скопировать' : '📋 Nusxalash';
-          btn.style.background = '';
-          btn.style.borderColor = '';
-          btn.style.color = '';
-        }, 2500);
-      }
-      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-    }
-
-    function goToBotForReceipt() {
-      const url = 'https://t.me/Iqzonebot';
-      if (tg?.openTelegramLink) tg.openTelegramLink(url);
-      else window.open(url, '_blank');
-    }
-
-    function goToBotStars() {
-      const url = 'https://t.me/Iqzonebot?start=pay_stars';
-      if (tg?.openTelegramLink) tg.openTelegramLink(url);
-      else window.open(url, '_blank');
-    }
-
-    function shareToTelegram() {
-      const userId = tg?.initDataUnsafe?.user?.id;
-      const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
-      const isRu = currentLang === 'ru';
-      const text = encodeURIComponent(isRu
-        ? `🧠 Я прошел официальный тест на IQ в IQzone! Проверь себя, сколько баллов наберешь ты? 👉 ${refLink}`
-        : `🧠 Men IQzone rasmiy testini topshirdim. Qani, o'z intellekt darajangizni sinab ko'ring! 👉 ${refLink}`);
-      const url = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${text}`;
-      if (tg?.openTelegramLink) tg.openTelegramLink(url);
-      else window.open(url, '_blank');
-    }
-
-    function copyInviteLink() {
-      const userId = tg?.initDataUnsafe?.user?.id;
-      const link = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(link).then(() => {
-          const btn = document.getElementById('copy-ref-btn');
-          if (btn) {
-            btn.innerText = currentLang === 'ru' ? '✅ Скопировано!' : '✅ Havola nusxalandi!';
-            setTimeout(() => { btn.innerText = currentLang === 'ru' ? '📋 Скопировать' : '📋 Havolani Nusxalash'; }, 2500);
-          }
-        });
+    function payViaCard() {
+      if (tg?.openTelegramLink) {
+        tg.openTelegramLink('https://t.me/Iqzonebot?start=pay_card');
       } else {
-        prompt('Taklif havolasi:', link);
+        window.open('https://t.me/Iqzonebot?start=pay_card', '_blank');
       }
     }
 
-    // Boot: Apply initial language and selected test
-    applyTranslations();
-    if (currentTest === 'eq') selectTab(2);
-    else if (currentTest === 'pq') selectTab(3);
-    else selectTab(1);
+    // Parse URL Parameters on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const urlLang = params.get('lang');
+      const urlTest = params.get('test');
+      const urlCode = params.get('code');
+
+      if (urlLang === 'ru') {
+        setLanguage('ru');
+      } else {
+        setLanguage('uz');
+      }
+
+      initLandingPreview();
+
+      if (urlTest === 'battle') {
+        if (urlCode) {
+          currentBattleCode = urlCode;
+          document.getElementById('battle-room-code').innerText = urlCode;
+          showView('view-battle');
+          document.getElementById('battle-step-menu').style.display = 'none';
+          document.getElementById('battle-step-join').style.display = 'none';
+          document.getElementById('battle-step-created').style.display = 'block';
+        } else {
+          showBattleView();
+        }
+      } else if (urlTest === 'eq') {
+        startTest('eq');
+      } else if (urlTest === 'pq') {
+        startTest('pq');
+      }
+    });
   </script>
 </body>
 </html>
