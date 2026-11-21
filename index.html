@@ -2,69 +2,69 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>IQzone — Rasmiy IQ Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>IQzone — Rasmiy Kognitiv Platforma</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
-      --bg: #070a13;
-      --card-bg: rgba(20, 27, 45, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
+      --bg: #090d16;
+      --card-bg: rgba(17, 24, 39, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
       --gold: #f59e0b;
-      --gold-glow: rgba(245, 158, 11, 0.3);
-      --blue: #3b82f6;
-      --cyan: #06b6d4;
-      --green: #10b981;
+      --gold-light: #fbbf24;
       --text: #f8fafc;
       --text-muted: #94a3b8;
+      --success: #10b981;
+      --border: rgba(255, 255, 255, 0.08);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.12) 0%, transparent 40%);
       color: var(--text);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px;
       user-select: none;
     }
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding: 16px;
-      position: relative;
-    }
-    .view { display: none; flex-direction: column; flex: 1; }
-    .view.active { display: flex; animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Top Live Bar */
-    .live-bar {
-      display: inline-flex;
+    .container { width: 100%; max-width: 480px; margin: 0 auto; }
+    .view { display: none; width: 100%; }
+    .view.active { display: block; animation: fadeIn 0.3s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Lang Toggle */
+    .lang-bar {
+      display: flex;
+      justify-content: flex-end;
       align-items: center;
       gap: 6px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      padding: 6px 12px;
+      margin-bottom: 12px;
+    }
+    .lang-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #34d399;
-      margin: 0 auto 16px auto;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background: #10b981;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #10b981;
-      animation: pulse 1.5s infinite;
+    .lang-pill.active {
+      background: #3b82f6;
+      border-color: #60a5fa;
+      color: #fff;
     }
-    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.8; } }
 
     /* Cards */
     .glass-card {
@@ -77,14 +77,13 @@
       margin-bottom: 14px;
     }
 
-    /* Headings */
     h1 { font-size: 26px; font-weight: 800; text-align: center; letter-spacing: -0.5px; margin-bottom: 6px; }
     .gold-gradient {
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .subtitle { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+    .subtitle { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.4; }
 
     /* Test Selector Tabs */
     .tab-item {
@@ -100,8 +99,8 @@
       cursor: pointer;
     }
     .tab-item.selected {
-      background: rgba(59, 130, 246, 0.12);
-      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.6);
     }
     .tab-left { display: flex; align-items: center; gap: 12px; }
     .tab-icon { font-size: 22px; }
@@ -118,37 +117,38 @@
 
     /* CTA Buttons */
     .btn-primary {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: #000;
-      font-size: 16px;
-      font-weight: 800;
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: none;
       width: 100%;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 8px 24px var(--gold-glow);
-      transition: transform 0.1s ease;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+      transition: all 0.2s ease;
     }
-    .btn-primary:active { transform: scale(0.97); }
+    .btn-primary:active { transform: scale(0.98); opacity: 0.95; }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
       font-size: 14px;
       font-weight: 600;
-      padding: 13px 18px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      width: 100%;
+      border-radius: 12px;
+      padding: 12px;
       cursor: pointer;
-      text-align: center;
       margin-top: 10px;
+      transition: all 0.2s ease;
     }
+    .btn-secondary:active { background: rgba(255, 255, 255, 0.1); }
 
     /* Trust Grid */
     .trust-grid {
@@ -158,101 +158,94 @@
       margin-top: 16px;
     }
     .trust-item {
-      text-align: center;
       background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 10px 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 12px;
+      padding: 10px 6px;
+      text-align: center;
     }
-    .trust-val { font-size: 13px; font-weight: 700; color: #e2e8f0; }
+    .trust-val { font-size: 13px; font-weight: 800; color: #fff; }
     .trust-lbl { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Quiz View */
+    /* Quiz Engine */
     .quiz-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
+    }
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #fbbf24;
+      font-size: 12px;
+      font-weight: 800;
     }
     .progress-bar-bg {
-      height: 8px;
+      width: 100%;
+      height: 6px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 999px;
       overflow: hidden;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .progress-bar-fill {
       height: 100%;
-      width: 5%;
-      background: linear-gradient(90deg, #3b82f6, #f59e0b);
-      border-radius: 999px;
+      width: 0%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
       transition: width 0.3s ease;
     }
-    .timer-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 4px 10px;
-      border-radius: 999px;
-      color: #f87171;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .question-card {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
+
+    .question-card { margin-bottom: 16px; }
     .q-cat {
       display: inline-block;
       font-size: 11px;
       font-weight: 700;
       color: #60a5fa;
-      background: rgba(59, 130, 246, 0.15);
-      padding: 4px 8px;
+      background: rgba(59, 130, 246, 0.12);
+      padding: 3px 8px;
       border-radius: 6px;
       margin-bottom: 10px;
-      align-self: flex-start;
     }
     .q-text {
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 600;
       line-height: 1.5;
       color: #fff;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
+      white-space: pre-line;
     }
+
+    /* Options */
     .opt-btn {
       width: 100%;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 14px 16px;
-      margin-bottom: 10px;
-      color: #f8fafc;
+      margin-bottom: 8px;
+      color: #e2e8f0;
       font-size: 14px;
       font-weight: 600;
       text-align: left;
-      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 12px;
+      cursor: pointer;
       transition: all 0.15s ease;
     }
-    .opt-btn:active, .opt-btn.chosen {
-      background: rgba(245, 158, 11, 0.18);
-      border-color: #f59e0b;
-      color: #fbbf24;
-      transform: scale(0.98);
-    }
+    .opt-btn:active { transform: scale(0.99); background: rgba(59, 130, 246, 0.15); border-color: #3b82f6; }
+    .opt-btn.chosen { background: #2563eb !important; border-color: #60a5fa !important; color: #fff !important; }
     .opt-letter {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.08);
       display: flex;
@@ -260,227 +253,167 @@
       justify-content: center;
       font-size: 12px;
       font-weight: 800;
+      color: #94a3b8;
+      flex-shrink: 0;
     }
-    .opt-btn.chosen .opt-letter {
-      background: #f59e0b;
-      color: #000;
-    }
+    .chosen .opt-letter { background: #fff; color: #1e40af; }
 
-    /* Suspense View */
+    /* Suspense Screen */
     .spinner-ring {
-      width: 72px;
-      height: 72px;
-      border: 4px solid rgba(245, 158, 11, 0.15);
-      border-top-color: #f59e0b;
+      width: 56px;
+      height: 56px;
+      border: 4px solid rgba(59, 130, 246, 0.2);
+      border-top-color: #3b82f6;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 40px auto 20px auto;
     }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    .status-step {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 10px;
-      text-align: center;
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .status-step { font-size: 13px; color: #94a3b8; margin-top: 10px; }
 
     /* Paywall View */
     .lock-banner {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.05));
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 20px;
-      padding: 20px;
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.15) 0%, rgba(17, 24, 39, 0.5) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 18px;
+      padding: 24px 16px;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-    .lock-icon { font-size: 42px; margin-bottom: 6px; }
+    .lock-icon { font-size: 40px; margin-bottom: 10px; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     .locked-score-badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-size: 24px;
+      gap: 6px;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px dashed rgba(239, 68, 68, 0.5);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 18px;
       font-weight: 900;
-      color: #0b0f19;
+      color: #f87171;
+      margin: 12px 0 6px 0;
       letter-spacing: 2px;
-      margin: 12px 0;
-      padding: 10px 24px;
-      background: linear-gradient(135deg, #f59e0b, #fbbf24);
-      border-radius: 14px;
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.45);
-      border: 2px solid #fef08a;
-      user-select: none;
-      animation: pulse-badge 2s infinite ease-in-out;
-    }
-    @keyframes pulse-badge {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
-      50% { transform: scale(1.03); box-shadow: 0 0 32px rgba(251, 191, 36, 0.7); }
     }
     .price-box {
       display: flex;
       align-items: baseline;
       justify-content: center;
       gap: 10px;
-      margin: 12px 0;
+      margin: 14px 0 10px 0;
     }
-    .old-price { font-size: 16px; color: #64748b; text-decoration: line-through; }
+    .old-price { font-size: 14px; color: #94a3b8; text-decoration: line-through; }
     .new-price { font-size: 26px; font-weight: 900; color: #10b981; }
-    .pay-btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .pay-btn-group { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
 
-    /* MODAL OVERLAY & BOTTOM SHEET */
+    /* Free Bonus Result View (EQ / PQ) */
+    .bonus-banner {
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.15) 0%, rgba(17, 24, 39, 0.5) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 18px;
+      padding: 24px 16px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .bonus-score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      padding: 8px 18px;
+      border-radius: 12px;
+      font-size: 22px;
+      font-weight: 900;
+      color: #34d399;
+      margin: 12px 0 6px 0;
+    }
+
+    /* Modals */
     .modal-overlay {
+      display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.78);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      z-index: 9999;
-      display: none;
+      z-index: 1000;
       align-items: flex-end;
       justify-content: center;
-      opacity: 0;
-      transition: opacity 0.2s ease;
     }
-    .modal-overlay.active {
-      display: flex;
-      opacity: 1;
-    }
+    .modal-overlay.active { display: flex; animation: slideUp 0.25s ease forwards; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
     .modal-sheet {
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 24px 24px 0 0;
       width: 100%;
       max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 18px 20px 28px 20px;
-      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
-      transform: translateY(100%);
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-      text-align: center;
-    }
-    .modal-overlay.active .modal-sheet {
-      transform: translateY(0);
-    }
-    @media (min-width: 600px) {
-      .modal-overlay {
-        align-items: center;
-      }
-      .modal-sheet {
-        border-radius: 24px;
-        transform: scale(0.95);
-      }
-      .modal-overlay.active .modal-sheet {
-        transform: scale(1);
-      }
+      background: #111827;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 18px 28px 18px;
     }
     .modal-handle {
-      width: 38px;
+      width: 40px;
       height: 4px;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 2px;
-      margin: 0 auto 12px auto;
+      margin: 0 auto 16px auto;
     }
     .modal-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .modal-close-btn {
       background: rgba(255, 255, 255, 0.08);
       border: none;
       color: #94a3b8;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      font-size: 16px;
       cursor: pointer;
+      font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s ease;
     }
-    .modal-close-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-      color: #fff;
-    }
-    .modal-price-tag {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    /* REALISTIC UZCARD/HUMO CARD */
     .bank-card {
-      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
-      border: 1px solid rgba(147, 197, 253, 0.3);
-      border-radius: 16px;
-      padding: 16px 18px;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(30, 27, 75, 0.6);
-      margin-bottom: 12px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      border-radius: 14px;
+      padding: 16px;
+      margin: 12px 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
-    .bank-card::after {
-      content: "";
-      position: absolute;
-      top: -30%;
-      right: -20%;
-      width: 140px;
-      height: 140px;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .bank-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .bank-card-chip {
-      font-size: 22px;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
+    .bank-card-top { display: flex; justify-content: space-between; align-items: center; }
+    .bank-card-chip { font-size: 24px; margin: 8px 0; }
     .bank-card-number {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 19px;
-      font-weight: 800;
+      font-family: monospace;
+      font-size: 18px;
       letter-spacing: 2px;
+      font-weight: 700;
       color: #fff;
-      margin-bottom: 10px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      margin: 6px 0 10px 0;
     }
-    .bank-card-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
+    .bank-card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
     .copy-card-btn {
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #fff;
       font-size: 12px;
       font-weight: 700;
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-    .copy-card-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* QUICK APP BUTTONS */
     .app-btn-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .app-btn {
       display: flex;
@@ -488,55 +421,34 @@
       justify-content: center;
       gap: 8px;
       padding: 12px;
-      border-radius: 12px;
-      font-size: 13px;
+      border-radius: 10px;
       font-weight: 700;
+      font-size: 14px;
       text-decoration: none;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
-    .app-btn:hover {
-      opacity: 0.95;
-    }
-    .app-btn:active {
-      transform: scale(0.97);
-    }
-    .click-btn {
-      background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #fff;
-      border: 1px solid #38bdf8;
     }
-    .payme-btn {
-      background: linear-gradient(135deg, #0d9488, #0f766e);
-      color: #fff;
-      border: 1px solid #2dd4bf;
-    }
-
-    /* GUIDE STEPS */
+    .click-btn { background: #0099ff; }
+    .payme-btn { background: #00cccc; }
     .pay-guide {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 12px 14px;
-      text-align: left;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 12px;
+      color: #94a3b8;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
-    .guide-step {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: #cbd5e1;
-      line-height: 1.4;
-    }
+    .guide-step { display: flex; align-items: center; gap: 8px; }
     .step-num {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
-      background: rgba(56, 189, 248, 0.2);
-      color: #38bdf8;
-      font-size: 11px;
+      background: #3b82f6;
+      color: #fff;
+      font-size: 10px;
       font-weight: 800;
       display: flex;
       align-items: center;
@@ -548,69 +460,73 @@
 <body>
   <div class="container">
 
+    <!-- Language Toggle Top Bar -->
+    <div class="lang-bar">
+      <button id="lang-btn-uz" class="lang-pill active" onclick="setAppLang('uz')">🇺🇿 O'zbekcha</button>
+      <button id="lang-btn-ru" class="lang-pill" onclick="setAppLang('ru')">🇷🇺 Русский</button>
+    </div>
+
     <!-- VIEW 1: LANDING & TRIO BUNDLE -->
     <div id="view-landing" class="view active">
-
-
       <h1><span class="gold-gradient">IQZONE</span> PRO</h1>
-      <p class="subtitle">IQzone Rasmiy Kognitiv Intellekt Platformasi</p>
+      <p id="lbl-subtitle" class="subtitle">IQzone Rasmiy Kognitiv Intellekt Platformasi</p>
 
       <div class="glass-card">
-        <div style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px;">
+        <div id="lbl-bundle-head" style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px;">
           Kognitiv Testlar To‘plami (Trio Bundle)
         </div>
 
-        <div class="tab-item selected" onclick="selectTab(1)">
+        <div id="tab-1" class="tab-item selected" onclick="selectTab(1)">
           <div class="tab-left">
             <div class="tab-icon">🧠</div>
             <div>
-              <div class="tab-title">Rasmiy IQ Test (21 savol)</div>
-              <div class="tab-desc">Mantiq, fazoviy va sonlar tahlili</div>
+              <div id="tab1-title" class="tab-title">Rasmiy IQ Test (21 savol)</div>
+              <div id="tab1-desc" class="tab-desc">Mantiq, fazoviy va sonlar tahlili</div>
             </div>
           </div>
-          <span class="tab-badge badge-active">ASOSIY</span>
+          <span id="tab1-badge" class="tab-badge badge-active">ASOSIY</span>
         </div>
 
-        <div class="tab-item" onclick="selectTab(2)">
+        <div id="tab-2" class="tab-item" onclick="selectTab(2)">
           <div class="tab-left">
             <div class="tab-icon">🎭</div>
             <div>
-              <div class="tab-title">EQ Test (Hissiy intellekt)</div>
-              <div class="tab-desc">Empatiya va muloqot qobiliyati</div>
+              <div id="tab2-title" class="tab-title">EQ Test (Hissiy intellekt)</div>
+              <div id="tab2-desc" class="tab-desc">Empatiya va muloqot qobiliyati (10 savol)</div>
             </div>
           </div>
-          <span class="tab-badge badge-free">BEPUL 🎁</span>
+          <span id="tab2-badge" class="tab-badge badge-free">BEPUL 🎁</span>
         </div>
 
-        <div class="tab-item" onclick="selectTab(3)">
+        <div id="tab-3" class="tab-item" onclick="selectTab(3)">
           <div class="tab-left">
             <div class="tab-icon">⏳</div>
             <div>
-              <div class="tab-title">PQ Test (Prokrastinatsiya)</div>
-              <div class="tab-desc">Erinchaklik va vaqt boshqaruvi</div>
+              <div id="tab3-title" class="tab-title">PQ Test (Prokrastinatsiya)</div>
+              <div id="tab3-desc" class="tab-desc">Erinchaklik va vaqt boshqaruvi (10 savol)</div>
             </div>
           </div>
-          <span class="tab-badge badge-free">BEPUL 🎁</span>
+          <span id="tab3-badge" class="tab-badge badge-free">BEPUL 🎁</span>
         </div>
       </div>
 
-      <button class="btn-primary" onclick="startQuiz()">
-        <span>Testni Boshlash</span>
+      <button id="btn-start-quiz" class="btn-primary" onclick="startQuiz()">
+        <span id="lbl-start-quiz">Testni Boshlash</span>
         <span>🚀</span>
       </button>
 
       <div class="trust-grid">
         <div class="trust-item">
-          <div class="trust-val">21 Savol</div>
-          <div class="trust-lbl">~5 Daqiqa</div>
+          <div id="trust-1-val" class="trust-val">21 Savol</div>
+          <div id="trust-1-lbl" class="trust-lbl">~5 Daqiqa</div>
         </div>
         <div class="trust-item">
-          <div class="trust-val">QR-Kodli</div>
-          <div class="trust-lbl">HD Sertifikat</div>
+          <div id="trust-2-val" class="trust-val">QR-Kodli</div>
+          <div id="trust-2-lbl" class="trust-lbl">HD Sertifikat</div>
         </div>
         <div class="trust-item">
-          <div class="trust-val">CHC / Raven</div>
-          <div class="trust-lbl">Metodologiya</div>
+          <div id="trust-3-val" class="trust-val">CHC / Raven</div>
+          <div id="trust-3-lbl" class="trust-lbl">Metodologiya</div>
         </div>
       </div>
     </div>
@@ -635,7 +551,7 @@
         <div id="options-container"></div>
       </div>
 
-      <button class="btn-secondary" onclick="skipQuestion()">
+      <button id="btn-skip-q" class="btn-secondary" onclick="skipQuestion()">
         ⏭️ O‘tkazib yuborish
       </button>
     </div>
@@ -643,45 +559,68 @@
     <!-- VIEW 3: SUSPENSE / ANALYZING -->
     <div id="view-suspense" class="view" style="justify-content: center; align-items: center; text-align: center;">
       <div class="spinner-ring"></div>
-      <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">Natijangiz Tahlil Qilinmoqda...</h2>
+      <h2 id="suspense-title" style="font-size: 20px; font-weight: 800; margin-bottom: 8px;">Natijangiz Tahlil Qilinmoqda...</h2>
       <p id="suspense-text" class="status-step">Raven matritsalari hisoblanmoqda...</p>
     </div>
 
-    <!-- VIEW 4: PAYWALL HOOK -->
+    <!-- VIEW 4: IQ PAYWALL HOOK -->
     <div id="view-paywall" class="view">
       <div class="lock-banner">
         <div class="lock-icon">🔒</div>
-        <h2 style="font-size: 20px; font-weight: 800; color: #fff;">NATIJANGIZ TAYYOR — LEKIN YOPIQ!</h2>
+        <h2 id="paywall-title" style="font-size: 20px; font-weight: 800; color: #fff;">NATIJANGIZ TAYYOR — LEKIN YOPIQ!</h2>
         <div class="locked-score-badge">
           <span>🔒</span>
           <span>??? BALL</span>
         </div>
-        <p style="font-size: 14px; color: #cbd5e1; margin-top: 6px; font-weight: 600;">
+        <p id="paywall-sub" style="font-size: 14px; color: #cbd5e1; margin-top: 6px; font-weight: 600;">
           Siz aholining yuqori <b>5 foiziga</b> kirdim deb o‘ylaysizmi? 🤔
         </p>
       </div>
 
       <div class="glass-card" style="text-align: center;">
-        <div style="font-size: 12px; font-weight: 600; color: #94a3b8;">IQZONE NING RASMIY SERTIFIKATI</div>
+        <div id="lbl-cert-headline" style="font-size: 12px; font-weight: 600; color: #94a3b8;">IQZONE NING RASMIY SERTIFIKATI</div>
         <div class="price-box">
           <span class="old-price">45 000 so‘m</span>
           <span class="new-price">9 900 so‘m</span>
         </div>
-        <p style="font-size: 12px; color: #94a3b8; line-height: 1.4;">
+        <p id="lbl-cert-desc" style="font-size: 12px; color: #94a3b8; line-height: 1.4;">
           Bor-yo‘g‘i 9,900 so‘m bilan o‘z intellekt darajangizni IQzone ning rasmiy sertifikati bilan tasdiqlang!
         </p>
 
         <div class="pay-btn-group">
-          <button class="btn-primary" onclick="payWithCard()">
+          <button id="btn-pay-card" class="btn-primary" onclick="payWithCard()">
             💳 Click / Payme / Karta (9 900 so‘m)
           </button>
-          <button class="btn-secondary" onclick="payWithStars()">
+          <button id="btn-pay-stars" class="btn-secondary" onclick="payWithStars()">
             ⭐ Telegram Stars (50 ⭐ — Avto)
           </button>
-          <button class="btn-secondary" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);" onclick="inviteFriends()">
+          <button id="btn-pay-free" class="btn-secondary" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);" onclick="inviteFriends()">
             🎁 5 ta do‘st taklif qilib BEPUL ochish
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- VIEW 5: FREE BONUS RESULT (EQ & PQ) -->
+    <div id="view-bonus-result" class="view">
+      <div class="bonus-banner">
+        <div style="font-size: 40px; margin-bottom: 8px;" id="bonus-icon">🎭</div>
+        <h2 id="bonus-title" style="font-size: 20px; font-weight: 800; color: #fff;">TEST MUVAFFAQIYATLI YAKUNLANDI!</h2>
+        <div class="bonus-score-badge">
+          <span id="bonus-score-text">124 / 140 BALL</span>
+        </div>
+        <p id="bonus-desc" style="font-size: 14px; color: #cbd5e1; margin-top: 8px; font-weight: 600; line-height: 1.5;">
+          Sizning hissiy intellektingiz va empatiya darajangiz yuqori!
+        </p>
+      </div>
+
+      <div class="glass-card" style="text-align: center;">
+        <button class="btn-primary" onclick="switchView('view-landing')">
+          <span>🏠 Bosh Menyuga Qaytish</span>
+        </button>
+        <button class="btn-secondary" style="margin-top: 10px;" onclick="shareBonusResult()">
+          <span>📲 Natijani Do‘stlarga Ulashish</span>
+        </button>
       </div>
     </div>
 
@@ -694,17 +633,10 @@
       
       <div class="modal-header">
         <div style="font-size: 20px;">💳</div>
-        <h3 style="font-size: 18px; font-weight: 800; color: #fff;">Karta Orqali To‘lov</h3>
+        <h3 id="lbl-modal-card-title" style="font-size: 18px; font-weight: 800; color: #fff;">Karta Orqali To‘lov</h3>
         <button class="modal-close-btn" onclick="closeModal('modal-card-pay')">✕</button>
       </div>
 
-      <div class="modal-price-tag">
-        <span style="font-size: 13px; color: #94a3b8; text-decoration: line-through;">45 000 so‘m</span>
-        <span style="font-size: 22px; font-weight: 900; color: #10b981;">9 900 so‘m</span>
-        <span style="font-size: 11px; background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 8px; border-radius: 6px; font-weight: 700;">-78% CHEGIRMA</span>
-      </div>
-
-      <!-- Karta Dizayni -->
       <div class="bank-card">
         <div class="bank-card-top">
           <span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #93c5fd;">UZCARD / HUMO</span>
@@ -723,23 +655,16 @@
         </div>
       </div>
 
-      <!-- Ilovalar tugmalari -->
-      <div style="margin: 12px 0 6px 0; font-size: 12px; font-weight: 600; color: #cbd5e1; text-align: left;">
-        Tezkor to‘lov ilovalari:
-      </div>
       <div class="app-btn-grid">
         <a href="https://my.click.uz/" target="_blank" class="app-btn click-btn">
-          <span>🟢</span>
-          <span>Click</span>
+          <span>🟢</span><span>Click</span>
         </a>
         <a href="https://payme.uz/" target="_blank" class="app-btn payme-btn">
-          <span>🔵</span>
-          <span>Payme</span>
+          <span>🔵</span><span>Payme</span>
         </a>
       </div>
 
-      <!-- Yo'riqnoma -->
-      <div class="pay-guide">
+      <div class="pay-guide" id="lbl-pay-guide">
         <div class="guide-step">
           <span class="step-num">1</span>
           <span>Kartaga <b>9 900 so‘m</b> o‘tkazing (Click, Payme yoki Uzum)</span>
@@ -754,13 +679,9 @@
         </div>
       </div>
 
-      <!-- Amal tugmasi -->
-      <button class="btn-primary" style="margin-top: 14px;" onclick="goToBotForReceipt()">
+      <button id="btn-send-receipt" class="btn-primary" style="margin-top: 14px;" onclick="goToBotForReceipt()">
         💬 Chekni Botga Yuborish 🚀
       </button>
-      <a href="https://t.me/adahamov_08" target="_blank" class="btn-secondary" style="margin-top: 8px; text-decoration: none; display: block;">
-        👨‍💻 Adminga Yozish (@adahamov_08)
-      </a>
     </div>
   </div>
 
@@ -770,22 +691,22 @@
       <div class="modal-handle"></div>
       <div class="modal-header">
         <div style="font-size: 20px;">⭐</div>
-        <h3 style="font-size: 18px; font-weight: 800; color: #fff;">Telegram Stars To‘lovi</h3>
+        <h3 id="lbl-stars-title" style="font-size: 18px; font-weight: 800; color: #fff;">Telegram Stars To‘lovi</h3>
         <button class="modal-close-btn" onclick="closeModal('modal-stars-pay')">✕</button>
       </div>
 
       <div style="text-align: center; padding: 14px 0;">
         <div style="font-size: 44px; margin-bottom: 6px;">⭐</div>
         <div style="font-size: 24px; font-weight: 900; color: #fbbf24;">50 Stars (Avto)</div>
-        <p style="font-size: 13px; color: #94a3b8; margin-top: 8px; line-height: 1.5;">
+        <p id="lbl-stars-desc" style="font-size: 13px; color: #94a3b8; margin-top: 8px; line-height: 1.5;">
           Telegram Stars orqali to‘lov qilganda natijangiz va rasmiy HD sertifikatingiz <b>avtomatik 1 soniyada</b> ochiladi!
         </p>
       </div>
 
-      <button class="btn-primary" onclick="goToBotStars()">
+      <button id="btn-stars-action" class="btn-primary" onclick="goToBotStars()">
         ⭐ Botda Stars orqali to‘lash 🚀
       </button>
-      <button class="btn-secondary" style="margin-top: 8px;" onclick="closeModal('modal-stars-pay')">
+      <button id="btn-stars-cancel" class="btn-secondary" style="margin-top: 8px;" onclick="closeModal('modal-stars-pay')">
         ✕ Bekor qilish
       </button>
     </div>
@@ -797,25 +718,25 @@
       <div class="modal-handle"></div>
       <div class="modal-header">
         <div style="font-size: 20px;">🎁</div>
-        <h3 style="font-size: 18px; font-weight: 800; color: #fff;">5 ta Do‘st — 100% Bepul</h3>
+        <h3 id="lbl-invite-modal-title" style="font-size: 18px; font-weight: 800; color: #fff;">5 ta Do‘st — 100% Bepul</h3>
         <button class="modal-close-btn" onclick="closeModal('modal-invite')">✕</button>
       </div>
 
       <div style="text-align: center; padding: 10px 0;">
         <div style="font-size: 38px; margin-bottom: 6px;">👥</div>
-        <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5;">
+        <p id="lbl-invite-modal-desc" style="font-size: 13px; color: #cbd5e1; line-height: 1.5;">
           5 ta do‘stingizga havola yuboring. Ular botga kirib test topshirishi bilan rasmiy sertifikatingiz <b>mutlaqo bepul</b> ochiladi!
         </p>
       </div>
 
       <div class="bank-card" style="background: rgba(255,255,255,0.04); padding: 12px; margin-bottom: 12px;">
-        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Sizning taklif havolangiz:</div>
+        <div id="lbl-your-ref-link" style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Sizning taklif havolangiz:</div>
         <div style="font-size: 13px; font-weight: 700; color: #38bdf8; word-break: break-all;" id="invite-link-text">
           https://t.me/Iqzonebot?start=iqtest
         </div>
       </div>
 
-      <button class="btn-primary" onclick="shareToTelegram()">
+      <button id="btn-share-tg" class="btn-primary" onclick="shareToTelegram()">
         📲 Telegram'da Do‘stlarga Ulashish
       </button>
       <button class="btn-secondary" id="copy-ref-btn" style="margin-top: 8px;" onclick="copyInviteLink()">
@@ -825,7 +746,6 @@
   </div>
 
   <script>
-    // Initialize Telegram WebApp
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
@@ -833,11 +753,200 @@
       tg.enableClosingConfirmation();
     }
 
-    const questions = [{"id": 1, "arch": 1, "q": "🔢 **1. Sonlar qonuniyati:**\n\n`3,  5,  9,  15,  23,  ?`\n\nKetma-ketlikdagi keyingi sonni toping:", "opts": ["29", "39", "31", "33"], "ans": 3}, {"id": 13, "arch": 2, "q": "📐 **2. Geometrik fazo:**\n\nQavariq **Kvadrat (To'rtburchak)**ning barcha burchaklarini o'zaro to'g'ri chiziqlar bilan tutashtirilsa, jami nechta **diagonal** hosil bo'ladi?", "opts": ["5", "2", "7", "8"], "ans": 1}, {"id": 25, "arch": 3, "q": "🧩 **3. Mantiqiy analogiya:**\n\n**Kitob** : **Muallif** = **Bino** : **?**\n\nMantiqiy bog'liqlikka ko'ra to'g'ri variantni tanlang:", "opts": ["Quruvchi", "Eshik", "G'isht", "Me'mor (Arxitektor)"], "ans": 3}, {"id": 37, "arch": 4, "q": "🎲 **4. Fazoviy idrok (Zar qoidasi):**\n\nStandart o'yin zarida qarama-qarshi tomonlar yig'indisi har doim **7** ga teng bo'ladi.\nAgar zarning yuqori yuzida **1** turgan bo'lsa, pastki yuzidagi raqam necha?", "opts": ["4", "3", "6"], "ans": 2}, {"id": 49, "arch": 5, "q": "⚖️ **5. Tarozi muvozanati:**\n\n• 1 ta Tarvuz = 2 ta Qovun vazniga teng.\n• 1 ta Qovun = 3 ta Olma vazniga teng.\n\nDemak, **1 ta Tarvuz** nechta Olma vazniga teng bo'ladi?", "opts": ["8 ta", "6 ta", "11 ta", "3 ta"], "ans": 1}, {"id": 61, "arch": 6, "q": "📅 **6. Taqvim mantiqi:**\n\n`Yanvar,  Mart,  May,  Iyul,  ?`\n\nUshbu ketma-ketlikdagi keyingi oy qaysi?", "opts": ["Noyabr", "Avgust", "Oktabr", "Sentabr"], "ans": 3}, {"id": 73, "arch": 7, "q": "🏝️ **7. Rost va yolg'on jumboqi:**\n\nBir orolda faqat rostgo'ylar va yolg'onchilar yashaydi. Bir kishi: 'Men yolg'onchiman' dedi.\n\nMantiqan to'g'ri xulosa qaysi?", "opts": ["U rostgo'y", "Bu mantiqiy paradoks (mumkin emas)", "U yolg'onchi", "U mehmon"], "ans": 1}, {"id": 85, "arch": 8, "q": "🧭 **8. Yo'nalish va kompas:**\n\nSiz **Shimol** tomonga qarab turibsiz. Keyin o'ng tomonga **90°** burildingiz.\nHozir qaysi tomonga qarab turibsiz?", "opts": ["Sharq", "Janub", "G'arb", "Shimol"], "ans": 0}, {"id": 97, "arch": 9, "q": "⏰ **9. Soat millari burchagi:**\n\nSoat roppa-rosa **01:00** bo'lganda, soat va daqiqa millari orasidagi eng kichik burchak necha gradus bo'ladi?", "opts": ["15°", "60°", "30°", "75°"], "ans": 2}, {"id": 109, "arch": 10, "q": "🧠 **10. Mantiqiy silogizm:**\n\n• Barcha metallar issiqlikni o'tkazadi. Mis — metall.\n\nUshbu shartlardan kelib chiqadigan **qat'iy to'g'ri xulosa** qaysi?", "opts": ["Hamma metall misdir", "Issiqlik faqat misda bo'ladi", "Mis issiqlikni o'tkazadi", "Mis metall emas"], "ans": 2}, {"id": 121, "arch": 11, "q": "🔤 **11. Harfli shifr zanjiri:**\n\n`A,  C,  E,  G,  ?`\n\nQonuniyat bo'yicha keyingi harfni toping:", "opts": ["I", "H", "K", "J"], "ans": 0}, {"id": 133, "arch": 12, "q": "🧊 **12. 3D Fazoviy bloklar:**\n\nBir qatorda bir-biriga yopishtirib terilgan **3 ta bir xil kub** mavjud.\nUshbu yangi jismning jami nechta tashqi (ochiq) yoqlari bor?", "opts": ["18", "20", "14", "12"], "ans": 2}, {"id": 145, "arch": 13, "q": "🏃 **13. Musobaqa va o'rinlar:**\n\nMarafon yugurishida 2-o'rindagi yuguruvchini quvib o'tdingiz. Hozir nechanchi o'rindasiz?", "opts": ["G'olibsiz", "3-o'rinda", "1-o'rinda", "2-o'rinda"], "ans": 3}, {"id": 157, "arch": 14, "q": "🔍 **14. Ortiqchasini toping:**\n\nQuyidagi to'rttalikdan qaysi biri qolgan 3 tasi bilan bir xil mantiqiy toifaga kirmaydi?", "opts": ["Tyulen", "Akula", "Delfin", "Kit"], "ans": 1}, {"id": 169, "arch": 15, "q": "🔢 **15. Murakkab qonuniyat:**\n\n`2,  6,  12,  20,  ?`\n\nKeyingi sonni aniqlang:", "opts": ["30", "24", "34", "38"], "ans": 0}, {"id": 181, "arch": 16, "q": "💧 **16. Hajm va idishlar mantiqi:**\n\nSizda faqat 3 litrlik va 5 litrlik ikkita idish bor. Roppa-rosa 4 litr suvni o'lchash mumkinmi?", "opts": ["Yo'q, mutlaqo iloji yo'q", "Ha, 5L idishni 3L ga to'kish orqali", "Faqat tarozi bo'lsa", "Faqat 3L likni to'ldirib"], "ans": 1}, {"id": 193, "arch": 17, "q": "🔢 **17. Arifmetik matritsa:**\n\n`[ 2 ]  [ 4 ]  ➔  [  ?  ]`\n\nAgar birinchi son 2 barobar oshirilib, ikkinchisi qo'shilsa, natija necha bo'ladi?", "opts": ["12", "15", "8", "5"], "ans": 2}, {"id": 205, "arch": 18, "q": "👥 **18. Qarindoshlik mantiqi:**\n\nSuratdagi odamga qarab: 'Bu odamning otasi mening otamning yolg'iz o'g'lidir' dedi (gapiruvchining akasi yo'q).\n\nMantiqiy xulosa qaysi?", "opts": ["Otasi", "O'zi", "O'g'li", "Akasi"], "ans": 2}, {"id": 217, "arch": 19, "q": "🔢 **19. Fibonachchi uslubidagi zanjir:**\n\n`1,  2,  3,  5,  8,  13,  ?`\n\nKeyingi sonni toping:", "opts": ["25", "30", "18", "21"], "ans": 3}, {"id": 229, "arch": 20, "q": "📊 **20. To'plamlar (Venn diagrammasi):**\n\nGuruhda jami **30 nafar** talaba bor. Ulardan **18 nafari** ingliz tilini, **15 nafari** rus tilini biladi. 3 nafari ikkala tilni ham bilmaydi.\nNechta talaba **ikkala tilni ham** biladi?", "opts": ["4", "8", "6", "11"], "ans": 2}, {"id": 241, "arch": 21, "q": "🚗 **21. Harakat va tezlik mantiqi:**\n\nIkki shahar orasidagi masofa **120 km**. Bir-biriga qarab ikki mashina 60 km/soat va 40 km/soat tezlikda bir vaqtda yo'lga chiqdi.\nUlar necha soatdan keyin uchrashadi?", "opts": ["3 soat", "2 soat", "1 soat", "1 soat"], "ans": 2}];
+    // Question Banks
+    const QUESTIONS_DATA = {
+      iq: {
+        uz: [{"id": 1, "arch": 1, "q": "🔢 **1. Sonlar qonuniyati:**\n\n`3,  5,  9,  15,  23,  ?`\n\nKetma-ketlikdagi keyingi sonni toping:", "opts": ["29", "39", "31", "33"], "ans": 3}, {"id": 13, "arch": 2, "q": "📐 **2. Geometrik fazo:**\n\nQavariq **Kvadrat (To'rtburchak)**ning barcha burchaklarini o'zaro to'g'ri chiziqlar bilan tutashtirilsa, jami nechta **diagonal** hosil bo'ladi?", "opts": ["5", "2", "7", "8"], "ans": 1}, {"id": 25, "arch": 3, "q": "🧩 **3. Mantiqiy analogiya:**\n\n**Kitob** : **Muallif** = **Bino** : **?**\n\nMantiqiy bog'liqlikka ko'ra to'g'ri variantni tanlang:", "opts": ["Quruvchi", "Eshik", "G'isht", "Me'mor (Arxitektor)"], "ans": 3}, {"id": 37, "arch": 4, "q": "🎲 **4. Fazoviy idrok (Zar qoidasi):**\n\nStandart o'yin zarida qarama-qarshi tomonlar yig'indisi har doim **7** ga teng bo'ladi.\nAgar zarning yuqori yuzida **1** turgan bo'lsa, pastki yuzidagi raqam necha?", "opts": ["4", "3", "6"], "ans": 2}, {"id": 49, "arch": 5, "q": "⚖️ **5. Tarozi muvozanati:**\n\n• 1 ta Tarvuz = 2 ta Qovun vazniga teng.\n• 1 ta Qovun = 3 ta Olma vazniga teng.\n\nDemak, **1 ta Tarvuz** nechta Olma vazniga teng bo'ladi?", "opts": ["8 ta", "6 ta", "11 ta", "3 ta"], "ans": 1}, {"id": 61, "arch": 6, "q": "📅 **6. Taqvim mantiqi:**\n\n`Yanvar,  Mart,  May,  Iyul,  ?`\n\nUshbu ketma-ketlikdagi keyingi oy qaysi?", "opts": ["Noyabr", "Avgust", "Oktabr", "Sentabr"], "ans": 3}, {"id": 73, "arch": 7, "q": "🏝️ **7. Rost va yolg'on jumboqi:**\n\nBir orolda faqat rostgo'ylar va yolg'onchilar yashaydi. Bir kishi: 'Men yolg'onchiman' dedi.\n\nMantiqan to'g'ri xulosa qaysi?", "opts": ["U rostgo'y", "Bu mantiqiy paradoks (mumkin emas)", "U yolg'onchi", "U mehmon"], "ans": 1}, {"id": 85, "arch": 8, "q": "🧭 **8. Yo'nalish va kompas:**\n\nSiz **Shimol** tomonga qarab turibsiz. Keyin o'ng tomonga **90°** burildingiz.\nHozir qaysi tomonga qarab turibsiz?", "opts": ["Sharq", "Janub", "G'arb", "Shimol"], "ans": 0}, {"id": 97, "arch": 9, "q": "⏰ **9. Soat millari burchagi:**\n\nSoat roppa-rosa **01:00** bo'lganda, soat va daqiqa millari orasidagi eng kichik burchak necha gradus bo'ladi?", "opts": ["15°", "60°", "30°", "75°"], "ans": 2}, {"id": 109, "arch": 10, "q": "🧠 **10. Mantiqiy silogizm:**\n\n• Barcha metallar issiqlikni o'tkazadi. Mis — metall.\n\nUshbu shartlardan kelib chiqadigan **qat'iy to'g'ri xulosa** qaysi?", "opts": ["Hamma metall misdir", "Issiqlik faqat misda bo'ladi", "Mis issiqlikni o'tkazadi", "Mis metall emas"], "ans": 2}, {"id": 121, "arch": 11, "q": "🔤 **11. Harfli shifr zanjiri:**\n\n`A,  C,  E,  G,  ?`\n\nQonuniyat bo'yicha keyingi harfni toping:", "opts": ["I", "H", "K", "J"], "ans": 0}, {"id": 133, "arch": 12, "q": "🧊 **12. 3D Fazoviy bloklar:**\n\nBir qatorda bir-biriga yopishtirib terilgan **3 ta bir xil kub** mavjud.\nUshbu yangi jismning jami nechta tashqi (ochiq) yoqlari bor?", "opts": ["18", "20", "14", "12"], "ans": 2}, {"id": 145, "arch": 13, "q": "🏃 **13. Musobaqa va o'rinlar:**\n\nMarafon yugurishida 2-o'rindagi yuguruvchini quvib o'tdingiz. Hozir nechanchi o'rindasiz?", "opts": ["G'olibsiz", "3-o'rinda", "1-o'rinda", "2-o'rinda"], "ans": 3}, {"id": 157, "arch": 14, "q": "🔍 **14. Ortiqchasini toping:**\n\nQuyidagi to'rttalikdan qaysi biri qolgan 3 tasi bilan bir xil mantiqiy toifaga kirmaydi?", "opts": ["Tyulen", "Akula", "Delfin", "Kit"], "ans": 1}, {"id": 169, "arch": 15, "q": "🔢 **15. Murakkab qonuniyat:**\n\n`2,  6,  12,  20,  ?`\n\nKeyingi sonni aniqlang:", "opts": ["30", "24", "34", "38"], "ans": 0}, {"id": 181, "arch": 16, "q": "💧 **16. Hajm va idishlar mantiqi:**\n\nSizda faqat 3 litrlik va 5 litrlik ikkita idish bor. Roppa-rosa 4 litr suvni o'lchash mumkinmi?", "opts": ["Yo'q, mutlaqo iloji yo'q", "Ha, 5L idishni 3L ga to'kish orqali", "Faqat tarozi bo'lsa", "Faqat 3L likni to'ldirib"], "ans": 1}, {"id": 193, "arch": 17, "q": "🔢 **17. Arifmetik matritsa:**\n\n`[ 2 ]  [ 4 ]  ➔  [  ?  ]`\n\nAgar birinchi son 2 barobar oshirilib, ikkinchisi qo'shilsa, natija necha bo'ladi?", "opts": ["12", "15", "8", "5"], "ans": 2}, {"id": 205, "arch": 18, "q": "👥 **18. Qarindoshlik mantiqi:**\n\nSuratdagi odamga qarab: 'Bu odamning otasi mening otamning yolg'iz o'g'lidir' dedi (gapiruvchining akasi yo'q).\n\nMantiqiy xulosa qaysi?", "opts": ["Otasi", "O'zi", "O'g'li", "Akasi"], "ans": 2}, {"id": 217, "arch": 19, "q": "🔢 **19. Fibonachchi uslubidagi zanjir:**\n\n`1,  2,  3,  5,  8,  13,  ?`\n\nKeyingi sonni toping:", "opts": ["25", "30", "18", "21"], "ans": 3}, {"id": 229, "arch": 20, "q": "📊 **20. To'plamlar (Venn diagrammasi):**\n\nGuruhda jami **30 nafar** talaba bor. Ulardan **18 nafari** ingliz tilini, **15 nafari** rus tilini biladi. 3 nafari ikkala tilni ham bilmaydi.\nNechta talaba **ikkala tilni ham** biladi?", "opts": ["4", "8", "6", "11"], "ans": 2}, {"id": 241, "arch": 21, "q": "🚗 **21. Harakat va tezlik mantiqi:**\n\nIkki shahar orasidagi masofa **120 km**. Bir-biriga qarab ikki mashina 60 km/soat va 40 km/soat tezlikda bir vaqtda yo'lga chiqdi.\nUlar necha soatdan keyin uchrashadi?", "opts": ["3 soat", "2 soat", "1.2 soat", "1 soat"], "ans": 2}],
+        ru: [{"id": 1, "q": "🔢 **1. Числовая закономерность:**\n\n`3,  5,  9,  15,  23,  ?`\n\nКакое следующее число в последовательности?", "opts": ["29", "39", "31", "33"], "ans": 3}, {"id": 2, "q": "📐 **2. Геометрия:**\n\nСколько диагоналей можно провести в выпуклом четырехугольнике (квадрате)?", "opts": ["5", "2", "7", "8"], "ans": 1}, {"id": 3, "q": "🧩 **3. Логическая аналогия:**\n\n**Книга** : **Автор** = **Здание** : **?**\n\nВыберите верное по логике соответствие:", "opts": ["Строитель", "Дверь", "Кирпич", "Архитектор"], "ans": 3}, {"id": 4, "q": "🎲 **4. Пространственное мышление:**\n\nВ стандартной игральной кости сумма противоположных граней всегда равна **7**.\nЕсли сверху выпало **1**, какое число снизу?", "opts": ["4", "3", "6"], "ans": 2}, {"id": 5, "q": "⚖️ **5. Баланс весов:**\n\n• 1 Арбуз = 2 Дыни.\n• 1 Дыня = 3 Яблока.\n\nСкольким яблокам равен вес **1 Арбуза**?", "opts": ["8 шт.", "6 шт.", "11 шт.", "3 шт."], "ans": 1}, {"id": 6, "q": "📅 **6. Логика календаря:**\n\n`Январь,  Март,  Май,  Июль,  ?`\n\nКакой месяц следующий в ряду?", "opts": ["Ноябрь", "Август", "Октябрь", "Сентябрь"], "ans": 3}, {"id": 7, "q": "🏝️ **7. Загадка правды и лжи:**\n\nНа острове живут рыцари (всегда говорят правду) и лжецы (всегда лгут). Человек сказал: «Я лжец».\n\nКакой вывод верный?", "opts": ["Он рыцарь", "Это логический парадокс (невозможно)", "Он лжец", "Он турист"], "ans": 1}, {"id": 8, "q": "🧭 **8. Направление и компас:**\n\nВы смотрите на **Север**. Затем повернулись на **90° вправо**.\nКуда вы теперь смотрите?", "opts": ["Восток", "Юг", "Запад", "Север"], "ans": 0}, {"id": 9, "q": "⏰ **9. Угол стрелок часов:**\n\nКогда часы показывают ровно **01:00**, какой наименьший угол между стрелками?", "opts": ["15°", "60°", "30°", "75°"], "ans": 2}, {"id": 10, "q": "🧠 **10. Логический силлогизм:**\n\n• Все металлы проводят тепло. Медь — металл.\n\nКакой **строгий вывод** следует из этих условий?", "opts": ["Любой металл — медь", "Тепло есть только в меди", "Медь проводит тепло", "Медь не металл"], "ans": 2}, {"id": 11, "q": "🔤 **11. Буквенный ряд:**\n\n`A,  C,  E,  G,  ?`\n\nКакая буква следующая в латинском алфавите?", "opts": ["I", "H", "K", "J"], "ans": 0}, {"id": 12, "q": "🧊 **12. 3D Пространство:**\n\n3 одинаковых кубика склеены в один прямой ряд.\nСколько внешних (открытых) граней у полученного тела?", "opts": ["18", "20", "14", "12"], "ans": 2}, {"id": 13, "q": "🏃 **13. Забег и позиции:**\n\nНа марафоне вы обогнали бегуна, который шел вторым. На каком вы сейчас месте?", "opts": ["Победитель", "3-е место", "1-е место", "2-е место"], "ans": 3}, {"id": 14, "q": "🔍 **14. Лишнее звено:**\n\nКто из четырех не относится к той же биологической группе, что остальные три?", "opts": ["Тюлень", "Акула", "Дельфин", "Кит"], "ans": 1}, {"id": 15, "q": "🔢 **15. Сложная закономерность:**\n\n`2,  6,  12,  20,  ?`\n\nОпределите следующее число:", "opts": ["30", "24", "34", "38"], "ans": 0}, {"id": 16, "q": "💧 **16. Логика переливаний:**\n\nУ вас есть только кувшины 3 литра и 5 литров. Можно ли точно отмерить ровно 4 литра?", "opts": ["Нет, невозможно", "Да, переливанием из 5л в 3л", "Только с весами", "Только наполняя 3л"], "ans": 1}, {"id": 17, "q": "🔢 **17. Арифметическая матрица:**\n\n`[ 2 ]  [ 4 ]  ➔  [  ?  ]`\n\nЕсли первое число умножить на 2 и прибавить второе, чему равен результат?", "opts": ["12", "15", "8", "5"], "ans": 2}, {"id": 18, "q": "👥 **18. Логика родства:**\n\nГлядя на портрет, мужчина сказал: «Отец этого человека — единственный сын моего отца» (у него нет братьев). Кто на портрете?", "opts": ["Отец", "Он сам", "Его сын", "Дядя"], "ans": 2}, {"id": 19, "q": "🔢 **19. Ряд чисел:**\n\n`1,  2,  3,  5,  8,  13,  ?`\n\nКакое следующее число в ряду Фибоначчи?", "opts": ["25", "30", "18", "21"], "ans": 3}, {"id": 20, "q": "📊 **20. Множества (Венн):**\n\nВ группе 30 студентов. 18 знают английский, 15 знают русский. 3 не знают ни один. Сколько студентов знают **оба языка**?", "opts": ["4", "8", "6", "11"], "ans": 2}, {"id": 21, "q": "🚗 **21. Скорость и движение:**\n\nРасстояние между городами 120 км. Навстречу друг другу выехали машины со скоростями 60 км/ч и 40 км/ч. Через сколько часов они встретятся?", "opts": ["3 часа", "2 часа", "1.2 часа", "1 час"], "ans": 2}]
+      },
+      eq: {
+        uz: [{"q": "💼 Ish joyingizda muhim loyihangiz keskin tanqid qilindi. Sizning birinchi reaksiyangiz:", "opts": ["Jahlim chiqadi va tanqidchini obro‘sizlantirishga harakat qilaman", "Bosiqlik bilan asosli tanqidni tinglab, takomillashtirish yo‘llarini izlayman", "Xafa bo‘lib, o‘zimni himoya qilishdan butunlay to‘xtayman", "Loyiha ustida ishlashni tashlab ketaman"], "ans": 1}, {"q": "😔 Yaqin do‘stingiz tushkun holatda, lekin gapirishni istamayapti. Nima qilasiz?", "opts": ["Sababini aytmaguncha qistayveraman", "Beparvo bo‘lib, o‘z ishlarim bilan band bo‘laman", "Har qanday paytda yordamga tayyorligimni bildirib, unga vaqt beraman", "Mening ham muammolarim ko‘pligini aytib noliyman"], "ans": 2}, {"q": "⚡ Kutilmagan qiyinchilik sababli muhim rejangiz butunlay buzildi. O‘zingizni qanday tutasiz?", "opts": ["Vahimaga tushib, sarosima ichida qolaman", "Vaziyatni xotirjam qabul qilib, tezda muqobil yechim ishlab chiqaman", "Aybdorlarni qidirishga tushaman", "Taqdirga tan berib qo‘l siltayman"], "ans": 1}, {"q": "🗣️ Bahs paytida suhbatdoshingiz his-tuyg‘ularini jilovlay olmay ovozini ko‘tardi:", "opts": ["Men ham undan balandroq baqirib javob beraman", "Xotirjam ohangda: «Keling, xotirjam gaplashaylik» deb vaziyatni sovutaman", "Shikoyat qilishga shoshilaman", "Indamay xonani tark etaman"], "ans": 1}, {"q": "👥 Yangi jamoaga kelganingizda atrofdagilar bilan qanday munosabat o‘rnatasiz?", "opts": ["O‘zlari birinchi bo‘lib kelib tanishishlarini kutaman", "Samimiy tabassum bilan tanishib, ularning tajribasini hurmat bilan o‘rganaman", "O‘zimning avvalgi yutuqlarim haqida to‘xtovsiz maqtanaman", "Hech kim bilan gaplashmaslikka harakat qilaman"], "ans": 1}, {"q": "🏆 Rejalashtirilgan ishda xatoga yo‘l qo‘ydingiz. O‘y-fikrlaringiz qanday bo‘ladi?", "opts": ["«Men hech narsaga yaramayman» deb tushkunlikka tushaman", "Xatoning sababini aniqlab, uni kelajak uchun muhim saboq deb bilaman", "Xatoni boshqa birovning bo‘yniga qo‘yishga urinaman", "Hammasini unutib, tavakkaliga yashayveraman"], "ans": 1}, {"q": "🎯 Qiyin hayotiy qaror qabul qilishda asosan nimaga tayanasiz?", "opts": ["Bir daqiqalik qizg‘in hissiyotlar va daf’iy kayfiyatga", "Mantiqiy dalillar va ichki hissiy xotirjamlik uyg‘unligiga", "Tavakkalga (tanga tashlashga)", "Boshqalar nima desa shunga"], "ans": 1}, {"q": "🤝 Do‘stingiz juda katta yutug‘ini aytganida ichingizdan qanday tuyg‘u o‘tadi?", "opts": ["Yashirin hasad va noqulaylik", "Uning uchun chin dildan quvonch va samimiy faxr tuyg‘usi", "O‘zimning undan ustun ekanimni ko‘rsatishga intilish", "Mutlaq befarqlik"], "ans": 1}, {"q": "🛑 Qattiq asabiylashish va g‘azablanish paytida o‘zingizni qanday jilovlaysiz?", "opts": ["Qo‘limga tushgan buyumni uloqtiraman yoki jahl sochaman", "Chuqur nafas olib, bir necha daqiqa tanaffus bilan hislarni boshqaraman", "G‘azabimni ichimga yutib, o‘zimni eyman", "Boshqalarni haqoratlayman"], "ans": 1}, {"q": "💬 Atrofdagi do‘stlaringiz va hamkasblaringiz sizni qanday ta’riflaydi?", "opts": ["Tez jahli chiqadigan va kayfiyati noaniq inson", "Bosiq, ishonchli va yaxshi tinglay oladigan maslahatgo‘y", "O‘ziga bino qo‘ygan va quloq solmaydigan", "Sovuq va e’tiborsiz"], "ans": 1}],
+        ru: [{"q": "💼 На работе ваш проект подвергся резкой критике. Ваша первая реакция:", "opts": ["Вспылю и начну доказывать чужую некомпетентность", "Спокойно выслушаю замечания и проанализирую точки роста", "Обижусь и полностью перестану защищать свои идеи", "Брошу работу над проектом"], "ans": 1}, {"q": "😔 Близкий друг подавлен, но не хочет говорить. Что вы предпримете?", "opts": ["Буду настойчиво выспрашивать, пока не признается", "Пройду мимо, сославшись на занятость", "Дам понять, что я рядом в любую минуту, и дам ему время", "Начну жаловаться на свои проблемы"], "ans": 2}, {"q": "⚡ Из-за непредвиденных обстоятельств сорвался важный план. Ваше поведение:", "opts": ["Впаду в панику и растерянность", "Спокойно оценю обстановку и оперативно разработаю план Б", "Начну обвинять обстоятельства и окружающих", "Опущу руки"], "ans": 1}, {"q": "🗣️ В споре собеседник сорвался и перешел на повышенные тона:", "opts": ["Начну кричать в ответ еще громче", "Спокойно предложу: «Давайте сделаем паузу и обсудим без эмоций»", "Побегу жаловаться руководству", "Молча хлопну дверью"], "ans": 1}, {"q": "👥 Приходя в новый коллектив, как вы выстраиваете отношения?", "opts": ["Жду, пока другие первыми подойдут знакомиться", "С искренней улыбкой знакомлюсь и уважительно перенимаю опыт", "Хвастаюсь прошлыми заслугами, чтобы запугать", "Держусь подчеркнуто отстраненно"], "ans": 1}, {"q": "🏆 Вы допустили ошибку в важном деле. Ваши мысли в этот момент:", "opts": ["«Я ни на что не гожусь» — впадаю в уныние", "Анализирую причину и воспринимаю ошибку как ценный урок", "Пытаюсь свалить вину на коллегу", "Делаю вид, что ничего не произошло"], "ans": 1}, {"q": "🎯 Принимая судьбоносное решение, на что вы опираетесь прежде всего?", "opts": ["На сиюминутные эмоции и настроение", "На баланс трезвой логики и внутреннего эмоционального согласия", "На авось", "На мнение первого попавшегося человека"], "ans": 1}, {"q": "🤝 Друг делится своим триумфом. Какое чувство рождается внутри?", "opts": ["Скрытая зависть и досада", "Искренняя радость за него и гордость", "Желание доказать, что мои успехи гораздо круче", "Полное безразличие"], "ans": 1}, {"q": "🛑 В момент сильного раздражения и гнева, как вы берете контроль?", "opts": ["Срываю злость на близких или вещах", "Делаю глубокий вдох, беру паузу и восстанавливаю самообладание", "Коплю гнев в себе, разрушая здоровье", "Оскорбляю окружающих"], "ans": 1}, {"q": "💬 Как вас чаще всего характеризуют близкие и коллеги?", "opts": ["Вспыльчивый и эмоционально непредсказуемый", "Уравновешенный, надежный и чуткий собеседник", "Эгоцентричный и глухой к чужому мнению", "Холодный и равнодушный"], "ans": 1}]
+      },
+      pq: {
+        uz: [{"q": "📅 Muhim vazifani bajarish muddati (dedlayn) yaqinlashganda:", "opts": ["Hamma ishni oxirgi kechaga qoldiraman, stressda ishlayman", "Vazifani mayda qismlarga bo‘lib, jadval asosida oldindan bajaraman", "Boshlayman-u, bir necha kunga tashlab qo‘yaman", "Muddati o‘tib ketguncha payqamay qolaman"], "ans": 1}, {"q": "📱 Qiyin ish ustida o‘tirganingizda telefoningiz jiringlasa yoki bildirishnoma kelsa:", "opts": ["Darhol qarayman va ijtimoiy tarmoqlarda 1 soat yo‘qolib qolaman", "E’tibor bermayman, belgilangan qismni tugatib keyin tekshiraman", "Ishni chala qoldirib, chalg‘ib ketaman", "«Keyin qilaman» deb butunlay to‘xtataman"], "ans": 1}, {"q": "💡 Ertalab uyg‘onganingizda kuningiz qanday boshlanadi?", "opts": ["Karavotda 40 daqiqa behuda lenta aylantirish bilan", "Kunning eng muhim 3 ta vazifasini aniqlab, energiyani sarflash bilan", "Qayerdan boshlashni bilmay betartib holda", "Tushlikkacha uxlab, rejalarni bekor qilish bilan"], "ans": 1}, {"q": "🎯 Katta maqsad qo‘yganingizda (masalan, til o‘rganish, sport):", "opts": ["2 kun kuchli qiziqish bilan boshlab, keyin tashlab ketaman", "Har kuni 20-30 daqiqadan barqaror odat shakllantirib davom etaman", "Faqat dushanbadan boshlashni kutib yuraveraman", "Boshlamasdan oldin mingta bahona to‘qiyman"], "ans": 1}, {"q": "⚡ Bir vaqtning o‘zida bir nechta vazifa paydo bo‘lsa:", "opts": ["Hammasini birdaniga boshlab, hech birini oxiriga yetkazolmayman", "Eng muhimini (Prioritet) ajratib, birma-bir ketma-ketlikda yopaman", "Boshim qotib, umuman hech narsa qilmay o‘tiraman", "Eng oson va ahamiyatsiz mayda ishlarga qochaman"], "ans": 1}, {"q": "🛑 Zerikarli yoki yoqimsiz, lekin shart bo‘lgan ish oldingizda turganda:", "opts": ["Uni oxirgi nuqtagacha paysalga solib orqaga suraman", "«5 daqiqa qoidasi» bilan darhol boshlab, tezda tugatib qutulaman", "Boshqa birov qilib berishini kutib o‘tiraman", "Unutganlikka solib o‘zimni aldayman"], "ans": 1}, {"q": "🧘 Ish paytida diqqatingizni (fokus) qancha vaqt bir joyda saqlay olasiz?", "opts": ["Maksimum 5-10 daqiqa, keyin xayolim qochadi", "Kamida 25-45 daqiqa (Pomodoro) chuqur diqqatda ishlay olaman", "Faqat oxirgi 1 soat qolgandagina diqqat yig‘aman", "Doimo nimagadir chalg‘ib turaman"], "ans": 1}, {"q": "📝 Haftalik rejalaringiz qanchalik amalga oshadi?", "opts": ["20% dan kami, qolgani kelasi haftaga o‘tadi", "75-90% reja intizom bilan to‘liq bajariladi", "Reja tuzmayman, oqim bo‘yicha yashayman", "Tuzilgan rejaning varag‘ini ham yo‘qotib qo‘yaman"], "ans": 1}, {"q": "🌙 Kechasi uxlashdan oldin kuningiz haqida nima deb o‘ylaysiz?", "opts": ["«Bugun ham kunim behuda o‘tdi» degan afsus va aybdorlik", "«Bugun muhim qadamlarni qo‘ydim» degan mamnunlik", "Ertangi kundan qo‘rquv va xavotir", "Hech narsa o‘ylamayman"], "ans": 1}, {"q": "🚀 O‘zingizning intizom (iroda kuchi) darajangizni qanday baholaysiz?", "opts": ["Juda past — erinchaklik va prokrastinatsiya meni yengadi", "Yuqori — maqsad sari og‘ishmay, vaqtimni qadrlayman", "O‘rtacha — kayfiyatimga juda bog‘liq", "Nolga yaqin"], "ans": 1}],
+        ru: [{"q": "📅 По мере приближения важного дедлайна:", "opts": ["Оставляю всё на последнюю ночь и работаю в диком стрессе", "Разбиваю задачу на этапы и планомерно закрываю заранее", "Начинаю бодро, но бросаю на полпути на пару дней", "Вспоминаю о дедлайне, когда он уже прошел"], "ans": 1}, {"q": "📱 Во время сложной работы на телефон приходит уведомление:", "opts": ["Сразу отвлекаюсь и «залипаю» в ленте на целый час", "Игнорирую, проверю только после завершения спринта", "Бросаю задачу незавершенной", "Решаю отложить работу на вечер"], "ans": 1}, {"q": "💡 С чего обычно начинается ваше утро после пробуждения?", "opts": ["С 40 минут бессмысленного скроллинга соцсетей в кровати", "С четкого определения 3 ключевых задач дня и фокуса на них", "С хаоса и непонимания, за что хвататься", "Со сна до обеда и отмены всех планов"], "ans": 1}, {"q": "🎯 Когда вы ставите амбициозную цель (спорт, языки, проект):", "opts": ["Загораюсь на 2 дня, а затем быстро остываю и бросаю", "Внедряю привычку по 20-30 минут ежедневно и иду до конца", "Жду каждого следующего понедельника, чтобы «начать»", "Придумываю сотни оправданий, чтобы не делать"], "ans": 1}, {"q": "⚡ Когда одновременно накапливается несколько задач:", "opts": ["Хватаюсь за всё сразу и ничего не довожу до конца", "Расставляю приоритеты и последовательно закрываю одно за другим", "Впадаю в ступор и вообще ничего не делаю", "Убегаю в мелкие и бесполезные дела"], "ans": 1}, {"q": "🛑 Перед вами стоит скучная, но обязательная задача:", "opts": ["Тяну до последнего предела, откладывая на потом", "Применяю правило 5 минут, начинаю сразу и быстро закрываю", "Жду, пока кто-то сделает за меня", "Делаю вид, что задачи не существует"], "ans": 1}, {"q": "🧘 Как долго вы можете удерживать глубокий фокус внимания?", "opts": ["Не более 5-10 минут, потом мысли улетают", "Не менее 25-45 минут глубокого погружения (Pomodoro)", "Только когда дедлайн горит через 15 минут", "Постоянно на что-то отвлекаюсь"], "ans": 1}, {"q": "📝 Насколько успешно выполняются ваши недельные планы?", "opts": ["Меньше 20%, остальное переносится вечно", "На 75-90% благодаря дисциплине и тайм-менеджменту", "Не планирую, живу по течению", "Теряю даже список запланированного"], "ans": 1}, {"q": "🌙 О чем вы чаще всего думаете перед сном?", "opts": ["«Опять день прошел впустую» — чувство вины и досады", "«Сегодня сделан реальный прогресс» — чувство удовлетворения", "О тревоге перед завтрашними долгами", "Ни о чем не думаю"], "ans": 1}, {"q": "🚀 Как вы оцениваете свой уровень самодисциплины и силы воли?", "opts": ["Очень низкий — лень и прокрастинация часто побеждают", "Высокий — ценю время и планомерно достигаю целей", "Средний — сильно завишу от настроения", "Близок к нулю"], "ans": 1}]
+      }
+    };
+
+    // I18N Text Dictionary
+    const I18N = {
+      uz: {
+        subtitle: "IQzone Rasmiy Kognitiv Intellekt Platformasi",
+        bundleHead: "Kognitiv Testlar To‘plami (Trio Bundle)",
+        tab1Title: "Rasmiy IQ Test (21 savol)",
+        tab1Desc: "Mantiq, fazoviy va sonlar tahlili",
+        tab1Badge: "ASOSIY",
+        tab2Title: "EQ Test (Hissiy intellekt)",
+        tab2Desc: "Empatiya va muloqot qobiliyati (10 savol)",
+        tab2Badge: "BEPUL 🎁",
+        tab3Title: "PQ Test (Prokrastinatsiya)",
+        tab3Desc: "Erinchaklik va vaqt boshqaruvi (10 savol)",
+        tab3Badge: "BEPUL 🎁",
+        startBtn: "Testni Boshlash",
+        trust1Val: "21 Savol",
+        trust1Lbl: "~5 Daqiqa",
+        trust2Val: "QR-Kodli",
+        trust2Lbl: "HD Sertifikat",
+        trust3Val: "CHC / Raven",
+        trust3Lbl: "Metodologiya",
+        qWord: "Savol",
+        skipBtn: "⏭️ O‘tkazib yuborish",
+        suspenseTitle: "Natijangiz Tahlil Qilinmoqda...",
+        suspenseSteps: [
+          "Kognitiv matritsalar tahlil qilinmoqda...",
+          "Mantiqiy xatolar va javob tezligi tekshirilmoqda...",
+          "Kognitiv foiz (Percentile) hisoblanmoqda...",
+          "Rasmiy hisobot tayyorlanmoqda..."
+        ],
+        paywallTitle: "NATIJANGIZ TAYYOR — LEKIN YOPIQ!",
+        paywallSub: "Siz aholining yuqori <b>5 foiziga</b> kirdim deb o‘ylaysizmi? 🤔",
+        certHead: "IQZONE NING RASMIY SERTIFIKATI",
+        certDesc: "Bor-yo‘g‘i 9,900 so‘m bilan o‘z intellekt darajangizni IQzone ning rasmiy sertifikati bilan tasdiqlang!",
+        payCard: "💳 Click / Payme / Karta (9 900 so‘m)",
+        payStars: "⭐ Telegram Stars (50 ⭐ — Avto)",
+        payFree: "🎁 5 ta do‘st taklif qilib BEPUL ochish",
+        modalCardTitle: "Karta Orqali To‘lov",
+        modalStarsTitle: "Telegram Stars To‘lovi",
+        modalStarsDesc: "Telegram Stars orqali to‘lov qilganda natijangiz va rasmiy HD sertifikatingiz <b>avtomatik 1 soniyada</b> ochiladi!",
+        modalStarsBtn: "⭐ Botda Stars orqali to‘lash 🚀",
+        modalCancel: "✕ Bekor qilish",
+        modalInviteTitle: "5 ta Do‘st — 100% Bepul",
+        modalInviteDesc: "5 ta do‘stingizga havola yuboring. Ular botga kirib test topshirishi bilan rasmiy sertifikatingiz <b>mutlaqo bepul</b> ochiladi!",
+        modalInviteShare: "📲 Telegram'da Do‘stlarga Ulashish",
+        payGuideHtml: `
+          <div class="guide-step"><span class="step-num">1</span><span>Kartaga <b>9 900 so‘m</b> o‘tkazing (Click, Payme yoki Uzum)</span></div>
+          <div class="guide-step"><span class="step-num">2</span><span>To‘lov chekini (skrinshot) <b>botga</b> yuboring</span></div>
+          <div class="guide-step"><span class="step-num">3</span><span><b>1–2 daqiqada</b> IQzone rasmiy natijangiz va HD sertifikat ochiladi!</span></div>
+        `,
+        sendReceiptBtn: "💬 Chekni Botga Yuborish 🚀",
+        bonusDone: "TEST MUVAFFAQIYATLI YAKUNLANDI!",
+        bonusBack: "🏠 Bosh Menyuga Qaytish",
+        bonusShare: "📲 Natijani Do‘stlarga Ulashish"
+      },
+      ru: {
+        subtitle: "IQzone Официальная платформа когнитивного интеллекта",
+        bundleHead: "Пакет когнитивных тестов (Trio Bundle)",
+        tab1Title: "Официальный IQ Тест (21 вопрос)",
+        tab1Desc: "Логика, пространственный и числовой интеллект",
+        tab1Badge: "ОСНОВНОЙ",
+        tab2Title: "EQ Тест (Эмоциональный интеллект)",
+        tab2Desc: "Эмпатия и навыки коммуникации (10 вопр.)",
+        tab2Badge: "БЕСПЛАТНО 🎁",
+        tab3Title: "PQ Тест (Прокрастинация)",
+        tab3Desc: "Самодисциплина и тайм-менеджмент (10 вопр.)",
+        tab3Badge: "БЕСПЛАТНО 🎁",
+        startBtn: "Начать тестирование",
+        trust1Val: "21 Вопрос",
+        trust1Lbl: "~5 Минут",
+        trust2Val: "С QR-кодом",
+        trust2Lbl: "HD Сертификат",
+        trust3Val: "CHC / Raven",
+        trust3Lbl: "Методология",
+        qWord: "Вопрос",
+        skipBtn: "⏭️ Пропустить вопрос",
+        suspenseTitle: "Анализ ваших результатов...",
+        suspenseSteps: [
+          "Анализ когнитивных матриц...",
+          "Оценка логических ошибок и скорости...",
+          "Расчет процентиля интеллекта...",
+          "Формирование официального отчета..."
+        ],
+        paywallTitle: "ВАШ РЕЗУЛЬТАТ ГОТОВ — НО ЗАКРЫТ!",
+        paywallSub: "Как вы думаете, вошли ли вы в топ <b>5% людей</b>? 🤔",
+        certHead: "ОФИЦИАЛЬНЫЙ СЕРТИФИКАТ IQZONE",
+        certDesc: "Всего за 9 900 сум подтвердите свой результат официальным HD сертификатом с QR-кодом!",
+        payCard: "💳 Click / Payme / Карта (9 900 сум)",
+        payStars: "⭐ Telegram Stars (50 ⭐ — Авто)",
+        payFree: "🎁 Пригласить 5 друзей — БЕСПЛАТНО",
+        modalCardTitle: "Оплата картой",
+        modalStarsTitle: "Оплата Telegram Stars",
+        modalStarsDesc: "При оплате через Telegram Stars ваш результат и сертификат откроются <b>автоматически за 1 секунду</b>!",
+        modalStarsBtn: "⭐ Оплатить через Stars в боте 🚀",
+        modalCancel: "✕ Отмена",
+        modalInviteTitle: "5 Друзей — 100% Бесплатно",
+        modalInviteDesc: "Отправьте ссылку 5 друзьям. Когда они начнут тест, ваш сертификат откроется <b>абсолютно бесплатно</b>!",
+        modalInviteShare: "📲 Поделиться в Telegram",
+        payGuideHtml: `
+          <div class="guide-step"><span class="step-num">1</span><span>Переведите <b>9 900 сум</b> на карту (Click, Payme, Uzum)</span></div>
+          <div class="guide-step"><span class="step-num">2</span><span>Отправьте чек (скриншот) <b>в бот</b></span></div>
+          <div class="guide-step"><span class="step-num">3</span><span>За <b>1–2 минуты</b> откроется ваш официальный сертификат!</span></div>
+        `,
+        sendReceiptBtn: "💬 Отправить чек в бот 🚀",
+        bonusDone: "ТЕСТ УСПЕШНО ЗАВЕРШЕН!",
+        bonusBack: "🏠 Вернуться в главное меню",
+        bonusShare: "📲 Поделиться результатом с друзьями"
+      }
+    };
+
+    // State
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentLang = urlParams.get('lang') === 'ru' ? 'ru' : (tg?.initDataUnsafe?.user?.language_code === 'ru' ? 'ru' : 'uz');
+    let currentTest = urlParams.get('test') || 'iq';
+    if (!['iq', 'eq', 'pq'].includes(currentTest)) currentTest = 'iq';
+
+    let currentQuestions = [];
     let currentIdx = 0;
     let correctCount = 0;
     let timerSeconds = 15 * 60;
     let timerInterval = null;
+
+    function applyTranslations() {
+      const t = I18N[currentLang];
+      document.getElementById('lbl-subtitle').innerText = t.subtitle;
+      document.getElementById('lbl-bundle-head').innerText = t.bundleHead;
+      document.getElementById('tab1-title').innerText = t.tab1Title;
+      document.getElementById('tab1-desc').innerText = t.tab1Desc;
+      document.getElementById('tab1-badge').innerText = t.tab1Badge;
+      document.getElementById('tab2-title').innerText = t.tab2Title;
+      document.getElementById('tab2-desc').innerText = t.tab2Desc;
+      document.getElementById('tab2-badge').innerText = t.tab2Badge;
+      document.getElementById('tab3-title').innerText = t.tab3Title;
+      document.getElementById('tab3-desc').innerText = t.tab3Desc;
+      document.getElementById('tab3-badge').innerText = t.tab3Badge;
+      document.getElementById('lbl-start-quiz').innerText = t.startBtn;
+      document.getElementById('trust-1-val').innerText = t.trust1Val;
+      document.getElementById('trust-1-lbl').innerText = t.trust1Lbl;
+      document.getElementById('trust-2-val').innerText = t.trust2Val;
+      document.getElementById('trust-2-lbl').innerText = t.trust2Lbl;
+      document.getElementById('trust-3-val').innerText = t.trust3Val;
+      document.getElementById('trust-3-lbl').innerText = t.trust3Lbl;
+      document.getElementById('btn-skip-q').innerText = t.skipBtn;
+      document.getElementById('suspense-title').innerText = t.suspenseTitle;
+      document.getElementById('paywall-title').innerText = t.paywallTitle;
+      document.getElementById('paywall-sub').innerHTML = t.paywallSub;
+      document.getElementById('lbl-cert-headline').innerText = t.certHead;
+      document.getElementById('lbl-cert-desc').innerText = t.certDesc;
+      document.getElementById('btn-pay-card').innerText = t.payCard;
+      document.getElementById('btn-pay-stars').innerText = t.payStars;
+      document.getElementById('btn-pay-free').innerText = t.payFree;
+      document.getElementById('lbl-modal-card-title').innerText = t.modalCardTitle;
+      document.getElementById('lbl-stars-title').innerText = t.modalStarsTitle;
+      document.getElementById('lbl-stars-desc').innerHTML = t.modalStarsDesc;
+      document.getElementById('btn-stars-action').innerText = t.modalStarsBtn;
+      document.getElementById('btn-stars-cancel').innerText = t.modalCancel;
+      document.getElementById('lbl-invite-modal-title').innerText = t.modalInviteTitle;
+      document.getElementById('lbl-invite-modal-desc').innerHTML = t.modalInviteDesc;
+      document.getElementById('btn-share-tg').innerText = t.modalInviteShare;
+      document.getElementById('lbl-pay-guide').innerHTML = t.payGuideHtml;
+      document.getElementById('btn-send-receipt').innerText = t.sendReceiptBtn;
+      document.getElementById('bonus-title').innerText = t.bonusDone;
+
+      // Toggle pills styling
+      document.getElementById('lang-btn-uz').classList.toggle('active', currentLang === 'uz');
+      document.getElementById('lang-btn-ru').classList.toggle('active', currentLang === 'ru');
+    }
+
+    function setAppLang(lang) {
+      currentLang = lang;
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      applyTranslations();
+      // If quiz is actively running, re-render question in new language
+      if (document.getElementById('view-quiz').classList.contains('active')) {
+        currentQuestions = QUESTIONS_DATA[currentTest][currentLang];
+        renderQuestion();
+      }
+    }
 
     function switchView(viewId) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -846,17 +955,23 @@
     }
 
     function selectTab(num) {
-      if (num > 1) {
-        if (tg) tg.HapticFeedback?.notificationOccurred('warning');
-        alert('Bu test IQ testidan o‘tganingizdan so‘ng BEPUL ochiladi! Avval IQ testini topshiring.');
-      }
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      document.querySelectorAll('.tab-item').forEach((t, i) => {
+        t.classList.toggle('selected', i + 1 === num);
+      });
+
+      if (num === 1) currentTest = 'iq';
+      else if (num === 2) currentTest = 'eq';
+      else if (num === 3) currentTest = 'pq';
     }
 
     function startQuiz() {
-      if (tg) tg.HapticFeedback?.impactOccurred('medium');
-      switchView('view-quiz');
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      currentQuestions = QUESTIONS_DATA[currentTest][currentLang];
       currentIdx = 0;
       correctCount = 0;
+      timerSeconds = (currentTest === 'iq' ? 15 : 10) * 60;
+      switchView('view-quiz');
       renderQuestion();
       startTimer();
     }
@@ -878,17 +993,25 @@
     }
 
     function renderQuestion() {
-      if (currentIdx >= questions.length) {
+      if (currentIdx >= currentQuestions.length) {
         finishQuiz();
         return;
       }
-      const q = questions[currentIdx];
-      document.getElementById('q-counter').innerText = 'Savol ' + (currentIdx + 1) + ' / ' + questions.length;
-      const pct = Math.round(((currentIdx + 1) / questions.length) * 100);
+      const q = currentQuestions[currentIdx];
+      const t = I18N[currentLang];
+      document.getElementById('q-counter').innerText = `${t.qWord} ${currentIdx + 1} / ${currentQuestions.length}`;
+      const pct = Math.round(((currentIdx + 1) / currentQuestions.length) * 100);
       document.getElementById('progress-fill').style.width = pct + '%';
       
-      const cats = ['🔢 Sonlar mantiqi', '🧩 Fazoviy idrok', '⚖️ Mantiqiy deduksiya', '🔍 Kognitiv qoliplar'];
-      document.getElementById('q-cat').innerText = cats[currentIdx % cats.length];
+      let catName = 'Mantiqiy Tahlil';
+      if (currentTest === 'eq') catName = currentLang === 'ru' ? '🎭 Эмоциональный интеллект' : '🎭 Hissiy Intellekt va Empatiya';
+      else if (currentTest === 'pq') catName = currentLang === 'ru' ? '⏳ Самодисциплина и тайм-менеджмент' : '⏳ Prokrastinatsiya va Vaqt';
+      else {
+        const catsUz = ['🔢 Sonlar mantiqi', '🧩 Fazoviy idrok', '⚖️ Mantiqiy deduksiya', '🔍 Kognitiv qoliplar'];
+        const catsRu = ['🔢 Логика чисел', '🧩 Пространственное мышление', '⚖️ Дедукция', '🔍 Когнитивные паттерны'];
+        catName = currentLang === 'ru' ? catsRu[currentIdx % catsRu.length] : catsUz[currentIdx % catsUz.length];
+      }
+      document.getElementById('q-cat').innerText = catName;
       document.getElementById('q-text').innerText = q.q;
 
       const optsBox = document.getElementById('options-container');
@@ -897,7 +1020,7 @@
       q.opts.forEach((optText, i) => {
         const btn = document.createElement('button');
         btn.className = 'opt-btn';
-        btn.innerHTML = '<span class="opt-letter">' + letters[i] + '</span><span>' + optText + '</span>';
+        btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${optText}</span>`;
         btn.onclick = () => selectAnswer(i, btn);
         optsBox.appendChild(btn);
       });
@@ -905,9 +1028,9 @@
 
     function selectAnswer(optIdx, btnEl) {
       btnEl.classList.add('chosen');
-      if (tg) tg.HapticFeedback?.impactOccurred('light');
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       
-      const q = questions[currentIdx];
+      const q = currentQuestions[currentIdx];
       if (optIdx === q.ans) {
         correctCount++;
       }
@@ -915,11 +1038,11 @@
       setTimeout(() => {
         currentIdx++;
         renderQuestion();
-      }, 220);
+      }, 200);
     }
 
     function skipQuestion() {
-      if (tg) tg.HapticFeedback?.impactOccurred('light');
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       currentIdx++;
       renderQuestion();
     }
@@ -927,12 +1050,8 @@
     function finishQuiz() {
       clearInterval(timerInterval);
       switchView('view-suspense');
-      const steps = [
-        'Raven matritsalari kalibrlanmoqda...',
-        'Mantiqiy xatolar va tezlik tekshirilmoqda...',
-        'Kognitiv foiz (Percentile) hisoblanmoqda...',
-        'QR-kodli rasmiy HD sertifikat tayyorlanmoqda...'
-      ];
+      const t = I18N[currentLang];
+      const steps = t.suspenseSteps;
       let stepIdx = 0;
       const stepInt = setInterval(() => {
         stepIdx++;
@@ -940,15 +1059,51 @@
           document.getElementById('suspense-text').innerText = steps[stepIdx];
         } else {
           clearInterval(stepInt);
-          switchView('view-paywall');
-          if (tg) {
-            tg.HapticFeedback?.notificationOccurred('success');
+          if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+          if (currentTest === 'iq') {
+            switchView('view-paywall');
             try {
-              tg.sendData(JSON.stringify({ event: 'quiz_finished', score: correctCount, total: questions.length }));
+              tg?.sendData(JSON.stringify({ event: 'quiz_finished', score: correctCount, total: currentQuestions.length }));
             } catch (e) {}
+          } else {
+            // EQ or PQ is 100% FREE! Show Instant Cognitive Bonus Report
+            showBonusResult();
           }
         }
-      }, 700);
+      }, 600);
+    }
+
+    function showBonusResult() {
+      switchView('view-bonus-result');
+      const isRu = currentLang === 'ru';
+      if (currentTest === 'eq') {
+        document.getElementById('bonus-icon').innerText = '🎭';
+        const eqScore = 95 + Math.round(correctCount * 3.5);
+        document.getElementById('bonus-score-text').innerText = `EQ: ${eqScore} / 135`;
+        document.getElementById('bonus-desc').innerHTML = isRu
+          ? `У вас <b>высокий уровень эмоциональной зрелости</b>! Вы отлично управляете своими эмоциями в стрессовых ситуациях и глубоко чувствуете собеседника.`
+          : `Sizda <b>yuqori hissiy yetuklik va empatiya</b> mavjud! Stressli vaziyatlarda his-tuyg‘ularni aql bilan boshqara olasiz va odamlarni chuqur tushunasiz.`;
+      } else {
+        document.getElementById('bonus-icon').innerText = '⏳';
+        const pqPct = 60 + Math.round(correctCount * 4);
+        document.getElementById('bonus-score-text').innerText = `PQ: ${pqPct}% (${isRu ? 'Дисциплина' : 'Intizom'})`;
+        document.getElementById('bonus-desc').innerHTML = isRu
+          ? `Уровень вашей самодисциплины: <b>${pqPct}%</b>. Вы умеете ставить цели и фокусироваться на главном, минимизируя прокрастинацию!`
+          : `Sizning iroda kuchi va intizom ko‘rsatkichingiz: <b>${pqPct}%</b>. Siz vaqtingizni qadrlaysiz va maqsad sari barqaror harakat qilasiz!`;
+      }
+    }
+
+    function shareBonusResult() {
+      const userId = tg?.initDataUnsafe?.user?.id;
+      const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
+      const isRu = currentLang === 'ru';
+      const text = encodeURIComponent(isRu
+        ? `🧠 Я успешно прошел когнитивный тест в IQzone! Проверь свой уровень IQ и эмоционального интеллекта! 👉 ${refLink}`
+        : `🧠 Men IQzone kognitiv testidan o'tdim! Qani, o'z intellektingizni sinab ko'ring! 👉 ${refLink}`);
+      const url = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${text}`;
+      if (tg?.openTelegramLink) tg.openTelegramLink(url);
+      else window.open(url, '_blank');
     }
 
     function openModal(id) {
@@ -961,25 +1116,15 @@
 
     function closeModal(id) {
       const modal = document.getElementById(id);
-      if (modal) {
-        modal.classList.remove('active');
-      }
+      if (modal) modal.classList.remove('active');
     }
 
     function handleModalBgClick(e, id) {
-      if (e.target.id === id) {
-        closeModal(id);
-      }
+      if (e.target.id === id) closeModal(id);
     }
 
-    function payWithCard() {
-      openModal('modal-card-pay');
-    }
-
-    function payWithStars() {
-      openModal('modal-stars-pay');
-    }
-
+    function payWithCard() { openModal('modal-card-pay'); }
+    function payWithStars() { openModal('modal-stars-pay'); }
     function inviteFriends() {
       const userId = tg?.initDataUnsafe?.user?.id;
       const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
@@ -991,9 +1136,7 @@
     function copyCardNumber() {
       const cardNum = "6262570109007361";
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(cardNum).then(() => {
-          showCardCopied();
-        }).catch(() => fallbackCopy(cardNum));
+        navigator.clipboard.writeText(cardNum).then(() => showCardCopied()).catch(() => fallbackCopy(cardNum));
       } else {
         fallbackCopy(cardNum);
       }
@@ -1018,12 +1161,12 @@
     function showCardCopied() {
       const btn = document.getElementById('copy-btn');
       if (btn) {
-        btn.innerText = '✅ Nusxalandi!';
+        btn.innerText = currentLang === 'ru' ? '✅ Скопировано!' : '✅ Nusxalandi!';
         btn.style.background = '#10b981';
         btn.style.borderColor = '#34d399';
         btn.style.color = '#fff';
         setTimeout(() => {
-          btn.innerText = '📋 Nusxalash';
+          btn.innerText = currentLang === 'ru' ? '📋 Скопировать' : '📋 Nusxalash';
           btn.style.background = '';
           btn.style.borderColor = '';
           btn.style.color = '';
@@ -1034,32 +1177,26 @@
 
     function goToBotForReceipt() {
       const url = 'https://t.me/Iqzonebot';
-      if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url, '_blank');
-      }
+      if (tg?.openTelegramLink) tg.openTelegramLink(url);
+      else window.open(url, '_blank');
     }
 
     function goToBotStars() {
       const url = 'https://t.me/Iqzonebot?start=pay_stars';
-      if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url, '_blank');
-      }
+      if (tg?.openTelegramLink) tg.openTelegramLink(url);
+      else window.open(url, '_blank');
     }
 
     function shareToTelegram() {
       const userId = tg?.initDataUnsafe?.user?.id;
       const refLink = userId ? `https://t.me/Iqzonebot?start=iqtest_${userId}` : `https://t.me/Iqzonebot?start=iqtest`;
-      const text = encodeURIComponent(`🧠 Men IQzone rasmiy testini topshirdim. Qani, o'z intellekt darajangizni sinab ko'ring! 👉 ${refLink}`);
+      const isRu = currentLang === 'ru';
+      const text = encodeURIComponent(isRu
+        ? `🧠 Я прошел официальный тест на IQ в IQzone! Проверь себя, сколько баллов наберешь ты? 👉 ${refLink}`
+        : `🧠 Men IQzone rasmiy testini topshirdim. Qani, o'z intellekt darajangizni sinab ko'ring! 👉 ${refLink}`);
       const url = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${text}`;
-      if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url, '_blank');
-      }
+      if (tg?.openTelegramLink) tg.openTelegramLink(url);
+      else window.open(url, '_blank');
     }
 
     function copyInviteLink() {
@@ -1069,14 +1206,20 @@
         navigator.clipboard.writeText(link).then(() => {
           const btn = document.getElementById('copy-ref-btn');
           if (btn) {
-            btn.innerText = '✅ Havola nusxalandi!';
-            setTimeout(() => { btn.innerText = '📋 Havolani Nusxalash'; }, 2500);
+            btn.innerText = currentLang === 'ru' ? '✅ Скопировано!' : '✅ Havola nusxalandi!';
+            setTimeout(() => { btn.innerText = currentLang === 'ru' ? '📋 Скопировать' : '📋 Havolani Nusxalash'; }, 2500);
           }
         });
       } else {
         prompt('Taklif havolasi:', link);
       }
     }
+
+    // Boot: Apply initial language and selected test
+    applyTranslations();
+    if (currentTest === 'eq') selectTab(2);
+    else if (currentTest === 'pq') selectTab(3);
+    else selectTab(1);
   </script>
 </body>
 </html>
